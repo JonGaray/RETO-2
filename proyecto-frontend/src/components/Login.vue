@@ -54,10 +54,22 @@ export default {
                     }
                 );
                 // Guardar el token en localStorage o en Vuex
-                localStorage.setItem('token', response.data.access_token);
+                sessionStorage.setItem('token', response.data.access_token);
                 // Redirigir al usuario a la vista del usuario
                 this.$router.push({ name: 'user' }); // Redirige a la vista de usuario
-                alert('Sesion Iniciada');
+
+                //Redireccion al caducar el token
+                const token = response.data.access_token;
+                const expiresIn = 3600; // 1 hora en segundos
+                sessionStorage.setItem('token', token);
+                sessionStorage.setItem('token_expiration', Date.now() + expiresIn * 1000);
+                setTimeout(() => {
+                    sessionStorage.removeItem('token');
+                    sessionStorage.removeItem('token_expiration');
+                    alert('Tu sesión ha caducado. Porfavor inice sesión de nuevo.');
+                    this.$router.push({ name: 'login' });
+                }, expiresIn * 1000);
+                
             } catch (err) {
                 this.error = err.response?.data?.error || 'Ha ocurrido un error.';
             } finally {

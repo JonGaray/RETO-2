@@ -15,6 +15,14 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if (Auth::check()){
+            if (Auth::user()->role == 'admin'){
+                return $next($request);
+            }else{
+                return response()->json(['message' => "Forbidden: You do not have the required permission"], 403);
+            }
+        } else {
+            return response()->json(['message' => "Unauthorized: You have not been authenticated"], 401);
+        }
     }
 }
