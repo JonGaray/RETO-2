@@ -56,6 +56,5 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return []; // Puedes agregar datos personalizados al token si es necesario
-}
-
+    }
 }
