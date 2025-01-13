@@ -49,7 +49,6 @@ export default {
         async handleLogin() {
             this.error = null;
             this.isLoading = true;
-
             try {
                 const response = await axios.post('http://localhost:8000/api/auth/login', {
                     email: this.email,
@@ -61,7 +60,7 @@ export default {
                 this.$router.push({ name: 'home' }); // Asegúrate de tener una ruta 'home' definida
                 alert('Sesion Iniciada');
             } catch (err) {
-                this.error = err.response?.data?.error || 'An error occurred during login.';
+                this.error = err.response?.data?.error || 'Ha ocurrido un error.';
             } finally {
                 this.isLoading = false;
             }
