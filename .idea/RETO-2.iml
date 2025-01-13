@@ -32,6 +32,8 @@
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/laravel/sail" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/laravel/serializable-closure" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/laravel/tinker" />
+      <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/league/commonmark" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/league/config" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/league/flysystem" />
@@ -42,6 +44,7 @@
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/mockery/mockery" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/namshi/jose" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/nesbot/carbon" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/nette/schema" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/nette/utils" />
@@ -50,6 +53,7 @@
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/nunomaduro/termwind" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/phar-io/manifest" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/phar-io/version" />
+      <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/php-open-source-saver/jwt-auth" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/phpoption/phpoption" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/phpunit/php-code-coverage" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/phpunit/php-file-iterator" />
@@ -85,6 +89,7 @@
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/sebastian/type" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/sebastian/version" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/staabm/side-effects-detector" />
+      <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/stella-maris/clock" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/symfony/clock" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/symfony/console" />
       <excludeFolder url="file://$MODULE_DIR$/proyecto-backend/vendor/symfony/css-selector" />
