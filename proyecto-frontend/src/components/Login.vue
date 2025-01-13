@@ -49,7 +49,6 @@ export default {
         async handleLogin() {
             this.error = null;
             this.isLoading = true;
-
             try {
                 const response = await axios.post('http://localhost:8000/api/auth/login', {
                     email: this.email,
