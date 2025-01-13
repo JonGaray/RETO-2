@@ -1,23 +1,35 @@
 <template>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form @submit.prevent="handleLogin">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input v-model="email" type="email" id="email" required placeholder="Enter your email" />
-            </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Iniciar Sesi&oacute;n</h2>
+                        <form @submit.prevent="handleLogin">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input v-model="email" type="email" id="email" class="form-control"
+                                    placeholder="Enter your email" required />
+                            </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input v-model="password" type="password" id="password" required placeholder="Enter your password" />
-            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input v-model="password" type="password" id="password" class="form-control"
+                                    placeholder="Enter your password" required />
+                            </div>
 
-            <button type="submit" :disabled="isLoading">Login</button>
+                            <button type="submit" class="btn btn-primary w-100" :disabled="isLoading">
+                                Entrar
+                            </button>
 
-            <div v-if="error" class="error-message">
-                <p>{{ error }}</p>
+                            <div v-if="error" class="alert alert-danger mt-3">
+                                <p>{{ error }}</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -47,7 +59,7 @@ export default {
                 localStorage.setItem('token', response.data.access_token);
                 // Redirigir al usuario a la página principal o dashboard
                 this.$router.push({ name: 'home' }); // Asegúrate de tener una ruta 'home' definida
-                alert("Sesion Iniciada");
+                alert('Sesion Iniciada');
             } catch (err) {
                 this.error = err.response?.data?.error || 'An error occurred during login.';
             } finally {
@@ -59,45 +71,17 @@ export default {
 </script>
 
 <style scoped>
-/* Agrega tus estilos de acuerdo a tus necesidades */
-.login-container {
-    width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
+.card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-top: 5px;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.card-title {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 button:disabled {
     background-color: #dcdcdc;
     cursor: not-allowed;
-}
-
-.error-message {
-    color: red;
-    margin-top: 10px;
 }
 </style>
