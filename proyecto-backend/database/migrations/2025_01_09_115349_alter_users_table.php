@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('username1');
             $table->string('username2');
             $table->string('role');
-            $table->string('status');
+            $table->string('status')->default('habilitado');
         });
     }
 

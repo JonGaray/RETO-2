@@ -59,7 +59,7 @@ wrong.',
             'username1' => 'required|string|max:255',
             'username2' => 'nullable|string|max:255',
             'role' => 'required|in:user,admin',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:habilitado,deshabilitado',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);

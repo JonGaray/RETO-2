@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->foreignId('workshops_id');
+            $table->string('status')->default('habilitado');
+            $table->foreignId('campus_id');
         });
     }
 

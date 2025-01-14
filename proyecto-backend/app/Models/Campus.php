@@ -9,8 +9,8 @@ class Campus extends Model
     protected $fillable = [
         'name'
     ];
-    public function workshops()
+    public function sections()
     {
-        return $this->hasMany('App\Models\Workshop');
+        return $this->hasMany('App\Models\Section');
     }
 }
