@@ -17,4 +17,8 @@ class Incident extends Model
     {
         return $this->belongsTo('App\Models\Machine');
     }
+    public function failuretype()
+    {
+        return $this->belongsTo('App\Models\Failuretype');
+    }
 }

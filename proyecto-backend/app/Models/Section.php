@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     protected $fillable = [
-        'name','workshops_id'
+        'name','campus_id'
     ];
-    public function workshop()
+    public function campus()
     {
-        return $this->belongsTo('App\Models\Workshop');
+        return $this->belongsTo('App\Models\Campus');
     }
 
     public function machinetypes()

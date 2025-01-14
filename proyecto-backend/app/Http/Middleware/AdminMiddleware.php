@@ -20,10 +20,10 @@ class AdminMiddleware
             if (Auth::user()->role == 'admin'){
                 return $next($request);
             }else{
-                return response()->json(['message' => "Forbidden: You do not have the required permission"], 403);
+                return response()->json(['message' => "Permiso denegado"], 403);
             }
         } else {
-            return response()->json(['message' => "Unauthorized: You have not been authenticated"], 401);
+            return response()->json(['message' => "Aun no has iniciado sesión"], 401);
         }
     }
 }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('end_date');
             $table->string('importance');
             $table->foreignId('machines_id');
+            $table->foreignId('failuretypes_id');
         });
     }
 
