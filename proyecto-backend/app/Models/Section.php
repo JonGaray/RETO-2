@@ -11,7 +11,7 @@ class Section extends Model
     ];
     public function campus()
     {
-        return $this->belongsTo('App\Models\Campus');
+        return $this->belongsTo('App\Models\Campuses');
     }
 
     public function machines()
