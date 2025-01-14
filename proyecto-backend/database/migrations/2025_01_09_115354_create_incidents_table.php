@@ -16,13 +16,13 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title');
             $table->text('description');
-            $table->string('status');
-            $table->dateTime('register_date');
+            $table->string('status')->default('nuevo');
+            $table->dateTime('register_date')->default(now());
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('importance');
-            $table->foreignId('machines_id');
-            $table->foreignId('failuretypes_id');
+            $table->foreignId('machines_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('failuretypes_id')->constrained()->cascadeOnDelete();
         });
     }
 
