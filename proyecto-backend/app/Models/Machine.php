@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Machine extends Model
 {
     protected $fillable = [
-        'priority','name','status','last_maintenance','machinetypes_id'
+        'priority','name','status','last_maintenance','sections_id'
     ];
     public function section()
     {
