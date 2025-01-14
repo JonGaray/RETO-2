@@ -21,7 +21,7 @@ class IncidentController extends Controller
             'start_date' => 'string|max:255',
             'end_date' => 'string|max:255',
             'importance' => 'required|in:parada,averia,aviso,mantenimiento',
-            'status' => 'required|in:habilitado,deshabilitado',
+            'status' => 'required|in:nuevo,proceso,terminado',
             'machines_id' => 'required|exists:machines,id',
             'failuretypes_id' => 'required|exists:failuretypes,id'
         ]);
@@ -41,6 +41,22 @@ class IncidentController extends Controller
         ]);
         return response()->json([
             'message' => "Incidencia registrada correctamente",
+            'incidencia' => $incident,
+        ]);
+    }
+    public function updateStatus(Request $request, $id){
+        $validator = Validator::make($request->all(),['status' => 'required|in:nuevo,proceso,terminado']);
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 400);
+        }
+        $incident = Incident::find($id);
+        if (!$incident){
+            return response()->json(['message' => 'Incidencia inexistente'], 404);
+        }
+        $incident->status = $request->status;
+        $incident->save();
+        return response()->json([
+            'message' => 'Estado actualizado',
             'incidencia' => $incident,
         ]);
     }

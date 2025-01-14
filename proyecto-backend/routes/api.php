@@ -22,4 +22,5 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function()
 {
     Route::post('incidents', 'index')->middleware('auth:api');
     Route::post('incidents/create', 'create')->middleware('auth:api');
+    Route::put('incidents/{id}/status', 'updateStatus')->middleware('auth:api');
 });
