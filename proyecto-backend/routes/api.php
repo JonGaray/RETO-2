@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\MachineController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,4 +24,10 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function()
     Route::post('incidents', 'index')->middleware('auth:api');
     Route::post('incidents/create', 'create')->middleware('auth:api');
     Route::put('incidents/{id}/status', 'updateStatus')->middleware('auth:api');
+});
+Route::controller(MachineController::class)->prefix('auth')->group(function (){
+    Route::post('machines','index')->middleware('auth:api');
+    Route::post('machines/create','create')->middleware('auth:api');
+    Route::put('machines/{id}/edit','edit')->middleware('auth:api');
+    Route::put('machines/{id}/status','updateStatus')->middleware('auth:api');
 });
