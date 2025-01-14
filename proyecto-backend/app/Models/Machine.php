@@ -9,9 +9,9 @@ class Machine extends Model
     protected $fillable = [
         'priority','name','status','last_maintenance','machinetypes_id'
     ];
-    public function machinetype()
+    public function section()
     {
-        return $this->belongsTo('App\Models\Machinetype');
+        return $this->belongsTo('App\Models\Section');
     }
 
     public function incidents()

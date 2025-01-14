@@ -14,8 +14,8 @@ class Section extends Model
         return $this->belongsTo('App\Models\Campus');
     }
 
-    public function machinetypes()
+    public function machines()
     {
-        return $this->hasMany('App\Models\Machinetype');
+        return $this->hasMany('App\Models\Machine');
     }
 }

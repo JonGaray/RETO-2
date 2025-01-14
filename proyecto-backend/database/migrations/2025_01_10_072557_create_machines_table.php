@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('status')->default('habilitado');
             $table->dateTime('last_maintenance');
-            $table->foreignId('machinetypes_id');
+            $table->foreignId('sections_id');
         });
     }
 
