@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Incident extends Model
 {
     protected $fillable = [
-        'title','description','status','register_date','start_date','end_date','importance','machines_id'
+        'title','description','status', 'failuretype','register_date','start_date','end_date','importance','machines_id'
     ];
     public function users()
     {
