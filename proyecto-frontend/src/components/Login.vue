@@ -16,7 +16,7 @@
                                 <input v-model="password" type="password" id="password" class="form-control"
                                     placeholder="Enter your password" required />
                             </div>
-                            <button type="submit" class="btn btn-primary w-100" :disabled="isLoading">
+                            <button type="submit" class="btn btn-lola w-100" :disabled="isLoading">
                                 Entrar
                             </button>
                             <div v-if="error" class="alert alert-danger mt-3">

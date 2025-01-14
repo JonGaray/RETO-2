@@ -133,6 +133,7 @@
       <path value="$PROJECT_DIR$/proyecto-backend/vendor/namshi/jose" />
       <path value="$PROJECT_DIR$/proyecto-backend/vendor/lcobucci/jwt" />
       <path value="$PROJECT_DIR$/proyecto-backend/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/proyecto-backend/vendor/laravel/sanctum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
