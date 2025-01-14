@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CampusController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\UserController;
@@ -30,4 +31,10 @@ Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::post('machines/create','create')->middleware('auth:api');
     Route::put('machines/{id}/edit','edit')->middleware('auth:api');
     Route::put('machines/{id}/status','updateStatus')->middleware('auth:api');
+});
+Route::controller(CampusController::class)->prefix('auth')->group(function (){
+    Route::post('campuses','index')->middleware('auth:api');
+    Route::post('campuses/create','create')->middleware('auth:api');
+    Route::put('campuses/{id}/edit','edit')->middleware('auth:api');
+    Route::put('campuses/{id}/status','updateStatus')->middleware('auth:api');
 });
