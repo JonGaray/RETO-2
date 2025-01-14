@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
+            $table->string('status')->default('habilitado');
             $table->foreignId('campus_id');
         });
     }

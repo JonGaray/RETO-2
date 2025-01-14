@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('priority');
             $table->string('name');
-            $table->string('status');
+            $table->string('status')->default('habilitado');
             $table->dateTime('last_maintenance');
             $table->foreignId('machinetypes_id');
         });
