@@ -5,12 +5,17 @@ import IncidentCard from '../components/Incident.vue'; // Importa el componente 
 import UserPanel from '../components/UserPanel.vue'; // Importa el componente UserPanel
 import Header from '../components/Header.vue'; // Importa el componente Header
 
+// Variables reactivas
 const incidents = ref([]); // Inicializa la lista de incidencias
-const userId = 2; // Puedes obtener el ID del usuario desde un sessionStorage o de otro lugar
+const userId = ref(null); // Inicializa userId con null
 
 onMounted(async () => {
+  // Obtener el objeto de usuario desde sessionStorage
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parsear el JSON del usuario
+  if (user && user.id) {
+    userId.value = user.id; // Asigna el ID del usuario
+  }
   const token = sessionStorage.getItem('token'); // Obtén el token desde sessionStorage
-
   try {
     // Llamada a la API para obtener todas las incidencias
     const response = await axios.get('http://127.0.0.1:8000/api/auth/incidents/getall', {
@@ -40,8 +45,7 @@ onMounted(async () => {
           <Header />
         </div>
         <div class="col-4">
-          <!-- Aquí está tu panel de usuario -->
-          <UserPanel :id="userId" />
+          <UserPanel v-if="userId" :id="userId" />
         </div>
         <div class="col-8">
           <!-- Generamos tantas tarjetas como incidencias existan -->
