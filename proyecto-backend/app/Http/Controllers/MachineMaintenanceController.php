@@ -27,7 +27,7 @@ class MachineMaintenanceController extends Controller
         ]);
         return response()->json([
             'message' => "Asociacion entre maquina y mantenimiento realizado correctamente",
-            'maquina' => $machinemaintenance,
+            'asociacion' => $machinemaintenance,
         ]);
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\MachineMaintenanceController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserIncidentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,4 +56,8 @@ Route::controller(MaintenanceController::class)->prefix('auth')->group(function 
 Route::controller(MachineMaintenanceController::class)->prefix('auth')->group(function (){
     Route::post('machinemaintenances','index')->middleware('auth:api');
     Route::post('machinemaintenances/create','create')->middleware('auth:api');
+});
+Route::controller(UserIncidentController::class)->prefix('auth')->group(function (){
+    Route::post('userincidents','index')->middleware('auth:api');
+    Route::post('userincidents/create','create')->middleware('auth:api');
 });
