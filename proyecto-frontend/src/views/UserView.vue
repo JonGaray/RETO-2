@@ -16,8 +16,8 @@ console.log('id en UserView:', userId);  // Verificar si el ID está disponible
         <div class="col-12">
           <Header/>
         </div>
-        <div class="col-6">
-          <UserPanel :id="userId"/> <!-- Pasamos el ID al componente UserPanel -->
+        <div class="col-4">
+          <UserPanel :id="userId"/>
         </div>
       </div>
     </div>
