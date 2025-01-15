@@ -46,6 +46,16 @@ export default {
             }
             return 'bg-secondary'; // Por defecto, si no hay estado conocido
         }
+    },
+    methods: {
+        formattedDate(date) {
+            if (!date) return 'Fecha no disponible'; // Si no hay fecha, mostrar un texto alternativo
+            // Asegurarse de que el formato esté en un formato compatible
+            const fixedDate = date.replace(' ', 'T'); // Cambia el espacio por 'T' para que sea compatible con ISO
+            const parsedDate = new Date(fixedDate);
+            // Verificar si la fecha es válida
+            return isNaN(parsedDate.getTime()) ? 'Fecha no disponible' : parsedDate.toLocaleDateString();
+        }
     }
 };
 </script>
