@@ -33,6 +33,9 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function()
     Route::get('incidents/count','countAllIncidents')->middleware('auth:api');
     Route::get('incidents/activeincidents','getActiveIncidents')->middleware('auth:api');
     Route::get('incidents/solvedtoday','getSolvedToday')->middleware('auth:api');
+    Route::post('/incidents/{id}/accept', [IncidentController::class, 'acceptIncident']);
+    Route::post('/incidents/{id}/join', [IncidentController::class, 'joinIncident']);
+    Route::post('/incidents/{id}/finish', [IncidentController::class, 'finishIncident']);
 });
 Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::post('machines','index')->middleware('auth:api');
