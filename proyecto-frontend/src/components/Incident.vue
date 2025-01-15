@@ -6,13 +6,13 @@
                     <h5 class="card-title fw-bold">{{ title }}</h5>
                     <p class="card-text text-muted">{{ description }}</p>
                     <ul class="list-unstyled mb-0">
-                        <li><strong>Gravedad:</strong> {{ category }}</li>
-                        <li><strong>Tipo de fallo:</strong> {{ failure_type_name }}</li>
-                        <li><strong>Maquina:</strong> {{ machine_name }}</li>
+                        <li class="badge-initcap"><strong>Gravedad:</strong> {{ category }}</li>
+                        <li class="badge-initcap"><strong>Tipo de fallo:</strong> {{ failure_type_name }}</li>
+                        <li class="badge-initcap"><strong>Maquina:</strong> {{ machine_name }}</li>
                     </ul>
                 </div>
                 <!-- Badge con clases dinámicas para el color -->
-                <span :class="badgeClass" class="badge p-2 fs-6">{{ status }}</span>
+                <span :class="badgeClass" class="badge p-2 fs-6 badge-initcap">{{ status }}</span>
             </div>
             <div class="d-flex justify-content-end">
                 <small class="text-muted">{{ new Date(date).toLocaleDateString() }}</small>
@@ -54,5 +54,10 @@ export default {
 .card {
     max-width: 700px;
     margin: 0 auto;
+}
+
+/* Aplicar InitCap al texto dentro del badge */
+.badge-initcap {
+    text-transform: capitalize; /* Convierte la primera letra de cada palabra a mayúscula */
 }
 </style>
