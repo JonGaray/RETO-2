@@ -1,6 +1,6 @@
 <template>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
@@ -32,6 +32,7 @@
 
 <script>
 import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -53,23 +54,27 @@ export default {
                         password: this.password,
                     }
                 );
-                // Guardar el token en localStorage o en Vuex
-                sessionStorage.setItem('token', response.data.access_token);
-                // Redirigir al usuario a la vista del usuario
-                this.$router.push({ name: 'user' }); // Redirige a la vista de usuario
 
-                //Redireccion al caducar el token
-                const token = response.data.access_token;
+                // Guardar el token en sessionStorage
+                sessionStorage.setItem('token', response.data.access_token);
+
+                // Guardar el objeto del usuario completo (ID, nombre, etc.) en sessionStorage
+                sessionStorage.setItem('user', JSON.stringify(response.data.user));
+
+                // Guardar la expiración del token y configurar la caducidad
                 const expiresIn = 3600; // 1 hora en segundos
-                sessionStorage.setItem('token', token);
                 sessionStorage.setItem('token_expiration', Date.now() + expiresIn * 1000);
                 setTimeout(() => {
                     sessionStorage.removeItem('token');
                     sessionStorage.removeItem('token_expiration');
-                    alert('Tu sesión ha caducado. Porfavor inice sesión de nuevo.');
+                    sessionStorage.removeItem('user');
+                    alert('Tu sesión ha caducado. Por favor, inicia sesión de nuevo.');
                     this.$router.push({ name: 'login' });
                 }, expiresIn * 1000);
-                
+
+                // Obtener el ID del usuario y redirigir a /user/{id}
+                const userId = response.data.user.id;  // Guardar el ID del usuario
+                this.$router.push(`/user/${userId}`);  // Redirigir a la vista de usuario con el ID en la URL
             } catch (err) {
                 this.error = err.response?.data?.error || 'Ha ocurrido un error.';
             } finally {

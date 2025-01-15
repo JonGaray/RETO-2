@@ -30,4 +30,8 @@ class UserIncidentController extends Controller
             'asociacion' => $userincidents,
         ]);
     }
+    public function getIncidentCountByUser($userId) {
+        $incidentCount = UserIncident::where('users_id', $userId)->count();
+        return response()->json(['count' => $incidentCount]);
+    }
 }

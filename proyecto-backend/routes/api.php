@@ -60,4 +60,6 @@ Route::controller(MachineMaintenanceController::class)->prefix('auth')->group(fu
 Route::controller(UserIncidentController::class)->prefix('auth')->group(function (){
     Route::post('userincidents','index')->middleware('auth:api');
     Route::post('userincidents/create','create')->middleware('auth:api');
+    Route::get('userincidents/{id}/count', 'getIncidentCountByUser')->middleware('auth:api');
+
 });
