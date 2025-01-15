@@ -52,12 +52,6 @@ export default {
         failure_type_name: String,
         incidents_id: Number,
     },
-    mounted() {
-        // Muestra los valores de las fechas en el mounted hook
-        console.log('Register Date:', this.register_date);
-        console.log('Start Date:', this.start_date);
-        console.log('End Date:', this.end_date);
-    },
     computed: {
         badgeClass() {
             if (this.status === 'nuevo') return 'bg-danger';
