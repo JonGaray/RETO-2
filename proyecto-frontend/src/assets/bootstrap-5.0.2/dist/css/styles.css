@@ -1,10 +1,18 @@
 .foto-perfil-usu {
-  width: 50%;
-  height: 50%;
+  width: 25%;
+  height: 25%;
 }
 
 .carta-usu-principal {
-  width: 18rem;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.boton-perfil-usu {
+  width: 30%;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
 }
 
 /*# sourceMappingURL=styles.css.map */
