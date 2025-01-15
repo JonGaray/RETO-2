@@ -66,11 +66,11 @@ class IncidentController extends Controller
     {
         $incidents = Incident::select(
             'incidents.*',
-            'machines.name as machine_name',  // Nombre de la máquina
-            'failuretypes.name as failure_type_name'  // Nombre del tipo de fallo
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
         )
             ->join('machines', 'incidents.machines_id', '=', 'machines.id')
-            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id') // Unimos con la tabla failuretypes
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
             ->orderByRaw("
             CASE
                 WHEN incidents.status = 'nuevo' THEN 1
@@ -78,7 +78,7 @@ class IncidentController extends Controller
                 WHEN incidents.status = 'terminado' THEN 3
                 ELSE 4
             END
-        ")  // Ordenamos primero por status (nuevo > proceso > terminado)
+        ")
             ->orderByRaw("
             CASE
                 WHEN incidents.importance = 'parada' THEN 1
@@ -86,16 +86,17 @@ class IncidentController extends Controller
                 WHEN incidents.importance = 'aviso' THEN 3
                 ELSE 5
             END
-        ")  // Luego por importancia (parada > averia > aviso > mantenimiento)
-            ->orderBy('machines.priority', 'asc')  // Después por la prioridad de la máquina
+        ")
+            ->orderBy('machines.priority', 'asc')
             ->orderByRaw("
             CASE
                 WHEN incidents.importance = 'mantenimiento' THEN 1
                 ELSE 2
             END
-        ")  // Finalmente, aseguramos que 'mantenimiento' sea priorizado en caso de igualdad de otros campos
-            ->paginate(5);  // Paginación
+        ")
+            ->paginate(3);  // Paginación de 3 por página
 
+        // Devuelves la paginación completa con los datos
         return response()->json($incidents);
     }
     public function countAllIncidents()
