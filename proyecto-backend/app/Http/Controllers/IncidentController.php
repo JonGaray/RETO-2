@@ -82,7 +82,6 @@ class IncidentController extends Controller
                 WHEN incidents.importance = 'parada' THEN 1
                 WHEN incidents.importance = 'averia' THEN 2
                 WHEN incidents.importance = 'aviso' THEN 3
-                WHEN incidents.importance = 'mantenimiento' THEN 4
                 ELSE 5
             END
         ")  // Luego por importancia (parada > averia > aviso > mantenimiento)

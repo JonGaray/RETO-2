@@ -3,8 +3,8 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
                 <div>
-                    <h5 class="card-title fw-bold">{{ title }}</h5>
-                    <p class="card-text text-muted">{{ description }}</p>
+                    <h5 class="card-title fw-bold badge-initcap">{{ title }}</h5>
+                    <p class="card-text text-muted badge-initcap">{{ description }}</p>
                     <ul class="list-unstyled mb-0">
                         <li class="badge-initcap"><strong>Gravedad:</strong> {{ category }}</li>
                         <li class="badge-initcap"><strong>Tipo de fallo:</strong> {{ failure_type_name }}</li>
