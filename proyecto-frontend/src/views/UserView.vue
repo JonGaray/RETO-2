@@ -11,7 +11,7 @@ import Header from '../components/Header.vue'
         <div class="col-12">
           <Header/>
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <user-panel/>
         </div>
       </div>
