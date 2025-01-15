@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router';
 import UserPanel from '../components/UserPanel.vue'
 import Header from '../components/Header.vue'
+import Incident from '../components/Incident.vue'
 
 const route = useRoute();
 const userId = route.params.id || JSON.parse(sessionStorage.getItem('user'))?.id;
@@ -18,6 +19,7 @@ const userId = route.params.id || JSON.parse(sessionStorage.getItem('user'))?.id
           <UserPanel :id="userId"/>
         </div>
       </div>
+      <Incident/>
     </div>
   </main>
 </template>
