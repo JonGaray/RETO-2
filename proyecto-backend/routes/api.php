@@ -29,6 +29,8 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function()
     Route::post('incidents', 'index')->middleware('auth:api');
     Route::post('incidents/create', 'create')->middleware('auth:api');
     Route::put('incidents/{id}/status', 'updateStatus')->middleware('auth:api');
+    Route::get('incidents/getall', 'getAllIncidents')->middleware('auth:api');
+    Route::get('incidents/count','countAllIncidents')->middleware('auth:api');
 });
 Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::post('machines','index')->middleware('auth:api');

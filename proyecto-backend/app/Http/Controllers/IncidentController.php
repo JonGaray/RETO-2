@@ -60,4 +60,46 @@ class IncidentController extends Controller
             'incidencia' => $incident,
         ]);
     }
+    public function getAllIncidents()
+    {
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',  // Nombre de la máquina
+            'failuretypes.name as failure_type_name'  // Nombre del tipo de fallo
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id') // Unimos con la tabla failuretypes
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")  // Ordenamos primero por status (nuevo > proceso > terminado)
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'parada' THEN 1
+                WHEN incidents.importance = 'averia' THEN 2
+                WHEN incidents.importance = 'aviso' THEN 3
+                WHEN incidents.importance = 'mantenimiento' THEN 4
+                ELSE 5
+            END
+        ")  // Luego por importancia (parada > averia > aviso > mantenimiento)
+            ->orderBy('machines.priority', 'asc')  // Después por la prioridad de la máquina
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'mantenimiento' THEN 1
+                ELSE 2
+            END
+        ")  // Finalmente, aseguramos que 'mantenimiento' sea priorizado en caso de igualdad de otros campos
+            ->paginate(5);  // Paginación
+
+        return response()->json($incidents);
+    }
+    public function countAllIncidents()
+    {
+        $incidentCount = Incident::count();
+        return response()->json(['count' => $incidentCount], 200);
+    }
 }
