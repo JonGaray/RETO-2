@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->default('nuevo');
             $table->dateTime('register_date')->default(now());
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
             $table->string('importance');
             $table->foreignId('machines_id')->constrained()->cascadeOnDelete();
             $table->foreignId('failuretypes_id')->constrained()->cascadeOnDelete();
