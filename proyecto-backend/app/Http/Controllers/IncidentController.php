@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -100,5 +101,13 @@ class IncidentController extends Controller
     {
         $incidentCount = Incident::count();
         return response()->json(['count' => $incidentCount], 200);
+    }
+    public function getActiveIncidents() {
+        $incidentCount = Incident::where('status', 'proceso')->count();
+        return response()->json(['count' => $incidentCount]);
+    }
+    public function getSolvedToday() {
+        $incidentCount = Incident::whereDate('end_date', Carbon::today())->count();
+        return response()->json(['count' => $incidentCount]);
     }
 }
