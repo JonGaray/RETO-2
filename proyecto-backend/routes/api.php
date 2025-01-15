@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\MachineController;
+use App\Http\Controllers\MachineMaintenanceController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UserController;
@@ -50,4 +51,8 @@ Route::controller(MaintenanceController::class)->prefix('auth')->group(function 
     Route::post('maintenances','index')->middleware('auth:api');
     Route::post('maintenances/create','create')->middleware('auth:api');
     Route::put('maintenances/{id}/edit','edit')->middleware('auth:api');
+});
+Route::controller(MachineMaintenanceController::class)->prefix('auth')->group(function (){
+    Route::post('machinemaintenances','index')->middleware('auth:api');
+    Route::post('machinemaintenances/create','create')->middleware('auth:api');
 });
