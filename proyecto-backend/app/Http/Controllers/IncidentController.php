@@ -46,6 +46,52 @@ class IncidentController extends Controller
             'incidencia' => $incident,
         ]);
     }
+    public function store(Request $request)
+    {
+        // Validar los datos del formulario
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'importance' => 'required|in:parada,averia,aviso,mantenimiento',
+            'machines_id' => 'required|exists:machines,id',
+            'failuretypes_id' => 'required|exists:failuretypes,id', // Validar que el tipo de falla exista
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errores de validación',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        try {
+            // Crear la nueva incidencia
+            $incident = Incident::create([
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'importance' => $request->input('importance'),
+                'machines_id' => $request->input('machines_id'),
+                'failuretypes_id' => $request->input('failuretypes_id'),
+                'status' => 'nuevo',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Incidencia creada correctamente',
+                'data' => $incident,
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear la incidencia',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function updateStatus(Request $request, $id){
         $validator = Validator::make($request->all(),['status' => 'required|in:nuevo,proceso,terminado']);
         if ($validator->fails()){
