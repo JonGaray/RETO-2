@@ -1,19 +1,22 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/Incident.vue'; // Importa el componente IncidentCard
-import UserPanel from '../components/UserPanel.vue'; // Importa el componente UserPanel
-import Header from '../components/Header.vue'; // Importa el componente Header
+import IncidentCard from '../components/Incident.vue';
+import UserPanel from '../components/UserPanel.vue';
+import Header from '../components/Header.vue';
 
 // Variables reactivas
-const incidents = ref([]); // Lista de incidencias
-const userId = ref(null); // ID del usuario
-const currentPage = ref(1); // Página actual
-const totalPages = ref(1); // Total de páginas
+const incidents = ref([]);
+const userId = ref(null);
+const currentPage = ref(1);
+const totalPages = ref(1);
+
+// Estado para el modal
+const showModal = ref(false);
 
 // Función para obtener las incidencias
 const fetchIncidents = async (page = 1) => {
-  const token = sessionStorage.getItem('token'); // Obtener el token desde sessionStorage
+  const token = sessionStorage.getItem('token');
   try {
     const response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/getall?page=${page}`, {
       headers: {
@@ -21,23 +24,34 @@ const fetchIncidents = async (page = 1) => {
       },
     });
 
-    // Verificar si la respuesta contiene los datos
     if (response.data && response.data.data) {
-      incidents.value = response.data.data; // Asignar los datos de incidencias
-      totalPages.value = response.data.last_page; // Total de páginas
-      currentPage.value = page; // Actualizar la página actual
+      incidents.value = response.data.data;
+      totalPages.value = response.data.last_page;
+      currentPage.value = page;
     } else {
       console.error('No se encontraron incidencias');
-      incidents.value = []; // Array vacío si no se encuentran incidencias
+      incidents.value = [];
     }
   } catch (error) {
     console.error('Error al obtener las incidencias:', error);
   }
 };
 
-// Llamar a fetchIncidents al cargar el componente
+// Escuchar el evento para abrir el modal
+const handleNewIncident = () => {
+  console.log('Modal abierto:', showModal.value);
+  showModal.value = true;
+  console.log('Modal después de abrir:', showModal.value);
+};
+
+// Cerrar el modal
+const closeModal = () => {
+  showModal.value = false;
+};
+
+// Llamar a fetchIncidents al montar el componente
 onMounted(() => {
-  fetchIncidents(); // Cargar la primera página de incidencias
+  fetchIncidents();
 });
 </script>
 
@@ -46,7 +60,8 @@ onMounted(() => {
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <Header />
+          <!-- Escucha del evento personalizado -->
+          <Header @new-incident="handleNewIncident" />
         </div>
         <div class="col-4">
           <UserPanel :id="userId" />
@@ -69,21 +84,23 @@ onMounted(() => {
 
           <!-- Controles de paginación -->
           <div class="d-flex justify-content-evenly mt-1">
-            <button 
-              class="btn btn-egibide" 
-              :disabled="currentPage === 1" 
-              @click="fetchIncidents(currentPage - 1)">
+            <button class="btn btn-egibide" :disabled="currentPage === 1" @click="fetchIncidents(currentPage - 1)">
               Anterior
             </button>
             <span>Pagina {{ currentPage }} de {{ totalPages }}</span>
-            <button 
-              class="btn btn-egibide" 
-              :disabled="currentPage === totalPages" 
-              @click="fetchIncidents(currentPage + 1)">
+            <button class="btn btn-egibide" :disabled="currentPage === totalPages" @click="fetchIncidents(currentPage + 1)">
               Siguiente
             </button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal de creación de nueva incidencia -->
+    <div v-if="showModal" class="modal-backdrop">
+      <div class="modal show">
+        <h2>Nueva Incidencia</h2>
+        <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
       </div>
     </div>
   </main>
@@ -92,5 +109,33 @@ onMounted(() => {
 <style scoped>
 .container {
   margin-top: 20px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Asegúrate de que esté por debajo del modal */
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  z-index: 1060; /* Asegúrate de que esté por encima del backdrop */
+  display: block; /* Asegúrate de que el modal se muestre */
+}
+
+.modal.show {
+  display: block !important;
+  opacity: 1;
+  z-index: 1060;
 }
 </style>
