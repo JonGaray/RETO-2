@@ -4,6 +4,7 @@ import AdminPagePanel from '../components/AdminPagePanel.vue';
 import AdminUserPanel from '../components/AdminUserPanel.vue';
 import AdminMachinePanel from '../components/AdminMachinePanel.vue'
 import AdminCampusPanel from '@/components/AdminCampusPanel.vue';
+import AdminSectionPanel from '@/components/AdminSectionPanel.vue';
 </script>
 
 <template>
@@ -17,7 +18,7 @@ import AdminCampusPanel from '@/components/AdminCampusPanel.vue';
             <AdminPagePanel />
         </div>
         <div class="col-8">
-          <AdminCampusPanel />
+          <AdminSectionPanel />
         </div>
       </div>
     </div>
