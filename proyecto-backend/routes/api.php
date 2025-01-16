@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CampusController;
+use App\Http\Controllers\FailuretypeController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\MachineMaintenanceController;
@@ -30,18 +31,21 @@ Route::controller(AuthController::class)->prefix('auth')->group(function()
 Route::controller(IncidentController::class)->prefix('auth')->group(function()
 {
     Route::post('incidents', 'index')->middleware('auth:api');
-    Route::post('incidents/create', 'create')->middleware('auth:api');
+    Route::post('incidents/create', 'create')->middleware('auth:api'); // Creación de la incidencia
     Route::put('incidents/{id}/status', 'updateStatus')->middleware('auth:api');
     Route::get('incidents/getall', 'getAllIncidents')->middleware('auth:api');
     Route::get('incidents/count','countAllIncidents')->middleware('auth:api');
     Route::get('incidents/activeincidents','getActiveIncidents')->middleware('auth:api');
     Route::get('incidents/solvedtoday','getSolvedToday')->middleware('auth:api');
-    Route::post('/incidents/{id}/accept', [IncidentController::class, 'acceptIncident']);
-    Route::post('/incidents/{id}/join', [IncidentController::class, 'joinIncident']);
-    Route::post('/incidents/{id}/finish', [IncidentController::class, 'finishIncident']);
+    Route::post('/incidents/{id}/accept', [IncidentController::class, 'acceptIncident'])->middleware('auth:api');
+    Route::post('/incidents/{id}/join', [IncidentController::class, 'joinIncident'])->middleware('auth:api');
+    Route::post('/incidents/{id}/finish', [IncidentController::class, 'finishIncident'])->middleware('auth:api');
+    Route::post('/incidents/store', [IncidentController::class, 'store'])->middleware('auth:api');
 });
+
 Route::controller(MachineController::class)->prefix('auth')->group(function (){
-    Route::post('machines','index')->middleware('auth:api');
+    Route::get('machines','index')->middleware('auth:api');
+    Route::get('machines/getsections', 'getBySection')->middleware('auth:api');
     Route::post('machines/create','create')->middleware('auth:api');
     Route::put('machines/{id}/edit','edit')->middleware('auth:api');
     Route::put('machines/{id}/status','updateStatus')->middleware('auth:api');
@@ -53,7 +57,7 @@ Route::controller(CampusController::class)->prefix('auth')->group(function (){
     Route::put('campuses/{id}/status','updateStatus')->middleware('auth:api');
 });
 Route::controller(SectionController::class)->prefix('auth')->group(function (){
-    Route::post('sections','index')->middleware('auth:api');
+    Route::get('sections','index')->middleware('auth:api');
     Route::post('sections/create','create')->middleware('auth:api');
     Route::put('sections/{id}/edit','edit')->middleware('auth:api');
     Route::put('sections/{id}/status','updateStatus')->middleware('auth:api');
@@ -71,5 +75,7 @@ Route::controller(UserIncidentController::class)->prefix('auth')->group(function
     Route::post('userincidents','index')->middleware('auth:api');
     Route::post('userincidents/create','create')->middleware('auth:api');
     Route::get('userincidents/{id}/count', 'getIncidentCountByUser')->middleware('auth:api');
-
+});
+Route::controller(FailuretypeController::class)->prefix('auth')->group(function (){
+    Route::get('failuretypes', 'index')->middleware('auth:api');
 });
