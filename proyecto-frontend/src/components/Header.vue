@@ -84,7 +84,7 @@ const newIncident = ref({
   description: '',
   importance: 'parada',
   machines_id: null,
-  failuretypes_id: null // Cambio aquí para que coincida con el nuevo campo
+  failuretypes_id: null, // Cambio aquí para que coincida con el nuevo campo
 });
 
 const fetchSections = async () => {
@@ -142,18 +142,49 @@ onMounted(() => {
 const submitIncident = async () => {
   const token = sessionStorage.getItem('token'); // Obtener el token de sessionStorage
   try {
+    // Crear la incidencia
     const response = await axios.post('http://127.0.0.1:8000/api/auth/incidents/store', newIncident.value, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('Incidencia creada exitosamente:', response.data);
+
+    // Verifica la estructura de la respuesta
+    console.log('Respuesta de creación de incidencia:', response.data);
+    console.log('Respuesta de creación de incidencia:', response.data.data.id);
+
+    // Verifica que la respuesta contenga el id de la incidencia
+    if (!response.data.data || !response.data.data.id) {
+      console.error('La respuesta no contiene el ID de la incidencia');
+      return;
+    }
+
+    // Obtener el ID del usuario (suponemos que está en el token o en algún lugar)
+    const userId = sessionStorage.getItem('userId'); // Aquí deberías tener el ID del usuario
+
+    if (!userId) {
+      console.error('No se pudo obtener el ID del usuario');
+      return;
+    }
+
+    // Crear la relación en la tabla intermedia usersincidents
+    await axios.post('http://127.0.0.1:8000/api/auth/userincidents/create', {
+      users_id: userId,
+      incidents_id: response.data.data.id, // Usamos el ID de la incidencia
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log('Incidencia creada y asociación realizada exitosamente');
     showModal.value = false; // Cerrar el modal después de la creación
   } catch (error) {
-    console.error('Error al crear la incidencia:', error);
+    console.error('Error al crear la incidencia o asociar usuario:', error);
   }
 };
 </script>
+
 
 <style scoped>
 .modal-backdrop {
