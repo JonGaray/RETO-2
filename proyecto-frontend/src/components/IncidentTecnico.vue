@@ -15,14 +15,14 @@
             </div>
             <!-- Botones condicionales según el estado -->
             <div class="d-flex justify-content-end">
-                <button v-if="status === 'nuevo'" @click="acceptIncident" class="btn btn-egibide btn-sm">
+                <button v-if="status === 'nuevo'" @click="acceptIncident" class="btn btn-outline-egibide btn-sm">
                     Aceptar
                 </button>
                 <div v-else-if="status === 'proceso'" class="d-flex gap-2">
-                    <button @click="joinIncident" class="btn btn-egibide btn-sm">
+                    <button @click="joinIncident" class="btn btn-outline-egibide btn-sm">
                         Apuntarse
                     </button>
-                    <button @click="finishIncident" class="btn btn-egibide btn-sm">
+                    <button @click="finishIncident" class="btn btn-outline-egibide btn-sm">
                         Finalizar
                     </button>
                 </div>

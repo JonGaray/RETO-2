@@ -51,7 +51,7 @@ Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::put('machines/{id}/status','updateStatus')->middleware('auth:api');
 });
 Route::controller(CampusController::class)->prefix('auth')->group(function (){
-    Route::post('campuses','index')->middleware('auth:api');
+    Route::get('campuses','index')->middleware('auth:api');
     Route::post('campuses/create','create')->middleware('auth:api');
     Route::put('campuses/{id}/edit','edit')->middleware('auth:api');
     Route::put('campuses/{id}/status','updateStatus')->middleware('auth:api');
@@ -79,4 +79,7 @@ Route::controller(UserIncidentController::class)->prefix('auth')->group(function
 });
 Route::controller(FailuretypeController::class)->prefix('auth')->group(function (){
     Route::get('failuretypes', 'index')->middleware('auth:api');
+    Route::post('failuretypes/create', 'create')->middleware('auth:api');
+    Route::put('failuretypes/{id}/edit', 'edit')->middleware('auth:api');
 });
+
