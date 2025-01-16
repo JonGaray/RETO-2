@@ -78,4 +78,7 @@ Route::controller(UserIncidentController::class)->prefix('auth')->group(function
 });
 Route::controller(FailuretypeController::class)->prefix('auth')->group(function (){
     Route::get('failuretypes', 'index')->middleware('auth:api');
+    Route::post('failuretypes/create', 'create')->middleware('auth:api');
+    Route::put('failuretypes/{id}/edit', 'edit')->middleware('auth:api');
 });
+
