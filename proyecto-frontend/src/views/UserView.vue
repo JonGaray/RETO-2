@@ -1,5 +1,5 @@
 <script setup>
-import UserPanel from '../components/UserPanel.vue'
+import TecnicPanel from '../components/TecnicPanel.vue'
 import Header from '../components/Header.vue'
 
 </script>
@@ -12,7 +12,7 @@ import Header from '../components/Header.vue'
           <Header/>
         </div>
         <div class="col-4">
-          <user-panel/>
+          <User-panel/>
         </div>
       </div>
     </div>
