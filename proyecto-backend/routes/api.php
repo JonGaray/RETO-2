@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/users', [UserController::class, 'index']);
+Route::put('/users/{id}/status', [UserController::class, 'updateStatus']);
+
+Route::get('/technicians', [UserController::class, 'getAvailableTecnicos']);
 
 Route::controller(AuthController::class)->prefix('auth')->group(function()
 {
