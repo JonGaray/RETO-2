@@ -19,7 +19,7 @@ import AdminFailureTypePanel from '@/components/AdminFailureTypePanel.vue';
             <AdminPagePanel />
         </div>
         <div class="col-8">
-          <AdminFailureTypePanel />
+          <AdminSectionPanel />
         </div>
       </div>
     </div>
