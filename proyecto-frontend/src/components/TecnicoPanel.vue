@@ -7,16 +7,13 @@
                         class="rounded-circle img-fluid foto-perfil-usu">
                     <h5 class="fw-bold mb-0 text-nowrap">{{ userName }}</h5>
                 </div>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between mt-5">
                     <span class="fw-bold">Incidencias activas:</span>
                     <span>{{ incidentsCount }}</span>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span class="fw-bold">Resueltas hoy:</span>
                     <span>{{ solvedtoday }}</span>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-egibide mt-3 boton-perfil-usu">Ver perfil</button>
                 </div>
             </div>
         </div>

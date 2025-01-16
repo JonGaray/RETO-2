@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/users', [UserController::class, 'index']);
+Route::put('/users/{id}/status', [UserController::class, 'updateStatus']);
+
+Route::get('/technicians', [UserController::class, 'getAvailableTecnicos']);
 
 Route::controller(AuthController::class)->prefix('auth')->group(function()
 {
@@ -48,7 +51,7 @@ Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::put('machines/{id}/status','updateStatus')->middleware('auth:api');
 });
 Route::controller(CampusController::class)->prefix('auth')->group(function (){
-    Route::post('campuses','index')->middleware('auth:api');
+    Route::get('campuses','index')->middleware('auth:api');
     Route::post('campuses/create','create')->middleware('auth:api');
     Route::put('campuses/{id}/edit','edit')->middleware('auth:api');
     Route::put('campuses/{id}/status','updateStatus')->middleware('auth:api');
