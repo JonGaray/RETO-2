@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\Models\UserIncident;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,5 +61,95 @@ class IncidentController extends Controller
             'message' => 'Estado actualizado',
             'incidencia' => $incident,
         ]);
+    }
+    public function getAllIncidents()
+    {
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'parada' THEN 1
+                WHEN incidents.importance = 'averia' THEN 2
+                WHEN incidents.importance = 'aviso' THEN 3
+                ELSE 5
+            END
+        ")
+            ->orderBy('machines.priority', 'asc')
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'mantenimiento' THEN 1
+                ELSE 2
+            END
+        ")
+            ->paginate(3);  // Paginación de 3 por página
+
+        // Devuelves la paginación completa con los datos
+        return response()->json($incidents);
+    }
+    public function countAllIncidents()
+    {
+        $incidentCount = Incident::count();
+        return response()->json(['count' => $incidentCount], 200);
+    }
+    public function getActiveIncidents() {
+        $incidentCount = Incident::where('status', 'proceso')->count();
+        return response()->json(['count' => $incidentCount]);
+    }
+    public function getSolvedToday() {
+        $incidentCount = Incident::whereDate('end_date', Carbon::today())->count();
+        return response()->json(['count' => $incidentCount]);
+    }
+    public function acceptIncident($id)
+    {
+        $incident = Incident::findOrFail($id);
+        if ($incident->status == 'nuevo') {
+            $incident->status = 'proceso';
+            $incident->start_date = now();
+            $incident->save();
+            return response()->json(['message' => 'Incidencia aceptada']);
+        }
+        return response()->json(['message' => 'Incidencia no se puede aceptar'], 400);
+    }
+    // Apuntarse a la incidencia (insertar en la tabla usersincidents)
+    public function joinIncident(Request $request, $id)
+    {
+        $user_id = $request->input('users_id');
+        // Comprobar si ya está apuntado
+        $exists = UserIncident::where('users_id', $user_id)
+            ->where('incidents_id', $id)
+            ->exists();
+        if (!$exists) {
+            UserIncident::create([
+                'users_id' => $user_id,
+                'incidents_id' => $id,
+            ]);
+            return response()->json(['message' => 'Te has apuntado a la incidencia']);
+        }
+        return response()->json(['message' => 'Ya estás apuntado a esta incidencia'], 400);
+    }
+    // Cambia el estado de la incidencia a 'terminado'
+    public function finishIncident($id)
+    {
+        $incident = Incident::findOrFail($id);
+        if ($incident->status == 'proceso') {
+            $incident->status = 'terminado';
+            $incident->end_date = now();
+            $incident->save();
+            return response()->json(['message' => 'Incidencia finalizada']);
+        }
+        return response()->json(['message' => 'Incidencia no se puede finalizar'], 400);
     }
 }
