@@ -78,4 +78,8 @@ class SectionController extends Controller
             'section' => $section,
         ]);
     }
+    public function getSections(){
+        $sections = Section::all();
+        return response()->json($sections);
+    }
 }

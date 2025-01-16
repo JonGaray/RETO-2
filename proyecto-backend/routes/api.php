@@ -15,10 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/users', [UserController::class, 'index']);
-Route::put('/users/{id}/status', [UserController::class, 'updateStatus']);
 
-Route::get('/technicians', [UserController::class, 'getAvailableTecnicos']);
 
 Route::controller(AuthController::class)->prefix('auth')->group(function()
 {
@@ -27,6 +24,9 @@ Route::controller(AuthController::class)->prefix('auth')->group(function()
     Route::post('logout', 'logout')->middleware('auth:api');
     Route::post('refresh', 'refresh')->middleware('auth:api');
     Route::get('me', 'me')->middleware('auth:api');
+    Route::get('/users', 'index')->middleware('auth:api');
+    Route::put('/users/{id}/status', 'updateStatus')->middleware('auth:api');
+    Route::get('/technicians', 'getAvailableTecnicos')->middleware('auth:api');
 });
 Route::controller(IncidentController::class)->prefix('auth')->group(function()
 {
@@ -58,6 +58,7 @@ Route::controller(CampusController::class)->prefix('auth')->group(function (){
 });
 Route::controller(SectionController::class)->prefix('auth')->group(function (){
     Route::get('sections','index')->middleware('auth:api');
+    Route::get('sections/getsections','getSections')->middleware('auth:api');
     Route::post('sections/create','create')->middleware('auth:api');
     Route::put('sections/{id}/edit','edit')->middleware('auth:api');
     Route::put('sections/{id}/status','updateStatus')->middleware('auth:api');

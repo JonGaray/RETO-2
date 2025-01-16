@@ -5,7 +5,7 @@ import AdminView from './views/AdminView.vue';
 
 <template>
   <div id="app" >
-    <admin-view />
+    <router-view />
   </div>
 </template>
 

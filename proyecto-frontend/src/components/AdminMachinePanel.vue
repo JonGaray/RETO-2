@@ -10,12 +10,12 @@
             :key="index" class="list-group-item d-flex justify-content-between align-items-center">
               <div>
                 <strong>{{ machine.name }} </strong>
-                <span class="text-muted d-block">{{ user.role }}</span>
+                <span class="text-muted d-block">{{ getSectionName(machine.sections_id) }}</span>
               </div>
               <div class="d-flex align-items-center">
                 <label class="switch me-3">
                   <input type="checkbox" :checked="machine.status === 'habilitado'" 
-                  @change="toggleStatus(user)">
+                  @change="toggleStatus(machine)">
                   <span></span>
                 </label>
                 <button class="btn btn-outline-primary btn-sm">Editar</button>
@@ -32,12 +32,13 @@
 export default {
     data() {
         return {
-            machines: []
+            machines: [],
+            sections: []
         };
     },
     created() {
         const token = sessionStorage.getItem('token');
-        axios.post('http://127.0.0.1:8000/api/machines', {}, {
+        axios.get('http://127.0.0.1:8000/api/auth/machines', {
             headers: {
                     Authorization: `Bearer ${token}`,  // Añadir el token al header
                 }
@@ -48,23 +49,48 @@ export default {
             .catch(error => {
                 console.error(error);
             });
+        axios.get('http://127.0.0.1:8000/api/auth/sections/getsections', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then(response => {
+                this.sections = response.data;
+            })
+            .catch(error => {
+                console.error(error);
+            });
     },
     methods: {
-        toggleStatus(user) {
-        // Cambia el estado del usuario localmente
-        user.status = user.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
+        toggleStatus(machine) {
+      // Cambiar estado localmente
+      machine.status =
+        machine.status === "habilitado" ? "deshabilitado" : "habilitado";
 
-        // (Opcional) Envía la actualización al servidor
-        this.updateUserStatus(user);
-        },
-        async updateUserStatus(user) {
-        try {
-            await axios.put(`http://127.0.0.1:8000/api/users/${user.id}`, { status: user.status });
-            console.log("Estado actualizado correctamente.");
-        } catch (error) {
-            console.error("Error al actualizar el estado:", error);
+      // Enviar actualización al servidor
+      this.updateMachineStatus(machine);
+    },
+    async updateMachineStatus(machine) {
+      const token = sessionStorage.getItem("token");
+      try {
+        await axios.put(
+          `http://127.0.0.1:8000/api/auth/machines/${machine.id}/status`,
+          { status: machine.status },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Estado actualizado correctamente.");
+      } catch (error) {
+        console.error("Error al actualizar el estado:", error);
+      }
+    },
+        getSectionName(sectionId) {
+            const section = this.sections.find(sec => sec.id === sectionId);
+            return section ? section.name : 'Desconocida';
         }
-        },
     },
 };
   </script>

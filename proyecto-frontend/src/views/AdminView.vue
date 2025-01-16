@@ -16,7 +16,7 @@ import AdminMachinePanel from '../components/AdminMachinePanel.vue'
             <AdminPagePanel />
         </div>
         <div class="col-8">
-          <AdminUserPanel />
+          <AdminMachinePanel />
         </div>
       </div>
     </div>

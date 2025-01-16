@@ -36,7 +36,12 @@
                 };
             },
             created() {
-                axios.get('http://127.0.0.1:8000/api/users')
+                const token = sessionStorage.getItem('token');
+                axios.get('http://127.0.0.1:8000/api/auth/users', {
+            headers: {
+                    Authorization: `Bearer ${token}`,  // Añadir el token al header
+                }
+            })
                     .then(response => {
                         this.users = response.data;
                     })
@@ -49,12 +54,17 @@
                 // Cambia el estado del usuario localmente
                 user.status = user.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
 
-                // (Opcional) Envía la actualización al servidor
+                // Envía la actualización al servidor
                 this.updateUserStatus(user);
                 },
                 async updateUserStatus(user) {
                 try {
-                    await axios.put(`http://127.0.0.1:8000/api/users/${user.id}/status`, { status: user.status });
+                    const token = sessionStorage.getItem('token');
+                    await axios.put(`http://127.0.0.1:8000/api/auth/users/${user.id}/status`, { status: user.status }, {
+            headers: {
+                    Authorization: `Bearer ${token}`,  // Añadir el token al header
+                }
+            })
                     console.log("Estado actualizado correctamente.");
                 } catch (error) {
                     console.error("Error al actualizar el estado:", error);
