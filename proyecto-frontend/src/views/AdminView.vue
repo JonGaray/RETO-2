@@ -3,6 +3,7 @@ import HeaderAdmin from '../components/HeaderAdmin.vue';
 import AdminPagePanel from '../components/AdminPagePanel.vue';
 import AdminUserPanel from '../components/AdminUserPanel.vue';
 import AdminMachinePanel from '../components/AdminMachinePanel.vue'
+import AdminCampusPanel from '@/components/AdminCampusPanel.vue';
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import AdminMachinePanel from '../components/AdminMachinePanel.vue'
             <AdminPagePanel />
         </div>
         <div class="col-8">
-          <AdminUserPanel />
+          <AdminCampusPanel />
         </div>
       </div>
     </div>
