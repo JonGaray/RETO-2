@@ -19,7 +19,7 @@
                                 @change="toggleStatus(campus)">
                             <span></span>
                         </label>
-                        <button class="btn btn-outline-primary btn-sm">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm">Editar</button>
                     </div>
                 </li>
             </ul>
