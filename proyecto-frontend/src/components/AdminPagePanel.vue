@@ -6,6 +6,7 @@
       <div class="d-grid gap-3">
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'user')">Usuarios</button>
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'machine')">Máquinas</button>
+        <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'maintenance')">Mantenimientos</button>
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'failureType')">Tipo de Fallos</button>
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'section')">Secciones</button>
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'campus')">Centros</button>
