@@ -6,7 +6,7 @@
           <img src="../img/foto-default.png" alt="Foto de perfil" class="rounded-circle img-fluid foto-perfil-usu">
           <h5 class="fw-bold mb-0 text-nowrap">{{ userName }}</h5>
         </div>
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-between">
           <span class="fw-bold">Incidencias realizadas:</span>
           <span>{{ incidentsCount }}</span>
         </div>
