@@ -160,8 +160,8 @@ const submitIncident = async () => {
     }
 
     // Obtener el ID del usuario (suponemos que está en el token o en algún lugar)
-    const userId = sessionStorage.getItem('userId'); // Aquí deberías tener el ID del usuario
-
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const userId = user.id;
     if (!userId) {
       console.error('No se pudo obtener el ID del usuario');
       return;
