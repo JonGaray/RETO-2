@@ -9,9 +9,21 @@ use Illuminate\Support\Facades\Validator;
 class MachineMaintenanceController extends Controller
 {
     public function index(){
-        $machinemaintenance = MachineMaintenance::all();
+        $machinemaintenance =
+            MachineMaintenance::select(
+            'machinesmaintenances.*',
+            'machines.name as machine_name',
+            'maintenances.name as maintenance_name',
+            'maintenances.regularity as regularity',
+        )
+            ->join('machines', 'machinesmaintenances.machines_id', '=', 'machines.id')
+            ->join('maintenances', 'machinesmaintenances.maintenances_id', '=', 'maintenances.id')
+            ->get();
+        ;
+        //dd($machinemaintenance);
         return response()->json($machinemaintenance);
     }
+
     public function create(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
