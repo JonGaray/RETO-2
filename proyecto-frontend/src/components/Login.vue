@@ -48,7 +48,7 @@ export default {
             this.isLoading = true;
             try {
                 const response = await axios.post(
-                    'http://localhost:8000/api/auth/login',
+                    'http://172.20.228.150:8080/api/auth/login',
                     {
                         email: this.email,
                         password: this.password,
