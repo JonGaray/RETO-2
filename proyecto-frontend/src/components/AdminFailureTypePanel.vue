@@ -137,44 +137,6 @@ export default {
 
 <style scoped>
 /* Estilos del modal */
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-}
 
-.modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    z-index: 1060;
-    display: block;
-}
 
-/* Iconos */
-.pencil{
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-}
-
-.activated{
-  width: 25px;
-  height: 25px;
-  margin-right: 7px;
-}
-
-.desactivated{
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-}
 </style>

@@ -61,13 +61,5 @@ export default {
 </script>
 
 <style scoped>
-.card {
-    max-width: 700px;
-    margin: 0 auto;
-}
 
-/* Aplicar InitCap al texto dentro del badge */
-.badge-initcap {
-    text-transform: capitalize; /* Convierte la primera letra de cada palabra a mayúscula */
-}
 </style>
