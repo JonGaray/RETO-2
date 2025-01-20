@@ -104,4 +104,5 @@ class MachineController extends Controller
             return response()->json(['error' => 'Error al obtener las máquinas', 'message' => $e->getMessage()], 500);
         }
     }
+    
 }

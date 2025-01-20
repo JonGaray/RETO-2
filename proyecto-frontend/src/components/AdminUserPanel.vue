@@ -3,7 +3,7 @@
         <div class="custom-card">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h4>Gestión de Usuarios</h4>
-            <button class="btn btn-egibide">+ Nuevo Usuario</button>
+            <button class="btn btn-egibide" @click="showCreateModal = true">+ Nuevo Usuario</button>
           </div>
           <ul class="list-group">
             <li v-for="(user, index) in users"
@@ -24,25 +24,118 @@
                   @change="toggleStatus(user)">
                   <span></span>
                 </label>
-                <button class="btn btn-outline-primary btn-sm"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
+                <button class="btn btn-outline-egibide btn-sm" @click="openEditUserModal(user)"><img class="pencil" src="../img/lapiz-de-cejas.png"  >Editar</button>
               </div>
             </li>
           </ul>
+
+          <!-- Pop-up para crear un nuevo usuario -->
+        <div v-if="showCreateModal" class="modal-backdrop">
+          <div class="modal show">
+            <h2>Crear Nuevo Usuario</h2>
+            <input v-model="newUser.name" type="text" class="form-control mt-3" placeholder="Nombre" required />
+            <input v-model="newUser.email" type="email" class="form-control mt-3" placeholder="Correo Electrónico" required />
+            <input v-model="newUser.password" type="text" class="form-control mt-3" placeholder="Contraseña" required />
+            <input v-model="newUser.username1" type="text" class="form-control mt-3" placeholder="Username 1" required />
+            <input v-model="newUser.username2" type="text" class="form-control mt-3" placeholder="Username 2" required />
+
+            <label for="roleSelect" class="mt-2">Rol:</label>
+            <select id="roleSelect" v-model="newUser.role" class="form-control mt-1" required>
+              <option value="user">User</option>
+              <option value="tecnico">Técnico</option>
+              <option value="admin">Admin</option>
+            </select>
+
+            <div class="d-flex justify-content-between mt-5">
+              <button class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
+              <button class="btn btn-egibide" @click="createUser">Guardar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pop-up para editar un nuevo usuario -->
+        <div v-if="showEditUserModal" class="modal-backdrop">
+          <div class="modal show">
+            <h2>Editar Usuario</h2>
+            <input
+              required
+              v-model="editedUser.name"
+              type="text"
+              class="form-control mt-3"
+              placeholder="Nombre del usuario"
+            />
+            <input
+              required
+              id="emailEdit"
+              v-model="editedUser.email"
+              type="email"
+              class="form-control mt-1"
+              placeholder="Correo electrónico"
+            />
+            <input
+              required
+              id="username1Edit"
+              v-model="editedUser.username1"
+              type="text"
+              class="form-control mt-1"
+              placeholder="Username 1"
+            />
+            <input
+              required
+              id="username2Edit"
+              v-model="editedUser.username2"
+              type="text"
+              class="form-control mt-1"
+              placeholder="Username 2"
+            />
+            <label for="roleEdit" class="mt-2">Rol:</label>
+            <select
+              required
+              id="roleEdit"
+              v-model="editedUser.role"
+              class="form-control mt-1"
+            >
+              <option value="user">Usuario</option>
+              <option value="tecnico">Técnico</option>
+              <option value="admin">Administrador</option>
+            </select>
+            <div class="d-flex justify-content-between mt-5">
+              <button type="button" class="btn btn-outline-egibide" @click="closeEditUserModal">Cancelar</button>
+              <button type="button" class="btn btn-egibide" @click="saveEditedUser">Guardar</button>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
   </template>
   
   <script>
-        import axios from 'axios';
+import axios from 'axios';
 
         export default {
             data() {
                 return {
-                    users: []
-                };
+                    users: [],
+                    showCreateModal: false,
+                    showEditUserModal: false,
+                    newUser: {
+                      name: '',
+                      email: '',
+                      password: '',
+                      username1: '',
+                      username2: '',
+                      role: '',
+                    },
+                    editedUser: null,
+                  };
             },
             created() {
-                axios.get('http://127.0.0.1:8000/api/users')
+                const token = sessionStorage.getItem('token');
+                axios.get('http://127.0.0.1:8000/api/auth/users', {
+                  headers: {
+                    Authorization: `Bearer ${token}`,  // Añadir el token al header
+                  }
+            })
                     .then(response => {
                         this.users = response.data;
                     })
@@ -55,16 +148,81 @@
                 // Cambia el estado del usuario localmente
                 user.status = user.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
 
-                // (Opcional) Envía la actualización al servidor
+                // Envía la actualización al servidor
                 this.updateUserStatus(user);
                 },
                 async updateUserStatus(user) {
                 try {
-                    await axios.put(`http://127.0.0.1:8000/api/users/${user.id}/status`, { status: user.status });
+                    const token = sessionStorage.getItem('token');
+                    await axios.put(`http://127.0.0.1:8000/api/auth/users/${user.id}/status`, { status: user.status }, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,  // Añadir el token al header
+                  }
+                })
                     console.log("Estado actualizado correctamente.");
                 } catch (error) {
                     console.error("Error al actualizar el estado:", error);
                 }
+                },
+                async createUser() {
+                  try {
+                    const token = sessionStorage.getItem('token');
+                    const response = await axios.put(
+                      'http://127.0.0.1:8000/api/auth/users/create',
+                      this.newUser,
+                      {
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                        },
+                      }
+                    );
+                    this.users.push(response.data);
+                    this.closeModal();
+                  } catch (error) {
+                    console.error('Error al crear usuario:', error);
+                  }
+                },
+                openEditUserModal(user) {
+                  this.editedUser = { ...user }; // Copia los datos del usuario seleccionado
+                  this.showEditUserModal = true;
+                },
+                closeEditUserModal() {
+                  this.showEditUserModal = false;
+                  this.resetEditedUser();
+                },
+                resetEditedUser() {
+                  this.editedUser = null;
+                },
+                async saveEditedUser() {
+                  alert(this.editedUser)
+                  
+                    const token = sessionStorage.getItem('token');
+                    await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    })
+                    .then(() => {
+                      const index = this.users.findIndex((u) => u.id === this.editedUser.id);
+                      if (index !== -1) {
+                        this.users.splice(index, 1, this.editedUser);
+                      }
+                      this.closeEditUserModal();
+                    })
+                    .catch((error) => {
+                      console.error("Error al editar la máquina:", error);
+                    })
+                },
+                closeModal() {
+                  this.showCreateModal = false;
+                  this.newUser = {
+                    name: '',
+                    email: '',
+                    password: '',
+                    username1: '',
+                    username2: '',
+                    role: '',
+                  };
                 },
             },
         };
