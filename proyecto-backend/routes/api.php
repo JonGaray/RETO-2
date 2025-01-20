@@ -62,6 +62,7 @@ Route::controller(SectionController::class)->prefix('auth')->group(function (){
     Route::post('sections/create','create')->middleware('auth:api');
     Route::put('sections/{id}/edit','edit')->middleware('auth:api');
     Route::put('sections/{id}/status','updateStatus')->middleware('auth:api');
+    Route::get('sections/getbycampus/{campus_id}','getSectionsByCampus')->middleware('auth:api');
 });
 Route::controller(MaintenanceController::class)->prefix('auth')->group(function (){
     Route::post('maintenances','index')->middleware('auth:api');

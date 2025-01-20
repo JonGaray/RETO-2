@@ -82,4 +82,9 @@ class SectionController extends Controller
         $sections = Section::all();
         return response()->json($sections);
     }
+    public function getSectionsByCampus($campusId)
+    {
+        $sections = Section::where('campus_id', $campusId)->get();
+        return response()->json($sections);
+    }
 }
