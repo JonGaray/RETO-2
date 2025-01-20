@@ -3,7 +3,10 @@
     <div class="row mt-3">
       <div class="d-flex justify-content-between align-items-center">
         <h1 class="text-egibide">Sistema de Incidencias</h1>
-        <button class="btn btn-egibide" @click="showModal = true">Nueva Incidencia</button>
+        <div class="d-flex">
+          <button class="btn btn-egibide me-5" @click="showModal = true">+ Nueva Incidencia</button>
+          <button class="btn btn-outline-egibide" @click="logout">Cerrar Sesion</button>
+        </div>
       </div>
     </div>
 
@@ -73,6 +76,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'; // Importar el router para la redirección
 
 const showModal = ref(false);
 const sections = ref([]);
@@ -86,6 +90,8 @@ const newIncident = ref({
   machines_id: null,
   failuretypes_id: null, // Cambio aquí para que coincida con el nuevo campo
 });
+
+const router = useRouter(); // Instancia del router para redirigir
 
 const fetchSections = async () => {
   const token = sessionStorage.getItem('token'); // Obtener el token de sessionStorage
@@ -181,12 +187,23 @@ const submitIncident = async () => {
     showModal.value = false; // Cerrar el modal después de la creación
     this.fetchFailureTypes();
     this.fetchMachines();
-    this.fetchSections()
+    this.fetchSections();
   } catch (error) {
     console.error('Error al crear la incidencia o asociar usuario:', error);
   }
 };
+
+// Añadir el método para cerrar sesión
+const logout = () => {
+  // Eliminar el token del sessionStorage
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('user'); // Si tienes el usuario en sessionStorage, también puedes eliminarlo
+
+  // Redirigir al usuario a la página de inicio
+  router.push('/');
+};
 </script>
+
 
 
 <style scoped>
