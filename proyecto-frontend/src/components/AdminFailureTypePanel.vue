@@ -12,7 +12,7 @@
                         <strong>{{ failuretype.name }} </strong>
                     </div>
                     <div class="d-flex align-items-center">
-                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -157,5 +157,24 @@ export default {
     width: 500px;
     z-index: 1060;
     display: block;
+}
+
+/* Iconos */
+.pencil{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.activated{
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
+}
+
+.desactivated{
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
 }
 </style>

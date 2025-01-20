@@ -14,10 +14,16 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <label class="switch me-3">
+                          <div v-if="section.status === 'habilitado'">
+                            <img class="activated" src="../img/boton-de-encendido.png">
+                          </div>
+                          <div v-else>
+                            <img class="desactivated" src="../img/interfaz.png">
+                          </div>
                             <input type="checkbox" :checked="section.status === 'habilitado'" @change="toggleStatus(section)">
                             <span></span>
                         </label>
-                        <button class="btn btn-outline-egibide btn-sm" @click="editSection(section)">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editSection(section)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -263,5 +269,24 @@ export default {
 
 .switch input:checked+span::before {
     transform: translateX(20px);
+}
+
+/* Iconos */
+.pencil{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.activated{
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
+}
+
+.desactivated{
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
 }
 </style>
