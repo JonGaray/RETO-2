@@ -14,10 +14,16 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <label class="switch me-3">
+                          <div v-if="campus.status === 'habilitado'">
+                            <img class="activated" src="../img/boton-de-encendido.png">
+                          </div>
+                          <div v-else>
+                            <img class="desactivated" src="../img/interfaz.png">
+                          </div>
                             <input type="checkbox" :checked="campus.status === 'habilitado'" @change="toggleStatus(campus)">
                             <span></span>
                         </label>
-                        <button class="btn btn-outline-egibide btn-sm" @click="editCampus(campus)">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editCampus(campus)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -117,6 +123,7 @@ export default {
             .then(response => {
                 this.campuses.push(response.data.campus); // Agregar el nuevo campus a la lista
                 this.closeModal(); // Cerrar el modal
+                this.fetchCampuses(); //Recarga la select
             })
             .catch(error => {
                 console.error('Error al crear el campus:', error);

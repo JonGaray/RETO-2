@@ -14,11 +14,17 @@
               </div>
               <div class="d-flex align-items-center">
                 <label class="switch me-3">
+                  <div v-if="machine.status === 'habilitado'">
+                    <img class="activated" src="../img/boton-de-encendido.png">
+                  </div>
+                  <div v-else>
+                    <img class="desactivated" src="../img/interfaz.png">
+                  </div>
                   <input type="checkbox" :checked="machine.status === 'habilitado'" 
                   @change="toggleStatus(user)">
                   <span></span>
                 </label>
-                <button class="btn btn-outline-primary btn-sm">Editar</button>
+                <button class="btn btn-outline-primary btn-sm"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
               </div>
             </li>
           </ul>
