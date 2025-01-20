@@ -107,35 +107,5 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.container {
-  margin-top: 20px;
-}
 
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050; /* Asegúrate de que esté por debajo del modal */
-}
-
-.modal {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 500px;
-  z-index: 1060; /* Asegúrate de que esté por encima del backdrop */
-  display: block; /* Asegúrate de que el modal se muestre */
-}
-
-.modal.show {
-  display: block !important;
-  opacity: 1;
-  z-index: 1060;
-}
 </style>

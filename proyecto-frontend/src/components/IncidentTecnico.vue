@@ -111,12 +111,5 @@ export default {
 
 
 <style scoped>
-.card {
-    max-width: 700px;
-    margin: 0 auto;
-}
 
-.badge-initcap {
-    text-transform: capitalize;
-}
 </style>
