@@ -10,7 +10,7 @@
             </div>
 
             <h5 class="mt-4">Asociaciones Existentes</h5>
-            <ul class="list-group">
+            <ul class="list-group" v-if="machinemaintenances.length > 0">
                 <li v-for="(machinemaintenance, index) in machinemaintenances" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
@@ -18,6 +18,9 @@
                     </div>
                 </li>
             </ul>
+            <div v-else>
+                <p>Cargando...</p>
+            </div>
         </div>
     </div>
 
