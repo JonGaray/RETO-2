@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('username2');
             $table->string('role');
             $table->string('status')->default('habilitado');
+            $table->string('google_id')->nullable();
         });
     }
 
