@@ -74,7 +74,16 @@ export default {
 
                 // Obtener el ID del usuario y redirigir a /user/{id}
                 const userId = response.data.user.id;  // Guardar el ID del usuario
-                this.$router.push(`/user/${userId}`);  // Redirigir a la vista de usuario con el ID en la URL
+                const userRole = response.data.user.role;  // Suponiendo que 'role' es el campo que contiene el rol
+
+                // Redirigir según el role
+                if (userRole === 'tecnico') {
+                    this.$router.push(`/tecnico/${userId}`);
+                } else if (userRole === 'admin') {
+                    this.$router.push(`/admin/${userId}`);
+                } else {
+                    this.$router.push(`/user/${userId}`);
+                }
             } catch (err) {
                 this.error = err.response?.data?.error || 'Ha ocurrido un error.';
             } finally {
@@ -86,17 +95,5 @@ export default {
 </script>
 
 <style scoped>
-.card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.card-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-button:disabled {
-    background-color: #dcdcdc;
-    cursor: not-allowed;
-}
 </style>

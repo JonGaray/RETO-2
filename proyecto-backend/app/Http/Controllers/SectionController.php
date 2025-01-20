@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class SectionController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $sections = Section::all();
-        return response()->json($sections);
+        return response()->json([
+            'success' => true,
+            'data' => $sections,
+        ], 200);
     }
     public function create(Request $request): \Illuminate\Http\JsonResponse
     {

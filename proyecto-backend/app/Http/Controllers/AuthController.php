@@ -58,7 +58,7 @@ wrong.',
             'password' => 'required|string|min:6',
             'username1' => 'required|string|max:255',
             'username2' => 'nullable|string|max:255',
-            'role' => 'required|in:user,admin',
+            'role' => 'required|in:user,admin,tecnico',
             'status' => 'required|in:habilitado,deshabilitado',
         ]);
         if ($validator->fails()) {

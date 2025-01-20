@@ -15,6 +15,18 @@ const router = createRouter({
       props: true // Pasar el parámetro 'id' como prop al componente
     },
     {
+      path: '/tecnico/:id', // Ruta que acepta un parámetro 'id'
+      name: 'tecnico',
+      component: () => import('../views/TecnicoView.vue'), // Componente que muestra los datos del usuario
+      props: true // Pasar el parámetro 'id' como prop al componente
+    },
+    {
+      path: '/admin/:id', // Ruta que acepta un parámetro 'id'
+      name: 'admin',
+      component: () => import('../views/AdminView.vue'), // Componente que muestra los datos del usuario
+      props: true // Pasar el parámetro 'id' como prop al componente
+    },
+    {
       path: '/register', // Ruta para el registro
       name: 'register',
       component: () => import('../components/Register.vue'), // Componente del usuario

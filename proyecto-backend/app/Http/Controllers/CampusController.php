@@ -16,40 +16,38 @@ class CampusController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'status' => 'required|in:habilitado,deshabilitado',
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $machine = Campus::create([
-            'name' => $request->name,
-            'status' => $request->status,
-        ]);
-        return response()->json([
-            'message' => "Campus registrado correctamente",
-            'maquina' => $machine,
-        ]);
+
+        $campus = new Campus();
+        $campus->name = $request->name;
+        $campus->status = 'habilitado';
+        $campus->save();
+
+        return response()->json(['campus' => $campus], 201);
     }
     public function edit(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'status' => 'required|in:habilitado,deshabilitado',
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+
         $campus = Campus::find($id);
         if (!$campus) {
             return response()->json(['message' => 'Campus no encontrado'], 404);
         }
+
         $campus->name = $request->name;
-        $campus->status = $request->status;
         $campus->save();
-        return response()->json([
-            'message' => 'Campus actualizado correctamente',
-            'campus' => $campus,
-        ]);
+
+        return response()->json(['campus' => $campus]);
     }
     public function updateStatus(Request $request, $id): \Illuminate\Http\JsonResponse
     {
