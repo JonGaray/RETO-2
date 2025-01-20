@@ -219,23 +219,5 @@ const logout = () => {
 
 <style scoped>
 /* Estilo para mostrar el icono en los selectores */
-.dropdown-wrapper {
-  position: relative;
-}
 
-.dropdown-icon-container {
-  position: relative;
-}
-
-.dropdown-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none; /* El icono no debe interferir con la interacción del usuario */
-}
-
-select.form-control {
-  padding-right: 30px; /* Espacio para el icono */
-}
 </style>
