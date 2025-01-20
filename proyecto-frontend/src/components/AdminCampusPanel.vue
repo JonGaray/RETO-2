@@ -14,10 +14,16 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <label class="switch me-3">
+                          <div v-if="campus.status === 'habilitado'">
+                            <img class="activated" src="../img/boton-de-encendido.png">
+                          </div>
+                          <div v-else>
+                            <img class="desactivated" src="../img/interfaz.png">
+                          </div>
                             <input type="checkbox" :checked="campus.status === 'habilitado'" @change="toggleStatus(campus)">
                             <span></span>
                         </label>
-                        <button class="btn btn-outline-egibide btn-sm" @click="editCampus(campus)">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editCampus(campus)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -117,6 +123,7 @@ export default {
             .then(response => {
                 this.campuses.push(response.data.campus); // Agregar el nuevo campus a la lista
                 this.closeModal(); // Cerrar el modal
+                this.fetchCampuses(); //Recarga la select
             })
             .catch(error => {
                 console.error('Error al crear el campus:', error);
@@ -163,63 +170,5 @@ export default {
 
 <style scoped>
 /* Estilos del modal */
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-}
 
-.modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    z-index: 1060;
-    display: block;
-}
-
-.switch {
-    display: inline-flex;
-    align-items: center;
-}
-
-.switch input {
-    display: none;
-}
-
-.switch span {
-    width: 40px;
-    height: 20px;
-    background-color: #ccc;
-    border-radius: 10px;
-    position: relative;
-    cursor: pointer;
-}
-
-.switch span::before {
-    content: '';
-    width: 16px;
-    height: 16px;
-    background-color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    transition: 0.3s;
-}
-
-.switch input:checked+span {
-    background-color: #790253;
-}
-
-.switch input:checked+span::before {
-    transform: translateX(20px);
-}
 </style>

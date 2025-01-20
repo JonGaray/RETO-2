@@ -12,7 +12,7 @@
                         <strong>{{ failuretype.name }} </strong>
                     </div>
                     <div class="d-flex align-items-center">
-                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -89,6 +89,7 @@ export default {
             .then(response => {
                 this.failuretypes.push(response.data.failuretype);
                 this.closeModal();
+                this.fetchFailuretypes(); //Recargar la select
             })
             .catch(error => {
                 console.error('Error al crear el tipo de fallo:', error);
@@ -117,6 +118,7 @@ export default {
                     this.failuretypes[index].name = this.editedFailuretypeName;
                 }
                 this.closeModal();
+                this.fetchFailuretypes();
             })
             .catch(error => {
                 console.error('Error al editar el tipo de fallo:', error);
@@ -135,25 +137,6 @@ export default {
 
 <style scoped>
 /* Estilos del modal */
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-}
 
-.modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    z-index: 1060;
-    display: block;
-}
+
 </style>

@@ -6,7 +6,7 @@
           <img src="../img/foto-default.png" alt="Foto de perfil" class="rounded-circle img-fluid foto-perfil-usu">
           <h5 class="fw-bold mb-0 text-nowrap">{{ userName }}</h5>
         </div>
-        <div class="d-flex justify-content-between mt-5">
+        <div class="d-flex justify-content-evenly">
           <span class="fw-bold">Incidencias realizadas:</span>
           <span>{{ incidentsCount }}</span>
         </div>
@@ -23,6 +23,7 @@
 import axios from 'axios';
 
 export default {
+  props: ['id'], // Recibimos el ID del usuario como prop
   data() {
     const user = JSON.parse(sessionStorage.getItem('user'));
     return {
@@ -33,11 +34,8 @@ export default {
   created() {
     const token = sessionStorage.getItem('token'); // Recupera el token desde sessionStorage
     if (token) {
-      // Obtener el ID del usuario desde la URL
-      const userId = this.$route.params.id;  // Recuperamos el ID del usuario desde la URL
-
       // Agrega el token a los encabezados de la solicitud
-      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${userId}/count`, {
+      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.id}/count`, {
         headers: {
           Authorization: `Bearer ${token}`,  // Añadir el token al header
         }

@@ -33,7 +33,7 @@ function getComponent(panel) {
     case 'maintenance':
       return AdminMaintenancePanel;
     default:
-      return AdminSectionPanel; // Componente por defecto si no hay match
+      return AdminUserPanel; // Componente por defecto si no hay match
   }
 }
 </script>

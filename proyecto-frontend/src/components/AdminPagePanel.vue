@@ -9,7 +9,7 @@
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'maintenance')">Mantenimientos</button>
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'failureType')">Tipo de Fallos</button>
         <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'section')">Secciones</button>
-        <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'campus')">Centros</button>
+        <button class="btn btn-outline-egibide mt-3" @click="$emit('panelChange', 'campus')">Campus</button>
       </div>
     </div>
   </div>
