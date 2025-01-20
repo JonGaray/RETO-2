@@ -89,6 +89,7 @@ export default {
             .then(response => {
                 this.failuretypes.push(response.data.failuretype);
                 this.closeModal();
+                this.fetchFailuretypes(); //Recargar la select
             })
             .catch(error => {
                 console.error('Error al crear el tipo de fallo:', error);
@@ -117,6 +118,7 @@ export default {
                     this.failuretypes[index].name = this.editedFailuretypeName;
                 }
                 this.closeModal();
+                this.fetchFailuretypes();
             })
             .catch(error => {
                 console.error('Error al editar el tipo de fallo:', error);

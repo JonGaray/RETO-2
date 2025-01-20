@@ -179,6 +179,9 @@ const submitIncident = async () => {
 
     console.log('Incidencia creada y asociación realizada exitosamente');
     showModal.value = false; // Cerrar el modal después de la creación
+    this.fetchFailureTypes();
+    this.fetchMachines();
+    this.fetchSections()
   } catch (error) {
     console.error('Error al crear la incidencia o asociar usuario:', error);
   }

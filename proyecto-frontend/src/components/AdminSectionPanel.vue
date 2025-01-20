@@ -149,6 +149,8 @@ export default {
             .then(response => {
                 this.sections.push(response.data.section);
                 this.closeModal();
+                this.fetchSections();
+                this.fetchCampuses();
             })
             .catch(error => {
                 console.error('Error al crear la sección:', error);
@@ -181,6 +183,8 @@ export default {
                     this.sections[index].campus_id = this.editedCampusId;
                 }
                 this.closeModal();
+                this.fetchSections();
+                this.fetchCampuses();
             })
             .catch(error => {
                 console.error('Error al editar la sección:', error);
