@@ -117,6 +117,7 @@ export default {
             .then(response => {
                 this.campuses.push(response.data.campus); // Agregar el nuevo campus a la lista
                 this.closeModal(); // Cerrar el modal
+                this.fetchCampuses(); //Recarga la select
             })
             .catch(error => {
                 console.error('Error al crear el campus:', error);

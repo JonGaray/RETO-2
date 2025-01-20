@@ -131,6 +131,9 @@ export default {
             .then(response => {
                 this.maintenances.push(response.data.maintenance);
                 this.closeModal();
+                this.fetchMachineMaintenances();
+                this.fetchMachines();
+                this.fetchMaintenances();
             })
             .catch(error => {
                 console.error('Error al crear el mantenimiento:', error);
@@ -151,6 +154,9 @@ export default {
             .then(response => {
                 this.machinemaintenances.push(response.data.asociacion);
                 this.closeModal();
+                this.fetchMachineMaintenances();
+                this.fetchMachines();
+                this.fetchMaintenances();
             })
             .catch(error => {
                 console.error('Error al crear la asociación:', error);
