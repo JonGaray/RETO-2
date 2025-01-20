@@ -127,17 +127,5 @@ export default {
 </script>
 
 <style scoped>
-.card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.card-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-button:disabled {
-    background-color: #dcdcdc;
-    cursor: not-allowed;
-}
 </style>

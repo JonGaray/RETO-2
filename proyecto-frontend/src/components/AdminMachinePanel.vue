@@ -76,55 +76,5 @@ export default {
   </script>
   
   <style scoped>
-  .switch {
-      display: inline-flex;
-      align-items: center;
-    }
-    .switch input {
-      display: none;
-    }
-    .switch span {
-      width: 40px;
-      height: 20px;
-      background-color: #ccc;
-      border-radius: 10px;
-      position: relative;
-      cursor: pointer;
-    }
-    .switch span::before {
-      content: '';
-      width: 16px;
-      height: 16px;
-      background-color: #fff;
-      border-radius: 50%;
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      transition: 0.3s;
-    }
-    .switch input:checked + span {
-      background-color: #790253;
-    }
-    .switch input:checked + span::before {
-      transform: translateX(20px);
-    }
 
-  /* Iconos */
-  .pencil{
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-  }
-
-  .activated{
-    width: 25px;
-    height: 25px;
-    margin-right: 7px;
-  }
-
-  .desactivated{
-    width: 30px;
-    height: 30px;
-    margin-right: 5px;
-  }
   </style>
