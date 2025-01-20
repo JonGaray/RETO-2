@@ -138,4 +138,73 @@ wrong.',
 
         return response()->json(['message' => 'Estado actualizado correctamente']);
     }
+    public function create(Request $request) {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'username1' => 'required|string|max:255',
+            'username2' => 'required|string|max:255',
+            'role' => 'required|in:user,tecnico,admin',
+        ]);
+
+        try {
+            $user = User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => bcrypt($validatedData['password']),
+                'username1' => $validatedData['username1'],
+                'username2' => $validatedData['username2'],
+                'role' => $validatedData['role'],
+            ]);
+    
+            return response()->json([
+                'message' => 'Usuario creado con éxito',
+                'user' => $user,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al crear el usuario',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function save(Request $request, $id){
+        print_r("entra");
+        die;
+    try {
+        // Validar los datos de entrada
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'username1' => 'required|string|max:255|unique:users,username1,' . $id,
+            'username2' => 'required|string|max:255|unique:users,username2,' . $id,
+            'role' => 'required|in:user,tecnico,admin',
+        ]);
+
+        // Buscar al usuario por ID
+        $user = User::findOrFail($id);
+        
+        // Actualizar los datos del usuario
+        $user->update($validatedData);
+
+        // Retornar respuesta exitosa
+        return response()->json([
+            'message' => 'Usuario actualizado correctamente.',
+            'user' => $user,
+        ], 200);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Retornar errores de validación
+        return response()->json([
+            'message' => 'Error en la validación.',
+            'errors' => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        // Manejar otros errores
+        return response()->json([
+            'message' => 'Error al actualizar el usuario.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 }

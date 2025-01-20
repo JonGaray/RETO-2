@@ -47,7 +47,7 @@
             </select>
             <div class="d-flex justify-content-between mt-5">
               <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
-              <button type="button" class="btn btn-egibide" @click="createMachine">Guardar</button>
+              <button type="button" class="btn btn-egibide" @click="createMachine">Crear</button>
             </div>
           </div>
         </div>
@@ -174,7 +174,6 @@ export default {
             },
           });
       this.sectionsCampus = response.data;
-      alert(this.sectionsCampus);
       this.selectedSection = null; // Reinicia la selección de secciones
     },
     createMachine() {

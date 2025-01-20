@@ -27,6 +27,8 @@ Route::controller(AuthController::class)->prefix('auth')->group(function()
     Route::get('/users', 'index')->middleware('auth:api');
     Route::put('/users/{id}/status', 'updateStatus')->middleware('auth:api');
     Route::get('/technicians', 'getAvailableTecnicos')->middleware('auth:api');
+    Route::put('/users/create', 'create')->middleware('auth:api');
+    Route::put('/users/{id}/save', 'save')->middleware('auth:api');
 });
 Route::controller(IncidentController::class)->prefix('auth')->group(function()
 {
