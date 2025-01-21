@@ -54,7 +54,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-egibide" @click="createSection">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createSection">Crear Seccion</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>

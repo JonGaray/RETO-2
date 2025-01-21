@@ -25,10 +25,10 @@
         <div class="modal show">
             <h2>Nuevo Tipo de Fallo</h2>
 
-            <label>Nombre del Tipo de Fallo</label>
+            <label class="mt-5">Nombre del Tipo de Fallo</label>
             <input v-model="newFailuretypeName" type="text" class="form-control">
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-egibide" @click="createFailuretype">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createFailuretype">Crear Tipo de Fallo</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
@@ -38,7 +38,7 @@
     <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Editar Tipo de Fallo</h2>
-            <label>Nombre del Tipo de Fallo</label>
+            <label class="mt-5">Nombre del Tipo de Fallo</label>
             <input v-model="editedFailuretypeName" type="text" class="form-control"
                 :placeholder="editFailuretypeObj.name">
             <div class="d-flex justify-content-between mt-5">

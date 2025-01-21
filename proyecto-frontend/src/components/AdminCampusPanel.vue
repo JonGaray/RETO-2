@@ -40,7 +40,7 @@
             <label class="mt-5">Nombre del Campus</label>
             <input v-model="newCampusName" type="text" class="form-control">
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-egibide" @click="createCampus">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createCampus">Crear Campus</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>

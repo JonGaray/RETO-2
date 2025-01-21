@@ -31,12 +31,14 @@
     <div v-if="showCreateMaintenanceModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nuevo Mantenimiento</h2>
+            <label class="mt-5">Nombre del Mantenimiento</label>
             <input v-model="newMaintenanceName" type="text" class="form-control mt-2"
                 placeholder="Nombre del mantenimiento">
+                <label class="mt-3">Regularidad</label>
             <input v-model="newMaintenanceRegularity" type="number" class="form-control mt-2"
                 placeholder="Regularidad en días">
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-egibide" @click="createMaintenance">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createMaintenance">Crear Mantenimiento</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
@@ -48,7 +50,7 @@
             <h2>Nueva Asociación Máquina-Mantenimiento</h2>
 
             <div class="mb-3 dropdown-wrapper">
-                <label>Máquina</label>
+                <label class="mt-5">Máquina</label>
                 <div class="dropdown-icon-container">
                     <select v-model="selectedMachineId" class="form-control mt-2">
                         <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}
@@ -70,7 +72,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-egibide" @click="createAssociation">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createAssociation">Crear Asociacion</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
