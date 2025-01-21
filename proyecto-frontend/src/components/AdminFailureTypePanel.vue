@@ -12,7 +12,8 @@
                         <strong>{{ failuretype.name }} </strong>
                     </div>
                     <div class="d-flex align-items-center">
-                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)"><img
+                                class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -23,10 +24,12 @@
     <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nuevo Tipo de Fallo</h2>
-            <input v-model="newFailuretypeName" type="text" class="form-control mt-5" placeholder="Nombre del tipo de fallo">
+
+            <label class="mt-5">Nombre del Tipo de Fallo</label>
+            <input v-model="newFailuretypeName" type="text" class="form-control">
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
-                <button type="button" class="btn btn-egibide" @click="createFailuretype">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createFailuretype">Crear Tipo de Fallo</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -35,10 +38,12 @@
     <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Editar Tipo de Fallo</h2>
-            <input v-model="editedFailuretypeName" type="text" class="form-control mt-5" :placeholder="editFailuretypeObj.name">
+            <label class="mt-5">Nombre del Tipo de Fallo</label>
+            <input v-model="editedFailuretypeName" type="text" class="form-control"
+                :placeholder="editFailuretypeObj.name">
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
                 <button type="button" class="btn btn-egibide" @click="saveFailuretypeEdit">Guardar</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -86,14 +91,14 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                this.failuretypes.push(response.data.failuretype);
-                this.closeModal();
-                this.fetchFailuretypes(); //Recargar la select
-            })
-            .catch(error => {
-                console.error('Error al crear el tipo de fallo:', error);
-            });
+                .then(response => {
+                    this.failuretypes.push(response.data.failuretype);
+                    this.closeModal();
+                    this.fetchFailuretypes(); //Recargar la select
+                })
+                .catch(error => {
+                    console.error('Error al crear el tipo de fallo:', error);
+                });
         },
 
         editFailuretype(failuretype) {
@@ -112,17 +117,17 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                const index = this.failuretypes.findIndex(failuretype => failuretype.id === this.editFailuretypeObj.id);
-                if (index !== -1) {
-                    this.failuretypes[index].name = this.editedFailuretypeName;
-                }
-                this.closeModal();
-                this.fetchFailuretypes();
-            })
-            .catch(error => {
-                console.error('Error al editar el tipo de fallo:', error);
-            });
+                .then(response => {
+                    const index = this.failuretypes.findIndex(failuretype => failuretype.id === this.editFailuretypeObj.id);
+                    if (index !== -1) {
+                        this.failuretypes[index].name = this.editedFailuretypeName;
+                    }
+                    this.closeModal();
+                    this.fetchFailuretypes();
+                })
+                .catch(error => {
+                    console.error('Error al editar el tipo de fallo:', error);
+                });
         },
 
         closeModal() {
@@ -137,6 +142,4 @@ export default {
 
 <style scoped>
 /* Estilos del modal */
-
-
 </style>

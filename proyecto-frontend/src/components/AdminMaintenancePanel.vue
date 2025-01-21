@@ -4,8 +4,10 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4>Gestión de Mantenimientos</h4>
                 <div>
-                    <button class="btn btn-egibide me-3" @click="showCreateMaintenanceModal = true">+ Nuevo Mantenimiento</button>
-                    <button class="btn btn-egibide ml-2" @click="showCreateAssociationModal = true">+ Nueva Asociación</button>
+                    <button class="btn btn-egibide me-3" @click="showCreateMaintenanceModal = true">+ Nuevo
+                        Mantenimiento</button>
+                    <button class="btn btn-egibide ml-2" @click="showCreateAssociationModal = true">+ Nueva
+                        Asociación</button>
                 </div>
             </div>
 
@@ -14,7 +16,8 @@
                 <li v-for="(machinemaintenance, index) in machinemaintenances" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
-                        <strong>{{ machinemaintenance.machine_name }} - {{ machinemaintenance.maintenance_name }} (Cada {{ machinemaintenance.regularity }} días)</strong>
+                        <strong>{{ machinemaintenance.machine_name }} - {{ machinemaintenance.maintenance_name }} (Cada
+                            {{ machinemaintenance.regularity }} días)</strong>
                     </div>
                 </li>
             </ul>
@@ -28,11 +31,15 @@
     <div v-if="showCreateMaintenanceModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nuevo Mantenimiento</h2>
-            <input v-model="newMaintenanceName" type="text" class="form-control mt-2" placeholder="Nombre del mantenimiento">
-            <input v-model="newMaintenanceRegularity" type="number" class="form-control mt-2" placeholder="Regularidad en días">
+            <label class="mt-5">Nombre del Mantenimiento</label>
+            <input v-model="newMaintenanceName" type="text" class="form-control mt-2"
+                placeholder="Nombre del mantenimiento">
+                <label class="mt-3">Regularidad</label>
+            <input v-model="newMaintenanceRegularity" type="number" class="form-control mt-2"
+                placeholder="Regularidad en días">
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
-                <button type="button" class="btn btn-egibide" @click="createMaintenance">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createMaintenance">Crear Mantenimiento</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -41,17 +48,32 @@
     <div v-if="showCreateAssociationModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nueva Asociación Máquina-Mantenimiento</h2>
-            <label>Máquina</label>
-            <select v-model="selectedMachineId" class="form-control mt-2">
-                <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}</option>
-            </select>
-            <label>Mantenimiento</label>
-            <select v-model="selectedMaintenanceId" class="form-control mt-2">
-                <option v-for="maintenance in maintenances" :key="maintenance.id" :value="maintenance.id">{{ maintenance.name }}</option>
-            </select>
+
+            <div class="mb-3 dropdown-wrapper">
+                <label class="mt-5">Máquina</label>
+                <div class="dropdown-icon-container">
+                    <select v-model="selectedMachineId" class="form-control mt-2">
+                        <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}
+                        </option>
+                    </select>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </div>
+            </div>
+
+            <div class="mb-3 dropdown-wrapper">
+                <label>Mantenimiento</label>
+                <div class="dropdown-icon-container">
+                    <select v-model="selectedMaintenanceId" class="form-control mt-2">
+                        <option v-for="maintenance in maintenances" :key="maintenance.id" :value="maintenance.id">{{
+                            maintenance.name }}</option>
+                    </select>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </div>
+            </div>
+
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
-                <button type="button" class="btn btn-egibide" @click="createAssociation">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createAssociation">Crear Asociacion</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -131,16 +153,16 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                this.maintenances.push(response.data.maintenance);
-                this.closeModal();
-                this.fetchMachineMaintenances();
-                this.fetchMachines();
-                this.fetchMaintenances();
-            })
-            .catch(error => {
-                console.error('Error al crear el mantenimiento:', error);
-            });
+                .then(response => {
+                    this.maintenances.push(response.data.maintenance);
+                    this.closeModal();
+                    this.fetchMachineMaintenances();
+                    this.fetchMachines();
+                    this.fetchMaintenances();
+                })
+                .catch(error => {
+                    console.error('Error al crear el mantenimiento:', error);
+                });
         },
 
         createAssociation() {
@@ -154,16 +176,16 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                this.machinemaintenances.push(response.data.asociacion);
-                this.closeModal();
-                this.fetchMachineMaintenances();
-                this.fetchMachines();
-                this.fetchMaintenances();
-            })
-            .catch(error => {
-                console.error('Error al crear la asociación:', error);
-            });
+                .then(response => {
+                    this.machinemaintenances.push(response.data.asociacion);
+                    this.closeModal();
+                    this.fetchMachineMaintenances();
+                    this.fetchMachines();
+                    this.fetchMaintenances();
+                })
+                .catch(error => {
+                    console.error('Error al crear la asociación:', error);
+                });
         },
 
         closeModal() {

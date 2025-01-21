@@ -140,7 +140,7 @@ class IncidentController extends Controller
                 ELSE 2
             END
         ")
-            ->paginate(3);  // Paginación de 3 por página
+            ->paginate(4);  // Paginación de 3 por página
 
         // Devuelves la paginación completa con los datos
         return response()->json($incidents);

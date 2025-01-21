@@ -18,20 +18,23 @@
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <strong>{{ section.name }} </strong>
-                        <span class="text-muted d-block">{{ section.status === 'habilitado' ? 'Activo' : 'Deshabilitado' }}</span>
+                        <span class="text-muted d-block">{{ section.status === 'habilitado' ? 'Activo' : 'Deshabilitado'
+                            }}</span>
                     </div>
                     <div class="d-flex align-items-center">
                         <label class="switch me-3">
-                          <div v-if="section.status === 'habilitado'">
-                            <img class="activated" src="../img/boton-de-encendido.png">
-                          </div>
-                          <div v-else>
-                            <img class="desactivated" src="../img/interfaz.png">
-                          </div>
-                            <input type="checkbox" :checked="section.status === 'habilitado'" @change="toggleStatus(section)">
+                            <div v-if="section.status === 'habilitado'">
+                                <img class="activated" src="../img/boton-de-encendido.png">
+                            </div>
+                            <div v-else>
+                                <img class="desactivated" src="../img/interfaz.png">
+                            </div>
+                            <input type="checkbox" :checked="section.status === 'habilitado'"
+                                @change="toggleStatus(section)">
                             <span></span>
                         </label>
-                        <button class="btn btn-outline-egibide btn-sm" @click="editSection(section)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editSection(section)"><img class="pencil"
+                                src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -42,16 +45,25 @@
     <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nueva Sección</h2>
-            <input v-model="newSectionName" type="text" class="form-control mt-5" placeholder="Nombre de la sección">
-            <label for="campusSelect" class="form-label mt-3">Campus:</label>
-            <select v-model="newCampusId" class="form-control mt-3">
+
+            <label class="mt-5">Nombre de Seccion</label>
+            <input v-model="newSectionName" type="text" class="form-control">
+
+            <div class="mb-3 dropdown-wrapper">
+            <label for="campusSelect" class="form-label mt-3">Campus</label>
+            <div class="dropdown-icon-container">
+            <select v-model="newCampusId" class="form-control">
                 <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
                     {{ campus.name }}
                 </option>
             </select>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+                </div>
+            </div>
+
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
-                <button type="button" class="btn btn-egibide" @click="createSection">Guardar</button>
+                <button type="button" class="btn btn-egibide" @click="createSection">Crear Seccion</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -60,16 +72,25 @@
     <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Editar Sección</h2>
-            <input v-model="editedSectionName" type="text" class="form-control mt-5" :placeholder="editSectionObj.name">
-            <label for="campusSelect" class="form-label mt-3">Campus:</label>
-            <select v-model="editedCampusId" class="form-control mt-3">
+
+            <label class="mt-5">Nombre de Seccion</label>
+            <input v-model="editedSectionName" type="text" class="form-control" :placeholder="editSectionObj.name">
+
+            <div class="mb-3 dropdown-wrapper">
+            <label for="campusSelect" class="form-label">Campus</label>
+            <div class="dropdown-icon-container">
+            <select v-model="editedCampusId" class="form-control">
                 <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
                     {{ campus.name }}
                 </option>
             </select>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+                </div>
+            </div>
+
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
                 <button type="button" class="btn btn-egibide" @click="saveSectionEdit">Guardar</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -151,7 +172,7 @@ export default {
             const token = sessionStorage.getItem('token');
             try {
                 const response = await axios.put(
-                    `http://127.0.0.1:8000/api/auth/sections/${section.id}/status`,  
+                    `http://127.0.0.1:8000/api/auth/sections/${section.id}/status`,
                     { status: section.status },
                     {
                         headers: {
@@ -169,7 +190,7 @@ export default {
             const token = sessionStorage.getItem('token');
             const sectionData = {
                 name: this.newSectionName,
-                campus_id: this.newCampusId, 
+                campus_id: this.newCampusId,
                 status: 'habilitado',
             };
             axios.post('http://127.0.0.1:8000/api/auth/sections/create', sectionData, {
@@ -177,15 +198,15 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                this.sections.push(response.data.section);
-                this.closeModal();
-                this.fetchSections();
-                this.fetchCampuses();
-            })
-            .catch(error => {
-                console.error('Error al crear la sección:', error);
-            });
+                .then(response => {
+                    this.sections.push(response.data.section);
+                    this.closeModal();
+                    this.fetchSections();
+                    this.fetchCampuses();
+                })
+                .catch(error => {
+                    console.error('Error al crear la sección:', error);
+                });
         },
 
         editSection(section) {
@@ -207,19 +228,19 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                const index = this.sections.findIndex(section => section.id === this.editSectionObj.id);
-                if (index !== -1) {
-                    this.sections[index].name = this.editedSectionName;
-                    this.sections[index].campus_id = this.editedCampusId;
-                }
-                this.closeModal();
-                this.fetchSections();
-                this.fetchCampuses();
-            })
-            .catch(error => {
-                console.error('Error al editar la sección:', error);
-            });
+                .then(response => {
+                    const index = this.sections.findIndex(section => section.id === this.editSectionObj.id);
+                    if (index !== -1) {
+                        this.sections[index].name = this.editedSectionName;
+                        this.sections[index].campus_id = this.editedCampusId;
+                    }
+                    this.closeModal();
+                    this.fetchSections();
+                    this.fetchCampuses();
+                })
+                .catch(error => {
+                    console.error('Error al editar la sección:', error);
+                });
         },
 
         closeModal() {
@@ -236,5 +257,4 @@ export default {
 
 <style scoped>
 /* Estilos del modal */
-
 </style>
