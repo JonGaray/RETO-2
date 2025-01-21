@@ -23,31 +23,31 @@
 import axios from 'axios';
 
 export default {
-  props: ['id'], // Recibimos el ID del usuario como prop
   data() {
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem('user'));  // Obtenemos el usuario del sessionStorage
     return {
-      userName: user ? user.name : '', // Definimos userName y le asignamos el valor del sessionStorage
-      incidentsCount: 0,  // Inicializamos el contador de incidencias
+      userName: user ? user.name : '',  // Asignamos el nombre del usuario
+      incidentsCount: 0,                // Inicializamos el contador de incidencias
+      userId: user ? user.id : null     // Obtenemos el ID del usuario del sessionStorage
     };
   },
   created() {
-    const token = sessionStorage.getItem('token'); // Recupera el token desde sessionStorage
-    if (token) {
-      // Agrega el token a los encabezados de la solicitud
-      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.id}/count`, {
+    const token = sessionStorage.getItem('token');  // Obtenemos el token del sessionStorage
+    if (token && this.userId) {  // Aseguramos que hay token y que el ID del usuario existe
+      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.userId}/count`, {  // Usamos el ID del usuario
         headers: {
-          Authorization: `Bearer ${token}`,  // Añadir el token al header
+          Authorization: `Bearer ${token}`,  // Añadimos el token en los headers
         }
       })
       .then(response => {
-        this.incidentsCount = response.data.count;
+        this.incidentsCount = response.data.count;  // Asignamos el número de incidencias
+        console.log(response.data.count);  // Verificamos que el conteo es correcto
       })
       .catch(error => {
-        console.error("Error al obtener el número de incidencias:", error);
+        console.error("Error al obtener el número de incidencias:", error);  // Mostramos el error si ocurre
       });
     } else {
-      console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
+      console.error("No se encontró el token de autenticación o el ID del usuario.");
     }
   }
 };

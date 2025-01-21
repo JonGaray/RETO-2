@@ -91,6 +91,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router'; // Importar el router para la redirección
 
+defineEmits(['newIncident']);
 const showModal = ref(false);
 const sections = ref([]);
 const machines = ref([]);
@@ -168,10 +169,6 @@ const submitIncident = async () => {
       },
     });
 
-    // Verifica la estructura de la respuesta
-    console.log('Respuesta de creación de incidencia:', response.data);
-    console.log('Respuesta de creación de incidencia:', response.data.data.id);
-
     // Verifica que la respuesta contenga el id de la incidencia
     if (!response.data.data || !response.data.data.id) {
       console.error('La respuesta no contiene el ID de la incidencia');
@@ -196,11 +193,13 @@ const submitIncident = async () => {
       },
     });
 
-    console.log('Incidencia creada y asociación realizada exitosamente');
     showModal.value = false; // Cerrar el modal después de la creación
-    this.fetchFailureTypes();
-    this.fetchMachines();
-    this.fetchSections();
+
+    // Llamar a las funciones sin usar `this`
+    fetchFailureTypes();
+    fetchMachines();
+    fetchSections();
+
   } catch (error) {
     console.error('Error al crear la incidencia o asociar usuario:', error);
   }
