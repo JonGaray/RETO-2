@@ -10,20 +10,23 @@
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <strong>{{ campus.name }} </strong>
-                        <span class="text-muted d-block">{{ campus.status === 'habilitado' ? 'Activo' : 'Deshabilitado' }}</span>
+                        <span class="text-muted d-block">{{ campus.status === 'habilitado' ? 'Activo' : 'Deshabilitado'
+                            }}</span>
                     </div>
                     <div class="d-flex align-items-center">
                         <label class="switch me-3">
-                          <div v-if="campus.status === 'habilitado'">
-                            <img class="activated" src="../img/boton-de-encendido.png">
-                          </div>
-                          <div v-else>
-                            <img class="desactivated" src="../img/interfaz.png">
-                          </div>
-                            <input type="checkbox" :checked="campus.status === 'habilitado'" @change="toggleStatus(campus)">
+                            <div v-if="campus.status === 'habilitado'">
+                                <img class="activated" src="../img/boton-de-encendido.png">
+                            </div>
+                            <div v-else>
+                                <img class="desactivated" src="../img/interfaz.png">
+                            </div>
+                            <input type="checkbox" :checked="campus.status === 'habilitado'"
+                                @change="toggleStatus(campus)">
                             <span></span>
                         </label>
-                        <button class="btn btn-outline-egibide btn-sm" @click="editCampus(campus)"><img class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editCampus(campus)"><img class="pencil"
+                                src="../img/lapiz-de-cejas.png">Editar</button>
                     </div>
                 </li>
             </ul>
@@ -34,10 +37,11 @@
     <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nuevo Campus</h2>
-            <input v-model="newCampusName" type="text" class="form-control mt-5" placeholder="Nombre del campus">
+            <label class="mt-5">Nombre del Campus</label>
+            <input v-model="newCampusName" type="text" class="form-control">
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
                 <button type="button" class="btn btn-egibide" @click="createCampus">Guardar</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -46,10 +50,12 @@
     <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Editar Campus</h2>
-            <input v-model="editedCampusName" type="text" class="form-control mt-5" :placeholder="editCampusObj.name">
+            <label class="mt-5">Nombre del Campus</label>
+            <input v-model="editedCampusName" type="text" class="form-control" :placeholder="editCampusObj.name">
+            
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
                 <button type="button" class="btn btn-egibide" @click="saveCampusEdit">Guardar</button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -96,7 +102,7 @@ export default {
             const token = sessionStorage.getItem('token');
             try {
                 const response = await axios.put(
-                    `http://127.0.0.1:8000/api/auth/campuses/${campus.id}/status`,  
+                    `http://127.0.0.1:8000/api/auth/campuses/${campus.id}/status`,
                     { status: campus.status },
                     {
                         headers: {
@@ -120,14 +126,14 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                this.campuses.push(response.data.campus); // Agregar el nuevo campus a la lista
-                this.closeModal(); // Cerrar el modal
-                this.fetchCampuses(); //Recarga la select
-            })
-            .catch(error => {
-                console.error('Error al crear el campus:', error);
-            });
+                .then(response => {
+                    this.campuses.push(response.data.campus); // Agregar el nuevo campus a la lista
+                    this.closeModal(); // Cerrar el modal
+                    this.fetchCampuses(); //Recarga la select
+                })
+                .catch(error => {
+                    console.error('Error al crear el campus:', error);
+                });
         },
 
         editCampus(campus) {
@@ -146,16 +152,16 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                const index = this.campuses.findIndex(campus => campus.id === this.editCampusObj.id);
-                if (index !== -1) {
-                    this.campuses[index].name = this.editedCampusName; // Actualizar el nombre del campus en la lista
-                }
-                this.closeModal(); // Cerrar el modal
-            })
-            .catch(error => {
-                console.error('Error al editar el campus:', error);
-            });
+                .then(response => {
+                    const index = this.campuses.findIndex(campus => campus.id === this.editCampusObj.id);
+                    if (index !== -1) {
+                        this.campuses[index].name = this.editedCampusName; // Actualizar el nombre del campus en la lista
+                    }
+                    this.closeModal(); // Cerrar el modal
+                })
+                .catch(error => {
+                    console.error('Error al editar el campus:', error);
+                });
         },
 
         closeModal() {
@@ -170,5 +176,4 @@ export default {
 
 <style scoped>
 /* Estilos del modal */
-
 </style>
