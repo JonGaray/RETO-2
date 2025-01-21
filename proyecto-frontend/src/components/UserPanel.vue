@@ -24,27 +24,27 @@ import axios from 'axios';
 
 export default {
   data() {
-    const user = JSON.parse(sessionStorage.getItem('user'));  // Obtenemos el usuario del sessionStorage
+    const user = JSON.parse(sessionStorage.getItem('user'));
     return {
-      userName: user ? user.name : '',  // Asignamos el nombre del usuario
-      incidentsCount: 0,                // Inicializamos el contador de incidencias
-      userId: user ? user.id : null     // Obtenemos el ID del usuario del sessionStorage
+      userName: user ? user.name : '',
+      incidentsCount: 0,
+      userId: user ? user.id : null
     };
   },
   created() {
-    const token = sessionStorage.getItem('token');  // Obtenemos el token del sessionStorage
-    if (token && this.userId) {  // Aseguramos que hay token y que el ID del usuario existe
-      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.userId}/count`, {  // Usamos el ID del usuario
+    const token = sessionStorage.getItem('token');
+    if (token && this.userId) {
+      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.userId}/count`, {
         headers: {
-          Authorization: `Bearer ${token}`,  // Añadimos el token en los headers
+          Authorization: `Bearer ${token}`,
         }
       })
       .then(response => {
-        this.incidentsCount = response.data.count;  // Asignamos el número de incidencias
-        console.log(response.data.count);  // Verificamos que el conteo es correcto
+        this.incidentsCount = response.data.count;
+        console.log(response.data.count);
       })
       .catch(error => {
-        console.error("Error al obtener el número de incidencias:", error);  // Mostramos el error si ocurre
+        console.error("Error al obtener el número de incidencias:", error);
       });
     } else {
       console.error("No se encontró el token de autenticación o el ID del usuario.");
@@ -54,5 +54,4 @@ export default {
 </script>
 
 <style scoped>
-/* Aquí puedes añadir tus estilos */
 </style>

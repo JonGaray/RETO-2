@@ -5,7 +5,6 @@
                 <h4>Gestión de Secciones</h4>
                 <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Sección</button>
             </div>
-            <!-- Barra de busqueda -->
             <input v-model="searchQuery" type="text" @input="searchSections" class="form-control mb-3"
                 placeholder="Buscar por nombre de seccion" />
             <ul class="list-group">
@@ -35,15 +34,11 @@
             </ul>
         </div>
     </div>
-
-    <!-- Modal para Crear Sección -->
     <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nueva Sección</h2>
-
             <label class="mt-5">Nombre de Seccion</label>
             <input v-model="newSectionName" type="text" class="form-control">
-
             <div class="mb-3 dropdown-wrapper">
                 <label for="campusSelect" class="form-label mt-3">Campus</label>
                 <div class="dropdown-icon-container">
@@ -55,22 +50,17 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
-
             <div class="d-flex justify-content-between mt-5">
                 <button type="button" class="btn btn-egibide" @click="createSection">Crear Seccion</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
     </div>
-
-    <!-- Modal para Editar Sección -->
     <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Editar Sección</h2>
-
             <label class="mt-5">Nombre de Seccion</label>
             <input v-model="editedSectionName" type="text" class="form-control" :placeholder="editSectionObj.name">
-
             <div class="mb-3 dropdown-wrapper">
                 <label for="campusSelect" class="form-label">Campus</label>
                 <div class="dropdown-icon-container">
@@ -82,7 +72,6 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
-
             <div class="d-flex justify-content-between mt-5">
                 <button type="button" class="btn btn-egibide" @click="saveSectionEdit">Guardar</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
@@ -118,13 +107,13 @@ export default {
             const token = sessionStorage.getItem("token");
             axios
                 .get("http://127.0.0.1:8000/api/auth/sections/search", {
-                    params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
+                    params: { query: this.searchQuery },
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 })
                 .then((response) => {
-                    this.sections = response.data; // Actualizar la lista con los resultados
+                    this.sections = response.data;
                 })
                 .catch((error) => {
                     console.error("Error al buscar máquinas:", error);
@@ -143,7 +132,6 @@ export default {
                 console.error('Error al obtener las secciones:', error);
             }
         },
-
         async fetchCampuses() {
             const token = sessionStorage.getItem('token');
             try {
@@ -157,12 +145,10 @@ export default {
                 console.error('Error al obtener los campus:', error);
             }
         },
-
         toggleStatus(section) {
             section.status = section.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
             this.updateSectionStatus(section);
         },
-
         async updateSectionStatus(section) {
             const token = sessionStorage.getItem('token');
             try {
@@ -180,7 +166,6 @@ export default {
                 console.error("Error al actualizar el estado de la sección:", error);
             }
         },
-
         createSection() {
             const token = sessionStorage.getItem('token');
             const sectionData = {
@@ -203,14 +188,12 @@ export default {
                     console.error('Error al crear la sección:', error);
                 });
         },
-
         editSection(section) {
             this.editSectionObj = section;
             this.editedSectionName = section.name;
             this.editedCampusId = section.campus_id;
             this.showEditModal = true;
         },
-
         saveSectionEdit() {
             const token = sessionStorage.getItem('token');
             const sectionData = {
@@ -237,7 +220,6 @@ export default {
                     console.error('Error al editar la sección:', error);
                 });
         },
-
         closeModal() {
             this.showCreateModal = false;
             this.showEditModal = false;
@@ -251,5 +233,4 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos del modal */
 </style>

@@ -54,15 +54,9 @@ export default {
                         password: this.password,
                     }
                 );
-
-                // Guardar el token en sessionStorage
                 sessionStorage.setItem('token', response.data.access_token);
-
-                // Guardar el objeto del usuario completo (ID, nombre, etc.) en sessionStorage
                 sessionStorage.setItem('user', JSON.stringify(response.data.user));
-
-                // Guardar la expiración del token y configurar la caducidad
-                const expiresIn = 3600; // 1 hora en segundos
+                const expiresIn = 3600;
                 sessionStorage.setItem('token_expiration', Date.now() + expiresIn * 1000);
                 setTimeout(() => {
                     sessionStorage.removeItem('token');
@@ -71,12 +65,8 @@ export default {
                     alert('Tu sesión ha caducado. Por favor, inicia sesión de nuevo.');
                     this.$router.push({ name: 'login' });
                 }, expiresIn * 1000);
-
-                // Obtener el ID del usuario y redirigir a /user/{id}
-                const userId = response.data.user.id;  // Guardar el ID del usuario
-                const userRole = response.data.user.role;  // Suponiendo que 'role' es el campo que contiene el rol
-
-                // Redirigir según el role
+                const userId = response.data.user.id;
+                const userRole = response.data.user.role;
                 if (userRole === 'tecnico') {
                     this.$router.push(`/tecnico/${userId}`);
                 } else if (userRole === 'admin') {
@@ -95,5 +85,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

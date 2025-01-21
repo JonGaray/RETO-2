@@ -13,20 +13,20 @@
             <p>Gestion de incidencias - Egibide</p>
           </div>
         </div>
-  
     </main>
   </template>
+
 <script>
 export default {
   methods: {
     logout() {
-      // Eliminar el token del sessionStorage
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('user');
-
-      // Redirigir al usuario a la página de inicio
       this.$router.push('/');
     }
   }
 };
 </script>
+
+<style scoped>
+</style>

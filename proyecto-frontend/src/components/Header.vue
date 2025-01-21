@@ -1,5 +1,4 @@
 <template>
-  <!-- Botón de Nueva Incidencia y Cerrar Sesión -->
   <div class="d-flex justify-content-between align-items-center">
     <h1 class="text-egibide">Sistema de Incidencias</h1>
     <div class="d-flex">
@@ -7,26 +6,18 @@
       <button class="btn btn-outline-egibide" @click="logout">Cerrar Sesión</button>
     </div>
   </div>
-
-  <!-- Modal para crear una nueva incidencia -->
   <div v-if="showModal" class="modal-backdrop">
     <div class="modal">
       <h2>Nueva Incidencia</h2>
-
       <form @submit.prevent="submitIncident">
-        <!-- Campo de título -->
         <div class="mb-3">
           <label for="title" class="form-label">Título</label>
           <input type="text" id="title" v-model="newIncident.title" class="form-control" required>
         </div>
-
-        <!-- Campo de descripción -->
         <div class="mb-3">
           <label for="description" class="form-label">Descripción</label>
           <textarea id="description" v-model="newIncident.description" class="form-control" required></textarea>
         </div>
-
-        <!-- Selector de campus -->
         <div class="mb-3 dropdown-wrapper">
           <label for="campus" class="form-label">Campus</label>
           <div class="dropdown-icon-container">
@@ -36,8 +27,6 @@
             <i class="fas fa-chevron-down dropdown-icon"></i>
           </div>
         </div>
-
-        <!-- Selector de sección basado en el campus -->
         <div class="mb-3 dropdown-wrapper">
           <label for="section" class="form-label">Sección</label>
           <div class="dropdown-icon-container">
@@ -47,8 +36,6 @@
             <i class="fas fa-chevron-down dropdown-icon"></i>
           </div>
         </div>
-
-        <!-- Otros campos de importancia, máquina y tipo de avería -->
         <div class="mb-3 dropdown-wrapper">
           <label for="importance" class="form-label">Importancia</label>
           <div class="dropdown-icon-container">
@@ -60,7 +47,6 @@
             <i class="fas fa-chevron-down dropdown-icon"></i>
           </div>
         </div>
-
         <div class="mb-3 dropdown-wrapper">
           <label for="machine" class="form-label">Máquina</label>
           <div class="dropdown-icon-container">
@@ -70,7 +56,6 @@
             <i class="fas fa-chevron-down dropdown-icon"></i>
           </div>
         </div>
-
         <div class="mb-3 dropdown-wrapper">
           <label for="failuretype" class="form-label">Tipo de Avería</label>
           <div class="dropdown-icon-container">
@@ -81,7 +66,6 @@
             <i class="fas fa-chevron-down dropdown-icon"></i>
           </div>
         </div>
-
         <div class="mb-3 d-flex justify-content-between">
           <button type="submit" class="btn btn-egibide">Crear Incidencia</button>
           <button type="button" class="btn btn-secondary" @click="showModal = false">Cancelar</button>
@@ -111,10 +95,7 @@ const newIncident = ref({
   machines_id: null,
   failuretypes_id: null,
 });
-
 const router = useRouter();
-
-// Fetch de campuses
 const fetchCampuses = async () => {
   const token = sessionStorage.getItem('token');
   try {
@@ -128,8 +109,6 @@ const fetchCampuses = async () => {
     console.error('Error al obtener los campuses:', error);
   }
 };
-
-// Fetch de secciones
 const fetchSections = async () => {
   const token = sessionStorage.getItem('token');
   try {
@@ -143,11 +122,9 @@ const fetchSections = async () => {
     console.error('Error al obtener las secciones:', error);
   }
 };
-
-// Fetch de máquinas
 const fetchMachines = async () => {
-  if (!selectedSection.value) return; // Evita hacer la solicitud si no hay sección seleccionada
-  machines.value = []; // Limpiar las máquinas previas
+  if (!selectedSection.value) return;
+  machines.value = [];
   const token = sessionStorage.getItem('token');
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/auth/machines/getsections', {
@@ -161,8 +138,6 @@ const fetchMachines = async () => {
     console.error('Error al obtener las máquinas:', error);
   }
 };
-
-// Fetch de tipos de fallas
 const fetchFailureTypes = async () => {
   const token = sessionStorage.getItem('token');
   try {
@@ -176,18 +151,13 @@ const fetchFailureTypes = async () => {
     console.error('Error al obtener los tipos de fallas:', error);
   }
 };
-
-// Cargar los campuses y tipos de fallas al montar
 onMounted(() => {
   fetchCampuses();
   fetchFailureTypes();
 });
-
-// Watch para cargar las máquinas cuando se selecciona una sección
 watch(selectedSection, (newSection) => {
   fetchMachines();
 });
-
 const submitIncident = async () => {
   const token = sessionStorage.getItem('token');
   try {
@@ -196,15 +166,12 @@ const submitIncident = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
     if (!response.data.data || !response.data.data.id) {
       console.error('La respuesta no contiene el ID de la incidencia');
       return;
     }
-
     const user = JSON.parse(sessionStorage.getItem('user'));
     const userId = user.id;
-
     await axios.post('http://127.0.0.1:8000/api/auth/userincidents/create', {
       users_id: userId,
       incidents_id: response.data.data.id,
@@ -213,19 +180,14 @@ const submitIncident = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
     showModal.value = false;
-
-    // Recargar los datos después de enviar la incidencia
     fetchFailureTypes();
     fetchMachines();
     fetchSections();
-
   } catch (error) {
     console.error('Error al crear la incidencia o asociar usuario:', error);
   }
 };
-
 const logout = () => {
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('user');
@@ -234,5 +196,4 @@ const logout = () => {
 </script>
 
 <style scoped>
-/* Estilo para mostrar el icono en los selectores */
 </style>

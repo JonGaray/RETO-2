@@ -10,7 +10,6 @@
                         Asociación</button>
                 </div>
             </div>
-
             <h5 class="mt-4">Asociaciones Existentes</h5>
             <ul class="list-group" v-if="machinemaintenances.length > 0">
                 <li v-for="(machinemaintenance, index) in machinemaintenances" :key="index"
@@ -29,8 +28,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal para Crear Mantenimiento -->
     <div v-if="showCreateMaintenanceModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nuevo Mantenimiento</h2>
@@ -46,12 +43,9 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal para Crear Asociación Máquina-Mantenimiento -->
     <div v-if="showCreateAssociationModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nueva Asociación Máquina-Mantenimiento</h2>
-
             <div class="mb-3 dropdown-wrapper">
                 <label class="mt-5">Máquina</label>
                 <div class="dropdown-icon-container">
@@ -62,7 +56,6 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
-
             <div class="mb-3 dropdown-wrapper">
                 <label>Mantenimiento</label>
                 <div class="dropdown-icon-container">
@@ -73,7 +66,6 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
-
             <div class="d-flex justify-content-between mt-4">
                 <button type="button" class="btn btn-egibide" @click="createAssociation">Crear Asociación</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
@@ -116,7 +108,7 @@ export default {
                 this.machinemaintenances = response.data;
             } catch (error) {
                 console.error('Error al obtener las asociaciones:', error);
-                this.machinemaintenances = []; // Establecer un valor predeterminado vacío en caso de error
+                this.machinemaintenances = [];
             }
         },
         async fetchMachines() {
@@ -145,7 +137,6 @@ export default {
                 console.error('Error al obtener los mantenimientos:', error);
             }
         },
-
         createMaintenance() {
             const token = sessionStorage.getItem('token');
             const maintenanceData = {
@@ -168,27 +159,23 @@ export default {
                     console.error('Error al crear el mantenimiento:', error);
                 });
         },
-
         createAssociation() {
     const token = sessionStorage.getItem('token');
     const associationData = {
         machines_id: this.selectedMachineId,
         maintenances_id: this.selectedMaintenanceId,
     };
-
     axios.post('http://127.0.0.1:8000/api/auth/machinemaintenances/create', associationData, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     })
     .then(response => {
-        // Comprobar si la propiedad 'data' existe y tiene los datos necesarios
         if (response.data && response.data.data) {
             this.machinemaintenances.push(response.data.data);
         } else {
             console.error('La respuesta no contiene la propiedad "data" con la asociación.');
         }
-
         this.closeModal();
         this.fetchMachineMaintenances();
         this.fetchMachines();
@@ -198,7 +185,6 @@ export default {
         console.error('Error al crear la asociación:', error);
     });
 },
-
         closeModal() {
             this.showCreateMaintenanceModal = false;
             this.showCreateAssociationModal = false;
@@ -212,25 +198,4 @@ export default {
 </script>
 
 <style scoped>
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-}
-
-.modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    z-index: 1060;
-    display: block;
-}
 </style>

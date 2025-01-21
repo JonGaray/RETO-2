@@ -2,24 +2,17 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import IncidentCard from '../components/Incident.vue';
-import UserPanel from '../components/UserPanel.vue';
-import Header from '../components/Header.vue';
 
-// Variables reactivas
-const incidents = ref([]); // Lista de incidencias
-const userId = ref(null); // ID del usuario (si aplica)
-const currentPage = ref(1); // Página actual
-const totalPages = ref(1); // Total de páginas
-const loading = ref(false); // Estado de carga
-const hasMore = ref(true); // Indica si hay más incidencias por cargar
-
-// Función para obtener las incidencias
+const incidents = ref([]);
+const userId = ref(null);
+const currentPage = ref(1);
+const totalPages = ref(1);
+const loading = ref(false);
+const hasMore = ref(true);
 const fetchIncidents = async () => {
-  if (loading.value || !hasMore.value) return; // Evitar múltiples llamadas si ya está cargando o no hay más
-
+  if (loading.value || !hasMore.value) return;
   const token = sessionStorage.getItem('token');
-  loading.value = true; // Iniciar estado de carga
-
+  loading.value = true;
   try {
     const response = await axios.get(
         `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`,
@@ -29,54 +22,37 @@ const fetchIncidents = async () => {
           },
         }
     );
-
     if (response.data && response.data.data) {
       const newIncidents = response.data.data;
-
-      // Concatenar las nuevas incidencias a las existentes
       incidents.value = [...incidents.value, ...newIncidents];
-
-      // Actualizar total de páginas y página actual
       totalPages.value = response.data.last_page;
-
-      // Incrementar página solo si hay más datos
       if (currentPage.value < totalPages.value) {
         currentPage.value++;
       } else {
-        hasMore.value = false; // No hay más páginas para cargar
+        hasMore.value = false;
       }
     } else {
-      hasMore.value = false; // Detener scroll infinito si no hay datos
+      hasMore.value = false;
     }
   } catch (error) {
     console.error('Error al obtener las incidencias:', error);
   } finally {
-    loading.value = false; // Finalizar estado de carga
+    loading.value = false;
   }
 };
-
-// Manejar el evento de scroll infinito
 const handleScroll = (event) => {
   const container = event.target;
   if (container.scrollTop + container.clientHeight >= container.scrollHeight - 10) {
     fetchIncidents();
   }
 };
-
-// Escuchar el evento para abrir el modal
 const handleNewIncident = () => {
   showModal.value = true;
 };
-
-// Estado del modal
 const showModal = ref(false);
-
-// Cerrar el modal
 const closeModal = () => {
   showModal.value = false;
 };
-
-// Llamar a fetchIncidents al montar el componente
 onMounted(() => {
   fetchIncidents();
 });
@@ -86,9 +62,7 @@ onMounted(() => {
   <main>
     <div class="container">
       <div class="row">
-
         <div class="col-12 infinite-scroll-container" @scroll="handleScroll">
-          <!-- Mostrar las incidencias -->
           <div v-for="incident in incidents" :key="incident.id">
             <IncidentCard
                 :title="incident.title"
@@ -102,21 +76,15 @@ onMounted(() => {
                 :failure_type_name="incident.failure_type_name"
             />
           </div>
-
-          <!-- Mostrar spinner mientras se cargan más incidencias -->
           <div v-if="loading" class="loading-spinner">
             Cargando más incidencias...
           </div>
-
-          <!-- Mostrar mensaje si no hay más incidencias -->
           <div v-if="!hasMore && !loading" class="no-more-items">
             No hay más incidencias para mostrar.
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Modal de creación de nueva incidencia -->
     <div v-if="showModal" class="modal-backdrop">
       <div class="modal show">
         <h2>Nueva Incidencia</h2>
@@ -127,9 +95,4 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
-
-
-
 </style>
-
