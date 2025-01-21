@@ -127,52 +127,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.infinite-scroll-container {
-  height: 80vh;
-  overflow-y: auto;
-}
 
-.loading-spinner {
-  text-align: center;
-  padding: 1rem;
-}
-
-.no-more-items {
-  text-align: center;
-  padding: 1rem;
-  font-style: italic;
-  color: gray;
-}
-
-
-
-.infinite-scroll-container {
-  height: 80vh;
-  overflow-y: auto;
-
-  /* Firefox scrollbar styling */
-  scrollbar-width: thin; /* Barra delgada */
-  scrollbar-color: #800080 #e0e0e0; /* Morado para el deslizador y gris claro para el fondo */
-}
-
-.infinite-scroll-container::-webkit-scrollbar {
-  width: 8px; /* Ancho de la barra */
-  height: 8px; /* Altura de la barra horizontal, si aplica */
-}
-
-.infinite-scroll-container::-webkit-scrollbar-thumb {
-  background-color: #800080; /* Color del deslizador (morado) */
-  border-radius: 10px; /* Bordes redondeados */
-}
-
-.infinite-scroll-container::-webkit-scrollbar-thumb:hover {
-  background-color: #9a009a; /* Color más claro al pasar el cursor */
-}
-
-.infinite-scroll-container::-webkit-scrollbar-track {
-  background: #e0e0e0; /* Fondo de la barra (gris claro) */
-  border-radius: 10px; /* Bordes redondeados */
-}
 
 
 
