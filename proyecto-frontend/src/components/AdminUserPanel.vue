@@ -44,7 +44,7 @@
           <label class="mt-5">Nombre</label>
           <input v-model="newUser.name" type="text" class="form-control" required />
           <label class="mt-3">Correo electrónico</label>
-          <input v-model="newUser.email" type="email" class="form-control" required />
+          <input v-model="newUser.email" type="email" class="form-control" id="mail" required />
             <label class="mt-3">Contraseña</label>
           <input v-model="newUser.password" type="text" class="form-control" required />
           <label class="mt-3">Primer apellido</label>
@@ -182,20 +182,49 @@ export default {
     },
     async createUser() {
       try {
+        const email = this.newUser.email.trim(); // Elimina espacios en blanco
+
+        // Validar el dominio del correo
+        if (!validarDominioCorreo(email)) {
+          alert("El correo debe tener el dominio @ikasle.egibide.org o @egibide.org");
+          return;
+        }
+
+        // Validar que la contraseña tenga al menos 8 caracteres
+        if (this.newUser.password.length < 8) {
+          alert("La contraseña debe tener al menos 8 caracteres.");
+          return;
+        }
+
+        // Verificar si el correo ya está registrado
         const token = sessionStorage.getItem('token');
+        const emailExists = await axios.get('http://127.0.0.1:8000/api/auth/users/check-email', {
+          params: { email }, // Envía el correo como parámetro
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (emailExists.data.exists) {
+          alert("El correo ya está registrado. Por favor, use otro correo.");
+          return;
+        }
+
+        // Si pasa todas las validaciones, crear el usuario
         const response = await axios.put(
-          'http://127.0.0.1:8000/api/auth/users/create',
-          this.newUser,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+            'http://127.0.0.1:8000/api/auth/users/create',
+            this.newUser,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
         );
+
         this.users.push(response.data);
         this.closeModal();
       } catch (error) {
-        console.error('Error al crear usuario:', error);
+        alert('Este usuario ya existe');
       }
     },
     openEditUserModal(user) {
@@ -242,6 +271,12 @@ export default {
     },
   },
 };
+function validarDominioCorreo(correo) {
+  // Expresión regular para validar los dominios especificados
+  const regex = /^[^@\s]+@(ikasle\.egibide\.org|egibide\.org)$/;
+  return regex.test(correo); // Retorna true si cumple, false si no
+}
+
 </script>
 
 <style scoped></style>
