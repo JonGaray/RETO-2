@@ -169,9 +169,7 @@ wrong.',
             ], 500);
         }
     }
-    public function save(Request $request, $id){
-        print_r("entra");
-        die;
+    public function save(Request $request, $id){ 
     try {
         // Validar los datos de entrada
         $validatedData = $request->validate([
