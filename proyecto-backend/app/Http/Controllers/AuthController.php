@@ -170,8 +170,6 @@ wrong.',
         }
     }
     public function save(Request $request, $id){
-        print_r("entra");
-        die;
     try {
         // Validar los datos de entrada
         $validatedData = $request->validate([

@@ -210,8 +210,6 @@ export default {
       this.editedUser = null;
     },
     async saveEditedUser() {
-      alert(this.editedUser)
-
       const token = sessionStorage.getItem('token');
       await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
