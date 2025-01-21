@@ -125,7 +125,7 @@ wrong.',
     public function getAvailableTecnicos()
     {
         $techniciansCount = User::where('role', 'Técnico')
-            ->where('status', 'habilitado') 
+            ->where('status', 'habilitado')
             ->count();
 
         return response()->json(['techniciansCount' => $techniciansCount]);
@@ -157,7 +157,7 @@ wrong.',
                 'username2' => $validatedData['username2'],
                 'role' => $validatedData['role'],
             ]);
-    
+
             return response()->json([
                 'message' => 'Usuario creado con éxito',
                 'user' => $user,
@@ -169,7 +169,7 @@ wrong.',
             ], 500);
         }
     }
-    public function save(Request $request, $id){ 
+    public function save(Request $request, $id){
     try {
         // Validar los datos de entrada
         $validatedData = $request->validate([
@@ -182,7 +182,7 @@ wrong.',
 
         // Buscar al usuario por ID
         $user = User::findOrFail($id);
-        
+
         // Actualizar los datos del usuario
         $user->update($validatedData);
 

@@ -15,7 +15,7 @@ class UserController extends Controller
     public function getAvailableTecnicos()
     {
         $techniciansCount = User::where('role', 'Técnico')
-            ->where('status', 'habilitado') 
+            ->where('status', 'habilitado')
             ->count();
 
         return response()->json(['techniciansCount' => $techniciansCount]);

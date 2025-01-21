@@ -18,7 +18,7 @@
           class="list-group-item d-flex justify-content-between align-items-center">
           <div>
             <strong>{{ user.name }} </strong>
-            <span class="text-muted d-block">{{ user.role }}</span>
+            <span class="text-muted d-block badge-initcap">{{ user.role }}</span>
           </div>
           <div class="d-flex align-items-center">
             <label class="switch me-3">
@@ -210,8 +210,6 @@ export default {
       this.editedUser = null;
     },
     async saveEditedUser() {
-      alert(this.editedUser)
-
       const token = sessionStorage.getItem('token');
       await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
