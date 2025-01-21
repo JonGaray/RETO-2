@@ -18,7 +18,7 @@
           class="list-group-item d-flex justify-content-between align-items-center">
           <div>
             <strong>{{ user.name }} </strong>
-            <span class="text-muted d-block">{{ user.role }}</span>
+            <span class="text-muted d-block badge-initcap">{{ user.role }}</span>
           </div>
           <div class="d-flex align-items-center">
             <label class="switch me-3">
