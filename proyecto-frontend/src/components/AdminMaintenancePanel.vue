@@ -16,8 +16,11 @@
                 <li v-for="(machinemaintenance, index) in machinemaintenances" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
-                        <strong>{{ machinemaintenance.machine_name }} - {{ machinemaintenance.maintenance_name }} (Cada
-                            {{ machinemaintenance.regularity }} días)</strong>
+                        <strong>
+                            {{ machinemaintenance.machine_name || 'Nombre de máquina no disponible' }} -
+                            {{ machinemaintenance.maintenance_name || 'Nombre de mantenimiento no disponible' }} (Cada
+                            {{ machinemaintenance.regularity || 'Regularidad no disponible' }} días)
+                        </strong>
                     </div>
                 </li>
             </ul>
@@ -34,7 +37,7 @@
             <label class="mt-5">Nombre del Mantenimiento</label>
             <input v-model="newMaintenanceName" type="text" class="form-control mt-2"
                 placeholder="Nombre del mantenimiento">
-                <label class="mt-3">Regularidad</label>
+            <label class="mt-3">Regularidad</label>
             <input v-model="newMaintenanceRegularity" type="number" class="form-control mt-2"
                 placeholder="Regularidad en días">
             <div class="d-flex justify-content-between mt-4">
@@ -72,7 +75,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-egibide" @click="createAssociation">Crear Asociacion</button>
+                <button type="button" class="btn btn-egibide" @click="createAssociation">Crear Asociación</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
             </div>
         </div>
@@ -113,6 +116,7 @@ export default {
                 this.machinemaintenances = response.data;
             } catch (error) {
                 console.error('Error al obtener las asociaciones:', error);
+                this.machinemaintenances = []; // Establecer un valor predeterminado vacío en caso de error
             }
         },
         async fetchMachines() {
@@ -166,27 +170,34 @@ export default {
         },
 
         createAssociation() {
-            const token = sessionStorage.getItem('token');
-            const associationData = {
-                machines_id: this.selectedMachineId,
-                maintenances_id: this.selectedMaintenanceId,
-            };
-            axios.post('http://127.0.0.1:8000/api/auth/machinemaintenances/create', associationData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-                .then(response => {
-                    this.machinemaintenances.push(response.data.asociacion);
-                    this.closeModal();
-                    this.fetchMachineMaintenances();
-                    this.fetchMachines();
-                    this.fetchMaintenances();
-                })
-                .catch(error => {
-                    console.error('Error al crear la asociación:', error);
-                });
+    const token = sessionStorage.getItem('token');
+    const associationData = {
+        machines_id: this.selectedMachineId,
+        maintenances_id: this.selectedMaintenanceId,
+    };
+
+    axios.post('http://127.0.0.1:8000/api/auth/machinemaintenances/create', associationData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
         },
+    })
+    .then(response => {
+        // Comprobar si la propiedad 'data' existe y tiene los datos necesarios
+        if (response.data && response.data.data) {
+            this.machinemaintenances.push(response.data.data);
+        } else {
+            console.error('La respuesta no contiene la propiedad "data" con la asociación.');
+        }
+
+        this.closeModal();
+        this.fetchMachineMaintenances();
+        this.fetchMachines();
+        this.fetchMaintenances();
+    })
+    .catch(error => {
+        console.error('Error al crear la asociación:', error);
+    });
+},
 
         closeModal() {
             this.showCreateMaintenanceModal = false;
