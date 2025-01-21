@@ -104,5 +104,11 @@ class MachineController extends Controller
             return response()->json(['error' => 'Error al obtener las máquinas', 'message' => $e->getMessage()], 500);
         }
     }
-    
+    public function searchByName(Request $request){
+        $query = $request->input('query');
+
+        $machines = Machine::where('name', 'like', "%{$query}%")->get();
+
+        return response()->json($machines);
+    }
 }

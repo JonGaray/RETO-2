@@ -206,5 +206,12 @@ wrong.',
             'error' => $e->getMessage(),
         ], 500);
     }
-}
+    }
+    public function searchByName(Request $request){
+        $query = $request->input('query');
+
+        $users = User::where('name', 'like', "%{$query}%")->get();
+
+        return response()->json($users);
+    }
 }
