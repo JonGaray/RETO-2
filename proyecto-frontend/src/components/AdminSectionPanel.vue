@@ -6,13 +6,8 @@
                 <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Sección</button>
             </div>
             <!-- Barra de busqueda -->
-            <input
-                v-model="searchQuery"
-                type="text"
-                @input="searchSections"
-                class="form-control mb-3"
-                placeholder="Buscar por nombre de seccion"
-            />
+            <input v-model="searchQuery" type="text" @input="searchSections" class="form-control mb-3"
+                placeholder="Buscar por nombre de seccion" />
             <ul class="list-group">
                 <li v-for="(section, index) in sections" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
@@ -50,14 +45,14 @@
             <input v-model="newSectionName" type="text" class="form-control">
 
             <div class="mb-3 dropdown-wrapper">
-            <label for="campusSelect" class="form-label mt-3">Campus</label>
-            <div class="dropdown-icon-container">
-            <select v-model="newCampusId" class="form-control">
-                <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
-                    {{ campus.name }}
-                </option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-icon"></i>
+                <label for="campusSelect" class="form-label mt-3">Campus</label>
+                <div class="dropdown-icon-container">
+                    <select v-model="newCampusId" class="form-control">
+                        <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
+                            {{ campus.name }}
+                        </option>
+                    </select>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
 
@@ -77,14 +72,14 @@
             <input v-model="editedSectionName" type="text" class="form-control" :placeholder="editSectionObj.name">
 
             <div class="mb-3 dropdown-wrapper">
-            <label for="campusSelect" class="form-label">Campus</label>
-            <div class="dropdown-icon-container">
-            <select v-model="editedCampusId" class="form-control">
-                <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
-                    {{ campus.name }}
-                </option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-icon"></i>
+                <label for="campusSelect" class="form-label">Campus</label>
+                <div class="dropdown-icon-container">
+                    <select v-model="editedCampusId" class="form-control">
+                        <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
+                            {{ campus.name }}
+                        </option>
+                    </select>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
 
@@ -119,22 +114,22 @@ export default {
         this.fetchCampuses();
     },
     methods: {
-            searchSections() {
-              const token = sessionStorage.getItem("token");
-              axios
+        searchSections() {
+            const token = sessionStorage.getItem("token");
+            axios
                 .get("http://127.0.0.1:8000/api/auth/sections/search", {
-                  params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
+                    params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 })
                 .then((response) => {
-                  this.sections = response.data; // Actualizar la lista con los resultados
+                    this.sections = response.data; // Actualizar la lista con los resultados
                 })
                 .catch((error) => {
-                  console.error("Error al buscar máquinas:", error);
+                    console.error("Error al buscar máquinas:", error);
                 });
-            },
+        },
         async fetchSections() {
             const token = sessionStorage.getItem('token');
             try {

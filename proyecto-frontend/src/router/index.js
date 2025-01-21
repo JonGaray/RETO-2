@@ -26,11 +26,6 @@ const router = createRouter({
       component: () => import('../views/AdminView.vue'), // Componente que muestra los datos del usuario
       props: true // Pasar el parámetro 'id' como prop al componente
     },
-    {
-      path: '/register', // Ruta para el registro
-      name: 'register',
-      component: () => import('../components/Register.vue'), // Componente del usuario
-    },
   ],
 })
 
