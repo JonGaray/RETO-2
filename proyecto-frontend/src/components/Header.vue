@@ -1,9 +1,13 @@
 <template>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <main>
     <div class="row mt-3">
       <div class="d-flex justify-content-between align-items-center">
         <h1 class="text-egibide">Sistema de Incidencias</h1>
-        <button class="btn btn-egibide" @click="showModal = true">Nueva Incidencia</button>
+        <div class="d-flex">
+          <button class="btn btn-egibide me-5" @click="showModal = true">+ Nueva Incidencia</button>
+          <button class="btn btn-outline-egibide" @click="logout">Cerrar Sesión</button>
+        </div>
       </div>
     </div>
 
@@ -29,35 +33,47 @@
             <textarea id="description" v-model="newIncident.description" class="form-control" required></textarea>
           </div>
 
-          <div class="mb-3">
+          <!-- Añadido icono al desplegable -->
+          <div class="mb-3 dropdown-wrapper">
             <label for="importance" class="form-label">Importancia</label>
-            <select id="importance" v-model="newIncident.importance" class="form-control" required>
-              <option value="parada">Parada</option>
-              <option value="averia">Avería</option>
-              <option value="aviso">Aviso</option>
-              <option value="mantenimiento">Mantenimiento</option>
-            </select>
+            <div class="dropdown-icon-container">
+              <select id="importance" v-model="newIncident.importance" class="form-control" required>
+                <option value="parada">Parada</option>
+                <option value="averia">Avería</option>
+                <option value="aviso">Aviso</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 dropdown-wrapper">
             <label for="section" class="form-label">Sección</label>
-            <select id="section" v-model="selectedSection" @change="fetchMachines" class="form-control" required>
-              <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.name }}</option>
-            </select>
+            <div class="dropdown-icon-container">
+              <select id="section" v-model="selectedSection" @change="fetchMachines" class="form-control" required>
+                <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.name }}</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 dropdown-wrapper">
             <label for="machine" class="form-label">Máquina</label>
-            <select id="machine" v-model="newIncident.machines_id" class="form-control" required>
-              <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}</option>
-            </select>
+            <div class="dropdown-icon-container">
+              <select id="machine" v-model="newIncident.machines_id" class="form-control" required>
+                <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 dropdown-wrapper">
             <label for="failuretype" class="form-label">Tipo de Avería</label>
-            <select id="failuretype" v-model="newIncident.failuretypes_id" class="form-control" required>
-              <option v-for="failuretype in failuretypes" :key="failuretype.id" :value="failuretype.id">{{ failuretype.name }}</option>
-            </select>
+            <div class="dropdown-icon-container">
+              <select id="failuretype" v-model="newIncident.failuretypes_id" class="form-control" required>
+                <option v-for="failuretype in failuretypes" :key="failuretype.id" :value="failuretype.id">{{ failuretype.name }}</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
           </div>
 
           <div class="mb-3 d-flex justify-content-between">
@@ -73,6 +89,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'; // Importar el router para la redirección
 
 const showModal = ref(false);
 const sections = ref([]);
@@ -86,6 +103,8 @@ const newIncident = ref({
   machines_id: null,
   failuretypes_id: null, // Cambio aquí para que coincida con el nuevo campo
 });
+
+const router = useRouter(); // Instancia del router para redirigir
 
 const fetchSections = async () => {
   const token = sessionStorage.getItem('token'); // Obtener el token de sessionStorage
@@ -179,13 +198,26 @@ const submitIncident = async () => {
 
     console.log('Incidencia creada y asociación realizada exitosamente');
     showModal.value = false; // Cerrar el modal después de la creación
+    this.fetchFailureTypes();
+    this.fetchMachines();
+    this.fetchSections();
   } catch (error) {
     console.error('Error al crear la incidencia o asociar usuario:', error);
   }
 };
+
+// Añadir el método para cerrar sesión
+const logout = () => {
+  // Eliminar el token del sessionStorage
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('user'); // Si tienes el usuario en sessionStorage, también puedes eliminarlo
+
+  // Redirigir al usuario a la página de inicio
+  router.push('/');
+};
 </script>
 
-
 <style scoped>
+/* Estilo para mostrar el icono en los selectores */
 
 </style>

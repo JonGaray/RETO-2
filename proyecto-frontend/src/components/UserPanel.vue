@@ -10,9 +10,6 @@
           <span class="fw-bold">Incidencias realizadas:</span>
           <span>{{ incidentsCount }}</span>
         </div>
-        <div class="d-flex justify-content-center">
-          <button class="btn btn-egibide mt-3 boton-perfil-usu">Ver perfil</button>
-        </div>
       </div>
     </div>
     <div class="w-100"></div>

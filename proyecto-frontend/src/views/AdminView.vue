@@ -6,6 +6,7 @@ import AdminMachinePanel from '../components/AdminMachinePanel.vue';
 import AdminCampusPanel from '@/components/AdminCampusPanel.vue';
 import AdminSectionPanel from '@/components/AdminSectionPanel.vue';
 import AdminFailureTypePanel from '@/components/AdminFailureTypePanel.vue';
+import AdminMaintenancePanel from '@/components/AdminMaintenancePanel.vue';
 import { ref } from 'vue'; // Importamos ref para la reactividad
 
 // Creamos una propiedad reactiva para controlar el componente activo
@@ -29,6 +30,8 @@ function getComponent(panel) {
       return AdminSectionPanel;
     case 'failureType':
       return AdminFailureTypePanel;
+    case 'maintenance':
+      return AdminMaintenancePanel;
     default:
       return AdminUserPanel; // Componente por defecto si no hay match
   }
