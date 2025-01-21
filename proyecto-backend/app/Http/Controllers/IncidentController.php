@@ -12,13 +12,12 @@ class IncidentController extends Controller
 {
     public function store(Request $request)
     {
-        // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'importance' => 'required|in:parada,averia,aviso,mantenimiento',
             'machines_id' => 'required|exists:machines,id',
-            'failuretypes_id' => 'required|exists:failuretypes,id', // Validar que el tipo de falla exista
+            'failuretypes_id' => 'required|exists:failuretypes,id',
         ]);
 
         if ($validator->fails()) {
@@ -30,7 +29,6 @@ class IncidentController extends Controller
         }
 
         try {
-            // Crear la nueva incidencia
             $incident = Incident::create([
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
@@ -88,9 +86,7 @@ class IncidentController extends Controller
                 ELSE 2
             END
         ")
-            ->paginate(4);  // Paginación de 3 por página
-
-        // Devuelves la paginación completa con los datos
+            ->paginate(4);
         return response()->json($incidents);
     }
     public function getActiveIncidents() {
@@ -112,11 +108,9 @@ class IncidentController extends Controller
         }
         return response()->json(['message' => 'Incidencia no se puede aceptar'], 400);
     }
-    // Apuntarse a la incidencia (insertar en la tabla usersincidents)
     public function joinIncident(Request $request, $id)
     {
         $user_id = $request->input('users_id');
-        // Comprobar si ya está apuntado
         $exists = UserIncident::where('users_id', $user_id)
             ->where('incidents_id', $id)
             ->exists();
@@ -129,7 +123,6 @@ class IncidentController extends Controller
         }
         return response()->json(['message' => 'Ya estás apuntado a esta incidencia'], 400);
     }
-    // Cambia el estado de la incidencia a 'terminado'
     public function finishIncident($id)
     {
         $incident = Incident::findOrFail($id);
