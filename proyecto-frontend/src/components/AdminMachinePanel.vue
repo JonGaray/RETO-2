@@ -32,25 +32,46 @@
           <div v-if="showCreateModal" class="modal-backdrop">
           <div class="modal show">
             <h2>Nueva Máquina</h2>
-            <input required v-model="newMachine.name" type="text" class="form-control mt-3" placeholder="Nombre de la máquina" />
+
+            <label for="machiName" class="mt-2">Nombre de la Maquina:</label>
+            <input required v-model="newMachine.name" type="text" class="form-control mt-3"/>
+
+            <div class="mb-3 dropdown-wrapper">
             <label for="prioritySelect" class="mt-2">Prioridad:</label>
-            <select required id="prioritySelect" v-model="newMachine.priority" class="form-control mt-1" placeholder="Prioridad">
+            <div class="dropdown-icon-container">
+              <select required id="prioritySelect" v-model="newMachine.priority" class="form-control mt-1" placeholder="Prioridad">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
             </select>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
+          </div>
+
+          <div class="mb-3 dropdown-wrapper">
             <label for="campusC" class="mt-2">Campus:</label>
+            <div class="dropdown-icon-container">
             <select id="campusC" class="form-control mt-1" v-model="selectedCampus" @change="fetchSections">
               <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
                 {{ campus.name }}
               </option>
             </select>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
+            </div>
+
+            <div class="mb-3 dropdown-wrapper">
             <label for="sectionSelect" class="mt-2">Seleccionar seccion:</label>
+            <div class="dropdown-icon-container">
             <select required id="sectionSelect" v-model="newMachine.sections_id" class="form-control mt-1">
               <option v-for="section in sectionsCampus" :key="section.id" :value="section.id">
                 {{ section.name }}
               </option>
             </select>
+            <i class="fas fa-chevron-down dropdown-icon"></i>
+          </div>
+        </div>
+
             <div class="d-flex justify-content-between mt-5">
               <button type="button" class="btn btn-outline-egibide" @click="closeModal">Cancelar</button>
               <button type="button" class="btn btn-egibide" @click="createMachine">Crear</button>
