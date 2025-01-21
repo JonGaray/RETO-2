@@ -4,6 +4,7 @@ import axios from 'axios';
 import IncidentCard from '../components/Incident.vue';
 import UserPanel from '../components/UserPanel.vue';
 import Header from '../components/Header.vue';
+import InifniteScroll from "@/components/InifniteScroll.vue";
 
 // Variables reactivas
 const incidents = ref([]);
@@ -56,6 +57,7 @@ onMounted(() => {
 </script>
 
 <template>
+
   <main>
     <div class="container">
       <div class="row">
@@ -68,30 +70,13 @@ onMounted(() => {
         </div>
         <div class="col-8">
           <!-- Mostrar las incidencias -->
-          <div v-for="incident in incidents" :key="incident.id">
-            <IncidentCard
-              :title="incident.title"
-              :description="incident.description"
-              :category="incident.importance"
-              :type="String(incident.failuretypes_id)"
-              :machines_id="String(incident.machines_id)"
-              :status="incident.status"
-              :date="incident.created_at"
-              :machine_name="incident.machine_name"
-              :failure_type_name="incident.failure_type_name"
-            />
-          </div>
+
+
+            <InifniteScroll/>
+
 
           <!-- Controles de paginación -->
-          <div class="d-flex justify-content-evenly mt-1">
-            <button class="btn btn-egibide" :disabled="currentPage === 1" @click="fetchIncidents(currentPage - 1)">
-              Anterior
-            </button>
-            <span>Pagina {{ currentPage }} de {{ totalPages }}</span>
-            <button class="btn btn-egibide" :disabled="currentPage === totalPages" @click="fetchIncidents(currentPage + 1)">
-              Siguiente
-            </button>
-          </div>
+
         </div>
       </div>
     </div>

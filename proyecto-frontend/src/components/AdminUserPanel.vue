@@ -5,12 +5,20 @@
         <h4>Gestión de Usuarios</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nuevo Usuario</button>
       </div>
+          <!-- Barra de busqueda -->
+          <input
+            v-model="searchQuery"
+            type="text"
+            @input="searchUsers"
+            class="form-control mb-3"
+            placeholder="Buscar por nombre de usuario"
+          />
       <ul class="list-group">
         <li v-for="(user, index) in users" :key="index"
           class="list-group-item d-flex justify-content-between align-items-center">
           <div>
             <strong>{{ user.name }} </strong>
-            <span class="text-muted d-block">{{ user.role }}</span>
+            <span class="text-muted d-block badge-initcap">{{ user.role }}</span>
           </div>
           <div class="d-flex align-items-center">
             <label class="switch me-3">
@@ -118,6 +126,7 @@ export default {
         role: '',
       },
       editedUser: null,
+                    searchQuery: "",
     };
   },
   created() {
@@ -135,6 +144,22 @@ export default {
       });
   },
   methods: {
+              searchUsers() {
+              const token = sessionStorage.getItem("token");
+              axios
+                .get("http://127.0.0.1:8000/api/auth/users/search", {
+                  params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                })
+                .then((response) => {
+                  this.users = response.data; // Actualizar la lista con los resultados
+                })
+                .catch((error) => {
+                  console.error("Error al buscar máquinas:", error);
+                });
+            },
     toggleStatus(user) {
       // Cambia el estado del usuario localmente
       user.status = user.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
@@ -185,8 +210,6 @@ export default {
       this.editedUser = null;
     },
     async saveEditedUser() {
-      alert(this.editedUser)
-
       const token = sessionStorage.getItem('token');
       await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
