@@ -5,6 +5,14 @@
         <h4>Gestión de Maquinas</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Maquina</button>
       </div>
+          <!-- Barra de busqueda -->
+          <input
+            v-model="searchQuery"
+            type="text"
+            @input="searchMachines"
+            class="form-control mb-3"
+            placeholder="Buscar por nombre de máquina"
+          />
       <ul class="list-group">
         <li v-for="(machine, index) in machines" :key="index"
           class="list-group-item d-flex justify-content-between align-items-center">
@@ -155,7 +163,8 @@ export default {
         sections_id: null,
       },
       editedMachine: null,
-      selectedCampus: null
+      selectedCampus: null,
+            searchQuery: "",
     }
   },
   created() {
@@ -196,6 +205,22 @@ export default {
       });
   },
   methods: {
+      searchMachines() {
+      const token = sessionStorage.getItem("token");
+      axios
+        .get("http://127.0.0.1:8000/api/auth/machines/search", {
+          params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          this.machines = response.data; // Actualizar la lista con los resultados
+        })
+        .catch((error) => {
+          console.error("Error al buscar máquinas:", error);
+        });
+    },
     async fetchSections() {
 
       if (!this.selectedCampus) return;

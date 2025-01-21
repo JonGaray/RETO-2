@@ -29,6 +29,7 @@ Route::controller(AuthController::class)->prefix('auth')->group(function()
     Route::get('/technicians', 'getAvailableTecnicos')->middleware('auth:api');
     Route::put('/users/create', 'create')->middleware('auth:api');
     Route::put('/users/{id}/save', 'save')->middleware('auth:api');
+    Route::get('/users/search', 'searchByName')->middleware('auth:api');
 });
 Route::controller(IncidentController::class)->prefix('auth')->group(function()
 {
@@ -48,6 +49,7 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function()
 Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::get('machines','index')->middleware('auth:api');
     Route::get('machines/getsections', 'getBySection')->middleware('auth:api');
+    Route::get('machines/search', 'searchByName')->middleware('auth:api');
     Route::post('machines/create','create')->middleware('auth:api');
     Route::put('machines/{id}/edit','edit')->middleware('auth:api');
     Route::put('machines/{id}/status','updateStatus')->middleware('auth:api');
@@ -60,6 +62,7 @@ Route::controller(CampusController::class)->prefix('auth')->group(function (){
 });
 Route::controller(SectionController::class)->prefix('auth')->group(function (){
     Route::get('sections','index')->middleware('auth:api');
+    Route::get('sections/search', 'searchByName')->middleware('auth:api');
     Route::get('sections/getsections','getSections')->middleware('auth:api');
     Route::post('sections/create','create')->middleware('auth:api');
     Route::put('sections/{id}/edit','edit')->middleware('auth:api');

@@ -87,4 +87,11 @@ class SectionController extends Controller
         $sections = Section::where('campus_id', $campusId)->get();
         return response()->json($sections);
     }
+    public function searchByName(Request $request){
+        $query = $request->input('query');
+
+        $sections = Section::where('name', 'like', "%{$query}%")->get();
+
+        return response()->json($sections);
+    }
 }
