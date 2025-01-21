@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UserIncidentController extends Controller
 {
-    public function index(){
-        $userincidents = UserIncident::all();
-        return response()->json($userincidents);
-    }
     public function create(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
