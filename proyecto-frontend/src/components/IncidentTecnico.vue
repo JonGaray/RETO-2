@@ -13,7 +13,6 @@
                 </div>
                 <span :class="badgeClass" class="badge p-2 fs-6 badge-initcap">{{ status }}</span>
             </div>
-            <!-- Botones condicionales según el estado -->
             <div class="d-flex justify-content-end">
                 <button v-if="status === 'nuevo'" @click="acceptIncident" class="btn btn-outline-egibide btn-sm">
                     Aceptar
@@ -61,19 +60,17 @@ export default {
         },
     },
     methods: {
-        // Función para cambiar el estado a "proceso"
         acceptIncident() {
             const token = sessionStorage.getItem('token');
             axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/accept`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
                 alert('Incidencia aceptada');
-                this.$emit('refresh'); // Emitir un evento para refrescar la lista de incidencias
+                this.$emit('refresh');
             }).catch(error => {
                 console.error('Error al aceptar la incidencia:', error);
             });
         },
-        // Función para apuntarse a la incidencia
         joinIncident() {
             const token = sessionStorage.getItem('token');
             const user = JSON.parse(sessionStorage.getItem('user'));
@@ -85,31 +82,26 @@ export default {
                 console.error('Error al apuntarse a la incidencia:', error);
             });
         },
-        // Función para finalizar la incidencia
         finishIncident() {
             const token = sessionStorage.getItem('token');
             axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/finish`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
                 alert('Incidencia finalizada');
-                this.$emit('refresh'); // Emitir un evento para refrescar la lista de incidencias
+                this.$emit('refresh');
             }).catch(error => {
                 console.error('Error al finalizar la incidencia:', error);
             });
         },
         formattedDate(date) {
-            if (!date) return 'Fecha no disponible'; // Si no hay fecha, mostrar un texto alternativo
-            // Asegurarse de que el formato esté en un formato compatible
-            const fixedDate = date.replace(' ', 'T'); // Cambia el espacio por 'T' para que sea compatible con ISO
+            if (!date) return 'Fecha no disponible';
+            const fixedDate = date.replace(' ', 'T');
             const parsedDate = new Date(fixedDate);
-            // Verificar si la fecha es válida
             return isNaN(parsedDate.getTime()) ? 'Fecha no disponible' : parsedDate.toLocaleDateString();
         }
     }
 };
 </script>
 
-
 <style scoped>
-
 </style>

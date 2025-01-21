@@ -19,12 +19,9 @@
             </ul>
         </div>
     </div>
-
-    <!-- Modal para Crear Tipo de Fallo -->
     <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nuevo Tipo de Fallo</h2>
-
             <label class="mt-5">Nombre del Tipo de Fallo</label>
             <input v-model="newFailuretypeName" type="text" class="form-control">
             <div class="d-flex justify-content-between mt-5">
@@ -33,8 +30,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal para Editar Tipo de Fallo -->
     <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Editar Tipo de Fallo</h2>
@@ -80,7 +75,6 @@ export default {
                 console.error('Error al obtener los tipos de fallo:', error);
             }
         },
-
         createFailuretype() {
             const token = sessionStorage.getItem('token');
             const failuretypeData = {
@@ -94,19 +88,17 @@ export default {
                 .then(response => {
                     this.failuretypes.push(response.data.failuretype);
                     this.closeModal();
-                    this.fetchFailuretypes(); //Recargar la select
+                    this.fetchFailuretypes();
                 })
                 .catch(error => {
                     console.error('Error al crear el tipo de fallo:', error);
                 });
         },
-
         editFailuretype(failuretype) {
             this.editFailuretypeObj = failuretype;
             this.editedFailuretypeName = failuretype.name;
             this.showEditModal = true;
         },
-
         saveFailuretypeEdit() {
             const token = sessionStorage.getItem('token');
             const failuretypeData = {
@@ -129,7 +121,6 @@ export default {
                     console.error('Error al editar el tipo de fallo:', error);
                 });
         },
-
         closeModal() {
             this.showCreateModal = false;
             this.showEditModal = false;
@@ -141,5 +132,4 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos del modal */
 </style>

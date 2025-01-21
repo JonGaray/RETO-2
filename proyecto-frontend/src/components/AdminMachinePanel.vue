@@ -5,7 +5,6 @@
         <h4>Gestión de Maquinas</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Maquina</button>
       </div>
-          <!-- Barra de busqueda -->
           <input
             v-model="searchQuery"
             type="text"
@@ -36,14 +35,11 @@
           </div>
         </li>
       </ul>
-      <!-- Pop-up creacion maquina -->
       <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
           <h2>Nueva Máquina</h2>
-
           <label for="machiName" class="mt-2">Nombre de la Maquina</label>
           <input required v-model="newMachine.name" type="text" class="form-control mt-3" />
-
           <div class="mb-3 dropdown-wrapper">
             <label for="prioritySelect" class="mt-2">Prioridad</label>
             <div class="dropdown-icon-container">
@@ -56,7 +52,6 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-
           <div class="mb-3 dropdown-wrapper">
             <label for="campusC" class="mt-2">Campus</label>
             <div class="dropdown-icon-container">
@@ -68,7 +63,6 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-
           <div class="mb-3 dropdown-wrapper">
             <label for="sectionSelect" class="mt-2">Seccion</label>
             <div class="dropdown-icon-container">
@@ -80,22 +74,17 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-
           <div class="d-flex justify-content-between mt-5">
             <button type="button" class="btn btn-egibide" @click="createMachine">Crear Maquina</button>
             <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
           </div>
         </div>
       </div>
-
-      <!-- pop-up editar maquina -->
       <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
           <h2>Editar Máquina</h2>
-
           <label>Nombre de la Maquina</label>
           <input required v-model="editedMachine.name" type="text" class="form-control mt-3" />
-
           <div class="mb-3 dropdown-wrapper">
             <label for="priorityEditSelect" class="mt-2">Prioridad:</label>
             <div class="dropdown-icon-container">
@@ -107,7 +96,6 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-
           <div class="mb-3 dropdown-wrapper">
             <label for="campus" class="mt-2">Campus:</label>
             <div class="dropdown-icon-container">
@@ -119,7 +107,6 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-
           <div class="mb-3 dropdown-wrapper">
             <label for="sectionEditSelect" class="mt-2">Seleccionar sección:</label>
             <div class="dropdown-icon-container">
@@ -131,7 +118,6 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-
           <div class="d-flex justify-content-between mt-5">
             <button type="button" class="btn btn-egibide" @click="saveMachineEdit">Guardar</button>
             <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
@@ -143,7 +129,6 @@
 </template>
 
 <script>
-
 import axios from 'axios';
 
 export default {
@@ -169,10 +154,9 @@ export default {
   },
   created() {
     const token = sessionStorage.getItem('token');
-
     axios.get('http://127.0.0.1:8000/api/auth/machines', {
       headers: {
-        Authorization: `Bearer ${token}`,  // Añadir el token al header
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(response => {
@@ -209,20 +193,19 @@ export default {
       const token = sessionStorage.getItem("token");
       axios
         .get("http://127.0.0.1:8000/api/auth/machines/search", {
-          params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
+          params: { query: this.searchQuery },
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
-          this.machines = response.data; // Actualizar la lista con los resultados
+          this.machines = response.data;
         })
         .catch((error) => {
           console.error("Error al buscar máquinas:", error);
         });
     },
     async fetchSections() {
-
       if (!this.selectedCampus) return;
       const token = sessionStorage.getItem("token");
       const response = await axios.get(`http://127.0.0.1:8000/api/auth/sections/getbycampus/${this.selectedCampus}`,
@@ -232,12 +215,11 @@ export default {
           },
         });
       this.sectionsCampus = response.data;
-      this.selectedSection = null; // Reinicia la selección de secciones
+      this.selectedSection = null;
     },
     createMachine() {
-      const currentDate = new Date().toISOString().split('T')[0]; // Obtiene la fecha en formato YYYY-MM-DD
+      const currentDate = new Date().toISOString().split('T')[0];
       this.newMachine.last_maintenance = currentDate;
-
       if (!this.newMachine.name || !this.newMachine.priority || !this.newMachine.sections_id) {
         alert("Todos los campos son obligatorios.");
         return;
@@ -286,11 +268,8 @@ export default {
         });
     },
     toggleStatus(machine) {
-      // Cambiar estado localmente
       machine.status =
         machine.status === "habilitado" ? "deshabilitado" : "habilitado";
-
-      // Enviar actualización al servidor
       this.updateMachineStatus(machine);
     },
     async updateMachineStatus(machine) {
@@ -330,4 +309,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
