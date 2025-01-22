@@ -190,7 +190,6 @@ const submitIncident = async () => {
     }
     const user = JSON.parse(sessionStorage.getItem('user'));
     const userId = user.id;
-    // Asignar el incidente al usuario
     await axios.post('http://127.0.0.1:8000/api/auth/userincidents/create', {
       users_id: userId,
       incidents_id: response.data.data.id,

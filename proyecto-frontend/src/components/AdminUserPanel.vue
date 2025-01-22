@@ -226,11 +226,6 @@ export default {
         );
         this.users.push(response.data);
         this.closeModal();
-        Swal.fire({
-          icon: 'success',
-          title: 'Usuario creado',
-          text: 'El usuario se ha registrado exitosamente.',
-        });
       } catch (error) {
       }
     },
