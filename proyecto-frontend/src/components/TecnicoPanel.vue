@@ -47,7 +47,7 @@
         <option value="aviso">Aviso</option>
         <option value="mantenimiento">Mantenimiento</option>
       </select>
-      <button class="btn btn-egibide" @click="onFilterChange('')">Reiniciar filtros </button>
+      <button class="btn btn-egibide" @change="onFilterChange('')">Reiniciar filtros </button>
     </div>
   </div>
 </template>
@@ -56,7 +56,6 @@
 import axios from "axios";
 
 export default {
-<<<<<<< HEAD
   data() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     return {
@@ -79,153 +78,98 @@ export default {
     if (token) {
       // Obtener datos iniciales
       axios.get(`http://127.0.0.1:8000/api/auth/incidents/activeincidents`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Añadir el token al header
-        },
-      })
-          .then((response) => {
-            this.incidentsCount = response.data.count;
-          })
-          .catch((error) => {
-            console.error("Error al obtener el número de incidencias:", error);
-          });
-
-      axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Añadir el token al header
-        },
-      })
-          .then((response) => {
-            this.solvedtoday = response.data.count;
-          })
-          .catch((error) => {
-            console.error("Error al obtener el número de incidencias:", error);
-          });
-
-      axios.get(`http://127.0.0.1:8000/api/auth/campuses`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Añadir el token al header
-        },
-      })
-          .then((response) => {
-            this.campuses = response.data;
-          })
-          .catch((error) => {
-            console.error("Error al obtener los campuses:", error);
-          });
-
-      axios.get(`http://127.0.0.1:8000/api/auth/sections`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Añadir el token al header
-        },
-      })
-          .then((response) => {
-            this.sections = response.data.data;
-          })
-          .catch((error) => {
-            console.error("Error al obtener las secciones:", error);
-          });
-
-      axios.get(`http://127.0.0.1:8000/api/auth/failuretypes`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Añadir el token al header
-        },
-      })
-          .then((response) => {
-            this.failureTypes = response.data.data;
-          })
-          .catch((error) => {
-            console.error("Error al obtener los tipos de fallos:", error);
-          });
-    } else {
-      console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
-=======
-    data() {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        return {
-            userName: user ? user.name : '',
-            incidentsCount: 0,
-            solvedtoday: 0,
-        };
-    },
-    created() {
-        const token = sessionStorage.getItem('token');
-        if (token) {
-            const userId = this.$route.params.id;
-            axios.get(`http://127.0.0.1:8000/api/auth/incidents/activeincidents`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-                .then(response => {
-                    this.incidentsCount = response.data.count;
-                })
-                .catch(error => {
-                    console.error("Error al obtener el número de incidencias:", error);
-                });
-                axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-                .then(response => {
-                    this.solvedtoday = response.data.count;
-                })
-                .catch(error => {
-                    console.error("Error al obtener el número de incidencias:", error);
-                });
-        } else {
-            console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
-        }
->>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
-    }
-  },
-  methods: {
-    async onFilterChange(filterType) {
-      // Emitir solo el filtro que ha sido modificado
-      let updatedFilter = {};
-
-      switch (filterType) {
-        case 'campus':
-          updatedFilter.selectedCampus = this.selectedCampus;
-          break;
-        case 'section':
-          updatedFilter.selectedSection = this.selectedSection;
-          break;
-        case 'failureType':
-          updatedFilter.selectedFailureType = this.selectedFailureType;
-          break;
-        case 'importance':
-          updatedFilter.selectedImportance = this.selectedImportance;
-          break;
-      }
-
-      // Emitir solo el filtro actualizado
-      this.$emit("filtersChanged", updatedFilter);
-    },
-      resetFilters() {
-        // Reinicia los valores de los filtros a su estado inicial
-        this.selectedCampus = null;
-        this.selectedSection = null;
-        this.selectedFailureType = null;
-        this.selectedImportance = null;
-
-        // Emite un evento para notificar al componente padre
-        this.$emit("filtersChanged", {
-          selectedCampus: null,
-          selectedSection: null,
-          selectedFailureType: null,
-          selectedImportance: null,
+      headers: {
+        Authorization: `Bearer ${token}`, // Añadir el token al header
+      },
+    })
+  .then((response) => {
+      this.incidentsCount = response.data.count;
+    })
+        .catch((error) => {
+          console.error("Error al obtener el número de incidencias:", error);
         });
-      }
+
+    axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Añadir el token al header
+    },
+  })
+.then((response) => {
+  this.solvedtoday = response.data.count;
+})
+    .catch((error) => {
+      console.error("Error al obtener el número de incidencias:", error);
+    });
+
+axios.get(`http://127.0.0.1:8000/api/auth/campuses`, {
+headers: {
+  Authorization: `Bearer ${token}`, // Añadir el token al header
+},
+})
+.then((response) => {
+  this.campuses = response.data;
+})
+    .catch((error) => {
+      console.error("Error al obtener los campuses:", error);
+    });
+
+axios.get(`http://127.0.0.1:8000/api/auth/sections`, {
+headers: {
+  Authorization: `Bearer ${token}`, // Añadir el token al header
+},
+})
+.then((response) => {
+  this.sections = response.data.data;
+})
+    .catch((error) => {
+      console.error("Error al obtener las secciones:", error);
+    });
+
+axios.get(`http://127.0.0.1:8000/api/auth/failuretypes`, {
+headers: {
+  Authorization: `Bearer ${token}`, // Añadir el token al header
+},
+})
+.then((response) => {
+  this.failureTypes = response.data.data;
+})
+    .catch((error) => {
+      console.error("Error al obtener los tipos de fallos:", error);
+    });
+} else {
+  console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
+}
+},
+methods: {
+  async onFilterChange(filterType) {
+    // Emitir solo el filtro que ha sido modificado
+    let updatedFilter = {};
+
+    switch (filterType) {
+      case 'campus':
+        updatedFilter.selectedCampus = this.selectedCampus;
+        break;
+      case 'section':
+        updatedFilter.selectedSection = this.selectedSection;
+        break;
+      case 'failureType':
+        updatedFilter.selectedFailureType = this.selectedFailureType;
+        break;
+      case 'importance':
+        updatedFilter.selectedImportance = this.selectedImportance;
+        break;
+      default:
+        updatedFilter.selectedReboot = "";
+        break;
+    }
+
+    // Emitir solo el filtro actualizado
+    this.$emit("filtersChanged", updatedFilter);
   },
+},
 };
 </script>
 
 <style scoped>
-<<<<<<< HEAD
 /* Aquí puedes añadir tus estilos */
 </style>
-=======
-</style>
->>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10

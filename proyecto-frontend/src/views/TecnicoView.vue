@@ -1,11 +1,10 @@
 <script setup>
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/IncidentTecnico.vue';
-import TecnicoPanel from '../components/TecnicoPanel.vue';
-import Header from '../components/Header.vue';
+import IncidentCard from '../components/IncidentTecnico.vue'; // Importa el componente IncidentCard
+import TecnicoPanel from '../components/TecnicoPanel.vue'; // Importa el componente TecnicoPanel
+import Header from '../components/Header.vue'; // Importa el componente Header
 
-<<<<<<< HEAD
 // Variables reactivas
 const incidents = ref([]); // Inicializa la lista de incidencias
 const userId = ref(null); // Inicializa userId con null
@@ -22,80 +21,54 @@ const fetchIncidents = async (filterType, page = 1) => {
     // Dependiendo del filtro, hacemos una llamada diferente
     if (filterType  === 'importance') {
       response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/${selectedFilter.value}/importance?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } else if (filterType  === 'campus') {
-      response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/${selectedFilter.value}/campus?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } else if (filterType  === 'section') {
-      response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/${selectedFilter.value}/section?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } else if (filterType  === 'failureType') {
-      response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/${selectedFilter.value}/failuretype?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } else {
-      // Por defecto
-      response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/getall?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-=======
-const incidents = ref([]);
-const userId = ref(null);
-const currentPage = ref(1);
-const totalPages = ref(1);
-const fetchIncidents = async (page = 1) => {
-    const token = sessionStorage.getItem('token');
-    try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/getall?page=${page}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        if (response.data && Array.isArray(response.data.data)) {
-            incidents.value = response.data.data;
-            totalPages.value = response.data.last_page;
-            currentPage.value = page;
-        } else {
-            console.error('No se encontraron incidencias');
-            incidents.value = [];
-        }
-    } catch (error) {
-        console.error('Error al obtener las incidencias:', error);
->>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
-    }
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } else if (filterType  === 'campus') {
+    response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/${selectedFilter.value}/campus?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+} else if (filterType  === 'section') {
+  response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/${selectedFilter.value}/section?page=${page}`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+} else if (filterType  === 'failureType') {
+  response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/${selectedFilter.value}/failuretype?page=${page}`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+} else {
+  // Por defecto
+  response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/getall?page=${page}`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+}
 
-    // Verificar si la respuesta tiene la propiedad 'data' y asignarla correctamente
-    if (response.data && Array.isArray(response.data.data)) {
-      incidents.value = response.data.data; // Asigna el array de incidencias a incidents
-      totalPages.value = response.data.last_page; // Total de páginas
-      currentPage.value = page; // Actualiza la página actual
-    } else {
-      console.error('No se encontraron incidencias');
-      incidents.value = []; // Asigna un array vacío si no hay incidencias
-    }
-  } catch (error) {
-    console.error('Error al obtener las incidencias:', error);
-  }
+// Verificar si la respuesta tiene la propiedad 'data' y asignarla correctamente
+if (response.data && Array.isArray(response.data.data)) {
+  incidents.value = response.data.data; // Asigna el array de incidencias a incidents
+  totalPages.value = response.data.last_page; // Total de páginas
+  currentPage.value = page; // Actualiza la página actual
+} else {
+  console.error('No se encontraron incidencias');
+  incidents.value = []; // Asigna un array vacío si no hay incidencias
+}
+} catch (error) {
+  console.error('Error al obtener las incidencias:', error);
+}
 };
+
+// Llamar a fetchIncidents al cargar el componente
 onMounted(() => {
-<<<<<<< HEAD
   fetchIncidents('default'); // Llamada por defecto sin filtro
-=======
-    fetchIncidents();
->>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
 });
 
 // Método para recibir el evento desde el componente hijo
@@ -122,55 +95,11 @@ const onFiltersChanged = (filters) => {
 </script>
 
 <template>
-<<<<<<< HEAD
   <main>
     <div class="container">
       <div class="row">
         <div class="col-12">
           <Header/>
-=======
-    <main>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <Header />
-                </div>
-                <div class="col-4">
-                    <TecnicoPanel :id="userId" />
-                </div>
-                <div class="col-8">
-                    <div v-for="incident in incidents" :key="incident.id">
-                        <IncidentCard 
-                            :title="incident.title" 
-                            :description="incident.description"
-                            :category="incident.importance" 
-                            :type="String(incident.failuretypes_id)" 
-                            :machines_id="String(incident.machines_id)" 
-                            :status="incident.status"
-                            :register_date="incident.created_at" 
-                            :machine_name="incident.machine_name"
-                            :failure_type_name="incident.failure_type_name" 
-                            :incidents_id="incident.id" 
-                        />
-                    </div>
-                    <div class="d-flex justify-content-evenly mt-1">
-                        <button 
-                            class="btn btn-egibide" 
-                            :disabled="currentPage === 1"
-                            @click="fetchIncidents(currentPage - 1)">
-                            Anterior
-                        </button>
-                        <span>Pagina {{ currentPage }} de {{ totalPages }}</span>
-                        <button 
-                            class="btn btn-egibide" 
-                            :disabled="currentPage === totalPages"
-                            @click="fetchIncidents(currentPage + 1)">
-                            Siguiente
-                        </button>
-                    </div>
-                </div>
-            </div>
->>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
         </div>
         <div class="col-4">
           <!-- Se renderiza el componente TecnicoPanel solo si userId tiene valor -->
@@ -216,10 +145,7 @@ const onFiltersChanged = (filters) => {
 </template>
 
 <style scoped>
-<<<<<<< HEAD
 .container {
   margin-top: 20px;
 }
-=======
->>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
 </style>
