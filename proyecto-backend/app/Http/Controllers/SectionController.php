@@ -10,7 +10,7 @@ class SectionController extends Controller
 {
     public function index()
     {
-        $sections = Section::all();
+        $sections = Section::select('sections.*')->orderBy('sections.niu')->get();
         return response()->json([
             'success' => true,
             'data' => $sections,
