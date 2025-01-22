@@ -1,9 +1,10 @@
 <script setup>
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/IncidentTecnico.vue'; // Importa el componente IncidentCard
-import TecnicoPanel from '../components/TecnicoPanel.vue'; // Importa el componente TecnicoPanel
-import Header from '../components/Header.vue'; // Importa el componente Header
+import IncidentCard from '../components/IncidentTecnico.vue';
+import TecnicoPanel from '../components/TecnicoPanel.vue';
+import Header from '../components/Header.vue';
+import InfiniteScrollTecnico from "@/components/InfiniteScrollTecnico.vue";
 
 // Variables reactivas
 const incidents = ref([]); // Inicializa la lista de incidencias
@@ -95,52 +96,21 @@ const onFiltersChanged = (filters) => {
 </script>
 
 <template>
-  <main>
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <Header/>
-        </div>
-        <div class="col-4">
-          <!-- Se renderiza el componente TecnicoPanel solo si userId tiene valor -->
-          <TecnicoPanel :id="userId" @filtersChanged="onFiltersChanged"/>
-        </div>
-        <div class="col-8">
-          <!-- Generamos tantas tarjetas como incidencias existan -->
-          <div v-for="incident in incidents" :key="incident.id">
-            <IncidentCard
-                :title="incident.title"
-                :description="incident.description"
-                :category="incident.importance"
-                :type="String(incident.failuretypes_id)"
-                :machines_id="String(incident.machines_id)"
-                :status="incident.status"
-                :register_date="incident.created_at"
-                :machine_name="incident.machine_name"
-                :failure_type_name="incident.failure_type_name"
-                :incidents_id="incident.id"
-            />
-          </div>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <Header />
+                </div>
+                <div class="col-4">
+                    <TecnicoPanel :id="userId" />
+                </div>
+                <div class="col-8">
+                    <InfiniteScrollTecnico/>
 
-          <!-- Controles de paginación -->
-          <div class="d-flex justify-content-evenly mt-1">
-            <button
-                class="btn btn-egibide"
-                :disabled="currentPage === 1"
-                @click="fetchIncidents(selectedFilter, currentPage - 1)">
-              Anterior
-            </button>
-            <span>Pagina {{ currentPage }} de {{ totalPages }}</span>
-            <button
-                class="btn btn-egibide"
-                :disabled="currentPage === totalPages"
-                @click="fetchIncidents(selectedFilter, currentPage + 1)">
-              Siguiente
-            </button>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
   </main>
 </template>
 

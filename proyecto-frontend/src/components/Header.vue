@@ -185,6 +185,7 @@ const submitIncident = async () => {
     fetchFailureTypes();
     fetchMachines();
     fetchSections();
+    window.location.reload();
   } catch (error) {
     console.error('Error al crear la incidencia o asociar usuario:', error);
   }
