@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import IncidentCard from '../components/Incident.vue';
 import UserPanel from '../components/UserPanel.vue';
@@ -12,56 +12,97 @@ const currentPage = ref(1); // Página actual
 const totalPages = ref(1); // Total de páginas
 const loading = ref(false); // Estado de carga
 const hasMore = ref(true); // Indica si hay más incidencias por cargar
+const isSearching = ref(false);
+const scrollContainer = ref(null);
+const searchQuery = ref("");
+
+
 
 // Función para obtener las incidencias
-const fetchIncidents = async () => {
-  if (loading.value || !hasMore.value) return; // Evitar múltiples llamadas si ya está cargando o no hay más
+const fetchIncidents = async (reset = false) => {
+  if (loading.value || (!hasMore.value && !isSearching.value)) return;
 
-  const token = sessionStorage.getItem('token');
-  loading.value = true; // Iniciar estado de carga
+  loading.value = true;
 
   try {
-    const response = await axios.get(
-        `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-    );
+    const token = sessionStorage.getItem('token');
+    const url = isSearching.value
+      ? `http://127.0.0.1:8000/api/auth/incidents/search`
+      : `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`;
 
-    if (response.data && response.data.data) {
-      const newIncidents = response.data.data;
+    const params = isSearching.value ? { query: searchQuery.value } : {};
 
-      // Concatenar las nuevas incidencias a las existentes
-      incidents.value = [...incidents.value, ...newIncidents];
+    const response = await axios.get(url, {
+      params,
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      // Actualizar total de páginas y página actual
-      totalPages.value = response.data.last_page;
+    const data = response.data.data || [];
 
-      // Incrementar página solo si hay más datos
-      if (currentPage.value < totalPages.value) {
-        currentPage.value++;
-      } else {
-        hasMore.value = false; // No hay más páginas para cargar
-      }
+    if (reset) {
+      incidents.value = data;
     } else {
-      hasMore.value = false; // Detener scroll infinito si no hay datos
+      incidents.value = [...incidents.value, ...data];
+    }
+
+    totalPages.value = response.data.last_page || 1;
+    hasMore.value = currentPage.value < totalPages.value;
+
+    if (!isSearching.value && !reset) {
+      currentPage.value++;
     }
   } catch (error) {
-    console.error('Error al obtener las incidencias:', error);
+    console.error('Error al obtener incidencias:', error);
   } finally {
-    loading.value = false; // Finalizar estado de carga
+    loading.value = false;
   }
 };
 
-// Manejar el evento de scroll infinito
+// Manejar la búsqueda desde el input
+const searchIncidents = async () => {
+  if (searchQuery.value.trim() === '') {
+    resetInfiniteScroll(); // Restablecer el estado inicial si no hay búsqueda
+    return;
+  }
+
+  isSearching.value = true;
+  incidents.value = []; // Limpiar las incidencias
+  currentPage.value = 1; // Reiniciar la paginación
+
+  await fetchIncidents(); // Realizar la búsqueda
+};
+
+// Función para gestionar la búsqueda
+const handleSearch = async () => {
+  if (searchQuery.value.trim() === '') {
+    resetInfiniteScroll();
+    return;
+  }
+
+  isSearching.value = true;
+  currentPage.value = 1;
+  hasMore.value = false; // Deshabilitar scroll infinito en búsqueda
+  await fetchIncidents(true); // Resetear las incidencias al buscar
+};
+
+// Escuchar el evento de scroll
 const handleScroll = (event) => {
   const container = event.target;
-  if (container.scrollTop + container.clientHeight >= container.scrollHeight - 10) {
+  if (
+    container.scrollTop + container.clientHeight >= container.scrollHeight - 10 &&
+    !loading.value &&
+    !isSearching.value
+  ) {
     fetchIncidents();
   }
 };
+
+// Watcher para el campo de búsqueda (con debounce)
+let debounceTimeout;
+watch(searchQuery, () => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(handleSearch, 300); // 300ms de espera antes de buscar
+});
 
 // Escuchar el evento para abrir el modal
 const handleNewIncident = () => {
@@ -80,14 +121,40 @@ const closeModal = () => {
 onMounted(() => {
   fetchIncidents();
 });
+
+    
+// Restablecer el scroll infinito
+const resetInfiniteScroll = async () => {
+  isSearching.value = false;
+  currentPage.value = 1;
+  totalPages.value = 1;
+  hasMore.value = true;
+  incidents.value = [];
+  await fetchIncidents(true);
+};
 </script>
 
 <template>
   <main>
-    <div class="container">
-      <div class="row">
-
-        <div class="col-12 infinite-scroll-container" @scroll="handleScroll">
+    <div class="container justify-content-center">
+      <div class="row justify-content-center mb-4">
+        <!-- Barra de busqueda -->
+            <div class="col-9">
+              <input
+                v-model="searchQuery"
+                type="text"
+                @input="searchIncidents"
+                class="form-control"
+                placeholder="Buscar por nombre de incidencia"
+              />
+            </div>
+      </div>
+        <div class="col-12 infinite-scroll-container" @scroll="(e) => {
+        if (!isSearching && e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 10) {
+          fetchIncidents();
+        }
+      }">
+          
           <!-- Mostrar las incidencias -->
           <div v-for="incident in incidents" :key="incident.id">
             <IncidentCard
@@ -114,8 +181,6 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </div>
-
     <!-- Modal de creación de nueva incidencia -->
     <div v-if="showModal" class="modal-backdrop">
       <div class="modal show">

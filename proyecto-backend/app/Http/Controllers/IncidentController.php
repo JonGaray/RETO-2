@@ -198,4 +198,43 @@ class IncidentController extends Controller
         }
         return response()->json(['message' => 'Incidencia no se puede finalizar'], 400);
     }
+    public function searchByName(Request $request)
+    {
+    $query = $request->input('query');
+
+    $incidents = Incident::select(
+        'incidents.*',
+        'machines.name as machine_name',
+        'failuretypes.name as failure_type_name'
+    )
+        ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+        ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+        ->where('title', 'like', "%{$query}%") // Filtro de búsqueda dinámico
+        ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+        ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'parada' THEN 1
+                WHEN incidents.importance = 'averia' THEN 2
+                WHEN incidents.importance = 'aviso' THEN 3
+                ELSE 5
+            END
+        ")
+        ->orderBy('machines.priority', 'asc')
+        ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'mantenimiento' THEN 1
+                ELSE 2
+            END
+        ")
+        ->paginate(4); // Paginación de 4 por página
+
+    return response()->json($incidents);
+}
 }

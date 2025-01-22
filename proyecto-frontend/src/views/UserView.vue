@@ -14,6 +14,7 @@ const totalPages = ref(1);
 
 // Estado para el modal
 const showModal = ref(false);
+const searchQuery = ref('');
 
 // Función para obtener las incidencias
 const fetchIncidents = async (page = 1) => {
@@ -54,6 +55,7 @@ const closeModal = () => {
 onMounted(() => {
   fetchIncidents();
 });
+
 </script>
 
 <template>
@@ -68,8 +70,8 @@ onMounted(() => {
         <div class="col-4">
           <UserPanel :id="userId" />
         </div>
-        <div class="col-8">
-          <!-- Mostrar las incidencias -->
+        <div class="col-8 justify-content-center">
+                   <!-- Mostrar las incidencias -->
 
 
             <InifniteScroll/>
