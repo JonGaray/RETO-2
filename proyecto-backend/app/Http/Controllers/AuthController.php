@@ -31,13 +31,10 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-// $request->validate();
         $credentials = $request->only('email', 'password');
         $token = Auth::attempt($credentials);
         if (!$token) {
             return response()->json([
-                /*'status' => 'error',
-                'message' => 'Unauthorized',*/
                 'error' => 'Unauthorized. Either email or password is wrong.',
             ], 401);
         }
@@ -45,25 +42,10 @@ class AuthController extends Controller
         return response()->json([
                 'access_token' => $token,
                 'token_type' => 'bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60, //auth()->factory()->getTTL() * 60,
+                'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => $user,
         ]);
     }
-    public function checkEmail(Request $request)
-    {
-        $email = $request->query('email'); // Obtener el parámetro 'email' de la solicitud
-
-        if (empty($email)) {
-            return response()->json(['error' => 'Email is required'], 400);
-        }
-
-        // Verificar si existe un usuario con ese correo
-        $exists = User::where('email', $email)->exists();
-
-        // Retornar la respuesta como JSON
-        return response()->json(['exists' => $exists]);
-    }
-
     public function index()
     {
         $users = User::all();
@@ -118,26 +100,18 @@ class AuthController extends Controller
             'username2' => 'required|string|max:255|unique:users,username2,' . $id,
             'role' => 'required|in:user,tecnico,admin',
         ]);
-
-        // Buscar al usuario por ID
         $user = User::findOrFail($id);
-
-        // Actualizar los datos del usuario
         $user->update($validatedData);
-
-        // Retornar respuesta exitosa
         return response()->json([
             'message' => 'Usuario actualizado correctamente.',
             'user' => $user,
         ], 200);
     } catch (\Illuminate\Validation\ValidationException $e) {
-        // Retornar errores de validación
         return response()->json([
             'message' => 'Error en la validación.',
             'errors' => $e->errors(),
         ], 422);
     } catch (\Exception $e) {
-        // Manejar otros errores
         return response()->json([
             'message' => 'Error al actualizar el usuario.',
             'error' => $e->getMessage(),
@@ -146,9 +120,7 @@ class AuthController extends Controller
     }
     public function searchByName(Request $request){
         $query = $request->input('query');
-
         $users = User::where('name', 'like', "%{$query}%")->get();
-
         return response()->json($users);
     }
 }

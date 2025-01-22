@@ -56,9 +56,6 @@ onMounted(() => {
           <UserPanel :id="userId" />
         </div>
         <div class="col-8 justify-content-center">
-                   <!-- Mostrar las incidencias -->
-
-
             <InifniteScroll/>
         </div>
       </div>

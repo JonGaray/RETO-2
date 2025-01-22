@@ -5,7 +5,6 @@
         <h4>Gestión de Usuarios</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nuevo Usuario</button>
       </div>
-          <!-- Barra de busqueda -->
           <input
             v-model="searchQuery"
             type="text"
@@ -36,8 +35,6 @@
           </div>
         </li>
       </ul>
-
-      <!-- Pop-up para crear un nuevo usuario -->
       <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
           <h2>Crear Nuevo Usuario</h2>
@@ -51,7 +48,6 @@
           <input v-model="newUser.username1" type="text" class="form-control" required />
           <label class="mt-3">Segundo apellido</label>
           <input v-model="newUser.username2" type="text" class="form-control" required />
-
           <div class="mb-3 dropdown-wrapper">
             <label for="roleSelect" class="mt-2">Rol</label>
             <div class="dropdown-icon-container">
@@ -63,15 +59,12 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-
           <div class="d-flex justify-content-between mt-5">
             <button class="btn btn-egibide" @click="createUser">Crear Usuario</button>
             <button class="btn btn-secondary" @click="closeModal">Cancelar</button>
           </div>
         </div>
       </div>
-
-      <!-- Pop-up para editar un nuevo usuario -->
       <div v-if="showEditUserModal" class="modal-backdrop">
         <div class="modal show">
           <h2>Editar Usuario</h2>
@@ -112,7 +105,6 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-
 export default {
   data() {
     return {
@@ -128,14 +120,14 @@ export default {
         role: '',
       },
       editedUser: null,
-                    searchQuery: "",
+      searchQuery: "",
     };
   },
   created() {
     const token = sessionStorage.getItem('token');
     axios.get('http://127.0.0.1:8000/api/auth/users', {
       headers: {
-        Authorization: `Bearer ${token}`,  // Añadir el token al header
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(response => {
@@ -150,23 +142,20 @@ export default {
               const token = sessionStorage.getItem("token");
               axios
                 .get("http://127.0.0.1:8000/api/auth/users/search", {
-                  params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
+                  params: { query: this.searchQuery },
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
                 })
                 .then((response) => {
-                  this.users = response.data; // Actualizar la lista con los resultados
+                  this.users = response.data;
                 })
                 .catch((error) => {
                   console.error("Error al buscar máquinas:", error);
                 });
             },
     toggleStatus(user) {
-      // Cambia el estado del usuario localmente
       user.status = user.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
-
-      // Envía la actualización al servidor
       this.updateUserStatus(user);
     },
     async updateUserStatus(user) {
@@ -174,7 +163,7 @@ export default {
         const token = sessionStorage.getItem('token');
         await axios.put(`http://127.0.0.1:8000/api/auth/users/${user.id}/status`, { status: user.status }, {
           headers: {
-            Authorization: `Bearer ${token}`,  // Añadir el token al header
+            Authorization: `Bearer ${token}`,
           }
         })
         console.log("Estado actualizado correctamente.");
@@ -185,10 +174,7 @@ export default {
     async createUser() {
       try {
         const token = sessionStorage.getItem('token');
-
         const email = this.newUser.email.trim();
-
-        // Validar el dominio del correo
         if (!validarDominioCorreo(email)) {
           Swal.fire({
             icon: 'error',
@@ -197,8 +183,6 @@ export default {
           });
           return;
         }
-
-        // Validar que la contraseña tenga al menos 8 caracteres
         if (this.newUser.password.length < 8) {
           Swal.fire({
             icon: 'error',
@@ -207,9 +191,6 @@ export default {
           });
           return;
         }
-
-
-        // Si pasa todas las validaciones, crear el usuario
         const response = await axios.post(
             'http://127.0.0.1:8000/api/auth/users/create',
             this.newUser,
@@ -219,7 +200,6 @@ export default {
               },
             }
         );
-
         this.users.push(response.data);
         this.closeModal();
         Swal.fire({
@@ -228,23 +208,19 @@ export default {
           text: 'El usuario se ha registrado exitosamente.',
         });
       } catch (error) {
-        // Manejo de errores
         if (error.response) {
-          // Errores del servidor
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: error.response.data.message || 'Ha ocurrido un error al crear el usuario.',
           });
         } else if (error.request) {
-          // Sin respuesta del servidor
           Swal.fire({
             icon: 'error',
             title: 'Error de red',
             text: 'No se pudo conectar con el servidor. Por favor, intente más tarde.',
           });
         } else {
-          // Otros errores
           Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -254,7 +230,7 @@ export default {
       }
     },
     openEditUserModal(user) {
-      this.editedUser = { ...user }; // Copia los datos del usuario seleccionado
+      this.editedUser = { ...user }; 
       this.showEditUserModal = true;
     },
     closeEditUserModal() {
@@ -266,7 +242,6 @@ export default {
     },
     async saveEditedUser() {
       alert(this.editedUser)
-
       const token = sessionStorage.getItem('token');
       await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
@@ -298,11 +273,10 @@ export default {
   },
 };
 function validarDominioCorreo(correo) {
-  // Expresión regular para validar los dominios especificados
   const regex = /^[^@\s]+@(ikasle\.egibide\.org|egibide\.org)$/;
-  return regex.test(correo); // Retorna true si cumple, false si no
+  return regex.test(correo);
 }
-
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

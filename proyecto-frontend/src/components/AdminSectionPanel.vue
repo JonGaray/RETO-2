@@ -40,7 +40,6 @@
             <h2>Nueva Sección</h2>
             <label class="mt-5">Nombre de Seccion</label>
             <input v-model="newSectionName" type="text" class="form-control">
-
             <div class="mb-3 dropdown-wrapper">
                 <label for="campusSelect" class="form-label mt-3">Campus</label>
                 <div class="dropdown-icon-container">
@@ -52,11 +51,8 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
-
-            <!-- Campo para NIU -->
             <label class="mt-3">NIU</label>
             <input v-model="newNiu" type="number" class="form-control" placeholder="Introduce el NIU">
-
             <div class="d-flex justify-content-between mt-5">
                 <button type="button" class="btn btn-egibide" @click="createSection">Crear Seccion</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
@@ -68,7 +64,6 @@
             <h2>Editar Sección</h2>
             <label class="mt-5">Nombre de Seccion</label>
             <input v-model="editedSectionName" type="text" class="form-control" :placeholder="editSectionObj.name">
-
             <div class="mb-3 dropdown-wrapper">
                 <label for="campusSelect" class="form-label">Campus</label>
                 <div class="dropdown-icon-container">
@@ -80,11 +75,8 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
-
-            <!-- Campo para NIU -->
             <label class="mt-3">NIU</label>
             <input v-model="editedNiu" type="number" class="form-control" :placeholder="editSectionObj.niu">
-
             <div class="d-flex justify-content-between mt-5">
                 <button type="button" class="btn btn-egibide" @click="saveSectionEdit">Guardar</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
@@ -107,8 +99,8 @@ export default {
             editedSectionName: '',
             newCampusId: null,
             editedCampusId: null,
-            newNiu: null,             // Variable para el nuevo NIU
-            editedNiu: null,          // Variable para el NIU en edición
+            newNiu: null,             
+            editedNiu: null,          
             editSectionObj: null,
             searchQuery: "",
         };
@@ -186,7 +178,7 @@ export default {
             const sectionData = {
                 name: this.newSectionName,
                 campus_id: this.newCampusId,
-                niu: this.newNiu, // Asignación del nuevo NIU
+                niu: this.newNiu, 
                 status: 'habilitado',
             };
             console.log(sectionData);
@@ -208,7 +200,7 @@ export default {
             this.editSectionObj = section;
             this.editedSectionName = section.name;
             this.editedCampusId = section.campus_id;
-            this.editedNiu = section.niu; // Asignación del NIU para edición
+            this.editedNiu = section.niu; 
             this.showEditModal = true;
         },
         saveSectionEdit() {
@@ -216,7 +208,7 @@ export default {
             const sectionData = {
                 name: this.editedSectionName,
                 campus_id: this.editedCampusId,
-                niu: this.editedNiu, // Asignación del NIU al guardar
+                niu: this.editedNiu, 
                 status: 'habilitado',
             };
             axios.put(`http://127.0.0.1:8000/api/auth/sections/${this.editSectionObj.id}/edit`, sectionData, {
@@ -229,7 +221,7 @@ export default {
                     if (index !== -1) {
                         this.sections[index].name = this.editedSectionName;
                         this.sections[index].campus_id = this.editedCampusId;
-                        this.sections[index].niu = this.editedNiu; // Actualización del NIU
+                        this.sections[index].niu = this.editedNiu; 
                     }
                     this.closeModal();
                     this.fetchSections();
@@ -245,12 +237,12 @@ export default {
             this.editedSectionName = '';
             this.newCampusId = null;
             this.editedCampusId = null;
-            this.newNiu = null; // Reiniciar NIU al cerrar el modal
-            this.editedNiu = null; // Reiniciar NIU al cerrar el modal
+            this.newNiu = null; 
+            this.editedNiu = null; 
         },
     },
 };
 </script>
 
-
-<style scoped></style>
+<style scoped>
+</style>

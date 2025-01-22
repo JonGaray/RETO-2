@@ -94,9 +94,7 @@ class SectionController extends Controller
     }
     public function searchByName(Request $request){
         $query = $request->input('query');
-
         $sections = Section::where('name', 'like', "%{$query}%")->get();
-
         return response()->json($sections);
     }
 }
