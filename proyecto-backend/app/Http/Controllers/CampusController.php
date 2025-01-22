@@ -40,7 +40,6 @@ class CampusController extends Controller
         }
         $campus->name = $request->name;
         $campus->save();
-
         return response()->json(['campus' => $campus]);
     }
     public function updateStatus(Request $request, $id): \Illuminate\Http\JsonResponse

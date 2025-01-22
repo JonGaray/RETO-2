@@ -19,7 +19,6 @@ class IncidentController extends Controller
             'machines_id' => 'required|exists:machines,id',
             'failuretypes_id' => 'required|exists:failuretypes,id',
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -27,7 +26,6 @@ class IncidentController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
-
         try {
             $incident = Incident::create([
                 'title' => $request->input('title'),
@@ -39,7 +37,6 @@ class IncidentController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Incidencia creada correctamente',
@@ -120,7 +117,6 @@ class IncidentController extends Controller
 
         return response()->json($incidents);
     }
-
     public function getFailureType($failureType)
     {
         $incidents = Incident::select(
@@ -158,7 +154,6 @@ class IncidentController extends Controller
 
         return response()->json($incidents);
     }
-
     public function getSection($section)
     {
         $incidents = Incident::select(
@@ -197,7 +192,6 @@ class IncidentController extends Controller
 
         return response()->json($incidents);
     }
-
     public function getCampus($campus)
     {
         $incidents = Incident::select(
@@ -233,10 +227,8 @@ class IncidentController extends Controller
             END
         ")
             ->paginate(3);
-
         return response()->json($incidents);
     }
-
     public function acceptIncident($id)
     {
         $incident = Incident::findOrFail($id);
@@ -277,7 +269,6 @@ class IncidentController extends Controller
     public function searchByName(Request $request)
     {
     $query = $request->input('query');
-
     $incidents = Incident::select(
         'incidents.*',
         'machines.name as machine_name',
@@ -310,7 +301,6 @@ class IncidentController extends Controller
             END
         ")
         ->paginate(4); // Paginación de 4 por página
-
     return response()->json($incidents);
 }
 }
