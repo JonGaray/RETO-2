@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     protected $fillable = [
-        'name','campus_id'
+        'name','campus_id','niu'
     ];
     public function campus()
     {
