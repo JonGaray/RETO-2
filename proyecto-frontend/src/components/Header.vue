@@ -82,7 +82,6 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
 
-
 defineEmits(['newIncident']);
 const showModal = ref(false);
 const campuses = ref([]);
