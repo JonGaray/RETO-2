@@ -110,7 +110,7 @@
 
 <script>
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
@@ -182,36 +182,32 @@ export default {
     },
     async createUser() {
       try {
-        const email = this.newUser.email.trim(); // Elimina espacios en blanco
+        const token = sessionStorage.getItem('token');
+
+        const email = this.newUser.email.trim();
 
         // Validar el dominio del correo
         if (!validarDominioCorreo(email)) {
-          alert("El correo debe tener el dominio @ikasle.egibide.org o @egibide.org");
+          Swal.fire({
+            icon: 'error',
+            title: 'Correo inválido',
+            text: 'El correo debe tener el dominio @ikasle.egibide.org o @egibide.org',
+          });
           return;
         }
-
         // Validar que la contraseña tenga al menos 8 caracteres
         if (this.newUser.password.length < 8) {
-          alert("La contraseña debe tener al menos 8 caracteres.");
+          Swal.fire({
+            icon: 'error',
+            title: 'Contraseña inválida',
+            text: 'La contraseña debe tener al menos 8 caracteres.',
+          });
           return;
         }
 
-        // Verificar si el correo ya está registrado
-        const token = sessionStorage.getItem('token');
-        const emailExists = await axios.get('http://127.0.0.1:8000/api/auth/users/check-email', {
-          params: { email }, // Envía el correo como parámetro
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (emailExists.data.exists) {
-          alert("El correo ya está registrado. Por favor, use otro correo.");
-          return;
-        }
 
         // Si pasa todas las validaciones, crear el usuario
-        const response = await axios.put(
+        const response = await axios.post(
             'http://127.0.0.1:8000/api/auth/users/create',
             this.newUser,
             {
@@ -220,13 +216,38 @@ export default {
               },
             }
         );
+        console.log( response.data);
 
         this.users.push(response.data);
         this.closeModal();
+
+        // Mensaje de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario creado',
+          text: 'El usuario se ha registrado exitosamente.',
+        });
       } catch (error) {
-        alert('Este usuario ya existe');
+        // Manejo de errores
+        if (error.response) {
+          // Errores del servidor
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.response.data.message || 'Este usuario ya existe',
+          });
+        } else if (error.request) {
+          // Sin respuesta del servidor
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de red',
+            text: 'No se pudo conectar con el servidor. Por favor, intente más tarde.',
+          });
+        }
       }
-    },
+    }
+
+    ,
     openEditUserModal(user) {
       this.editedUser = { ...user }; // Copia los datos del usuario seleccionado
       this.showEditUserModal = true;

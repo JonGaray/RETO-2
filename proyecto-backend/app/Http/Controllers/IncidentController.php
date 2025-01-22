@@ -162,7 +162,7 @@ class IncidentController extends Controller
     {
         $incident = Incident::findOrFail($id);
         if ($incident->status == 'nuevo') {
-            $incident->status = 'proceso';
+            $incident->status = 'pproceso';
             $incident->start_date = now();
             $incident->save();
             return response()->json(['message' => 'Incidencia aceptada']);

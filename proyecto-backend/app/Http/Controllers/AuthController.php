@@ -117,6 +117,21 @@ wrong.',
             'user' => $user,
         ]);
     }
+    public function checkEmail(Request $request)
+    {
+        $email = $request->query('email'); // Obtener el parámetro 'email' de la solicitud
+
+        if (empty($email)) {
+            return response()->json(['error' => 'Email is required'], 400);
+        }
+
+        // Verificar si existe un usuario con ese correo
+        $exists = User::where('email', $email)->exists();
+
+        // Retornar la respuesta como JSON
+        return response()->json(['exists' => $exists]);
+    }
+
     public function index()
     {
         $users = User::all();
