@@ -11,6 +11,7 @@
                 <li v-for="(section, index) in sections" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
+                        <strong class="me-3">{{ section.niu }}</strong>
                         <strong>{{ section.name }} </strong>
                         <span class="text-muted d-block">{{ section.status === 'habilitado' ? 'Activo' : 'Deshabilitado'
                             }}</span>
@@ -188,6 +189,7 @@ export default {
                 niu: this.newNiu, // Asignación del nuevo NIU
                 status: 'habilitado',
             };
+            console.log(sectionData);
             axios.post('http://127.0.0.1:8000/api/auth/sections/create', sectionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
