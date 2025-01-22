@@ -5,15 +5,13 @@ import TecnicoPanel from '../components/TecnicoPanel.vue';
 import Header from '../components/Header.vue';
 import InfiniteScrollTecnico from "@/components/InfiniteScrollTecnico.vue";
 
-// Variables reactivas
 const incidents = ref([]);
 const userId = ref(null);
 const currentPage = ref(1);
 const totalPages = ref(1);
-const selectedFilter = ref(''); // Filtro seleccionado
-const selectedFilterType = ref(''); // Tipo de filtro seleccionado
+const selectedFilter = ref('');
+const selectedFilterType = ref('');
 
-// Función para manejar el cambio de filtros desde el componente hijo
 const onFiltersChanged = (filters) => {
     if (filters.selectedCampus !== undefined) {
         selectedFilter.value = filters.selectedCampus;
@@ -28,13 +26,9 @@ const onFiltersChanged = (filters) => {
         selectedFilter.value = filters.selectedImportance;
         selectedFilterType.value = 'importance';
     }
-
-    // Aquí llamamos al componente `InfiniteScrollTecnico` para actualizar la lista
-    // usando el filtro seleccionado
     fetchIncidentsWithFilters();
 };
 
-// Método para obtener incidencias con el filtro seleccionado
 const fetchIncidentsWithFilters = () => {
     const infiniteScrollTecnico = document.querySelector('InfiniteScrollTecnico');
     if (infiniteScrollTecnico) {
@@ -51,7 +45,6 @@ const fetchIncidentsWithFilters = () => {
                     <Header />
                 </div>
                 <div class="col-4">
-                    <!-- Conectar el evento del filtro -->
                     <TecnicoPanel :id="userId" @filtersChanged="onFiltersChanged" />
                 </div>
                 <div class="col-8">
