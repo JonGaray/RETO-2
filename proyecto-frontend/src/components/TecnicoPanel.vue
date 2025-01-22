@@ -22,32 +22,32 @@
       <p class="text-muted text-center mb-4">
         Este es el lugar desde el cual el técnico puede filtrar las incidencias.
       </p>
-      <label>Campus</label>
-      <select class="form-control mt-3 text-center" v-model="selectedCampus" @change="onFilterChange('campus')">
+      <label class="mt-3">Campus</label>
+      <select class="form-control text-center" v-model="selectedCampus" @change="onFilterChange('campus')">
         <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
           {{ campus.name }}
         </option>
       </select>
-      <label>Sección</label>
-      <select class="form-control mt-3 text-center" v-model="selectedSection" @change="onFilterChange('section')">
+      <label class="mt-3">Sección</label>
+      <select class="form-control text-center" v-model="selectedSection" @change="onFilterChange('section')">
         <option v-for="section in sections" :key="section.id" :value="section.id">
           {{ section.name }}
         </option>
       </select>
-      <label>Tipo de Fallo</label>
-      <select class="form-control mt-3 text-center" v-model="selectedFailureType" @change="onFilterChange('failureType')" >
+      <label class="mt-3">Tipo de Fallo</label>
+      <select class="form-control text-center" v-model="selectedFailureType" @change="onFilterChange('failureType')" >
         <option v-for="failuretype in failureTypes" :key="failuretype.id" :value="failuretype.id">
           {{ failuretype.name }}
         </option>
       </select>
-      <label>Importancia</label>
-      <select class="form-control mt-3 text-center" v-model="selectedImportance" @change="onFilterChange('importance')">
+      <label class="mt-3">Importancia</label>
+      <select class="form-control text-center" v-model="selectedImportance" @change="onFilterChange('importance')">
         <option value="parada">Parada</option>
         <option value="averia">Averia</option>
         <option value="aviso">Aviso</option>
         <option value="mantenimiento">Mantenimiento</option>
       </select>
-      <button class="btn btn-egibide" @change="onFilterChange('')">Reiniciar filtros </button>
+      <button class="btn btn-egibide mt-3" @click="resetFilter">Reiniciar filtros </button>
     </div>
   </div>
 </template>
@@ -166,6 +166,9 @@ methods: {
     // Emitir solo el filtro actualizado
     this.$emit("filtersChanged", updatedFilter);
   },
+  async resetFilter(){
+    window.location.reload();
+  }
 },
 };
 </script>
