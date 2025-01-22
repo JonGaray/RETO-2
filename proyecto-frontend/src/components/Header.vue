@@ -80,6 +80,8 @@
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
+
 
 defineEmits(['newIncident']);
 const showModal = ref(false);
@@ -160,6 +162,22 @@ watch(selectedSection, (newSection) => {
   fetchMachines();
 });
 const submitIncident = async () => {
+  if (newIncident.value.title.trim().length > 255) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Exceso de caracteres',
+      text: 'El título no puede superar los 255 caracteres',
+    });
+    return;
+  }
+  if (newIncident.value.description.trim().length > 255) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Exceso de caracteres',
+      text: 'La descripción no puede superar los 255 caracteres',
+    });
+    return;
+  }
   const token = sessionStorage.getItem('token');
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/auth/incidents/store', newIncident.value, {
@@ -173,6 +191,7 @@ const submitIncident = async () => {
     }
     const user = JSON.parse(sessionStorage.getItem('user'));
     const userId = user.id;
+    // Asignar el incidente al usuario
     await axios.post('http://127.0.0.1:8000/api/auth/userincidents/create', {
       users_id: userId,
       incidents_id: response.data.data.id,
