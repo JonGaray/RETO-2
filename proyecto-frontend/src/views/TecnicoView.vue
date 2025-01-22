@@ -4,6 +4,7 @@ import axios from 'axios';
 import IncidentCard from '../components/IncidentTecnico.vue';
 import TecnicoPanel from '../components/TecnicoPanel.vue';
 import Header from '../components/Header.vue';
+import InfiniteScrollTecnico from "@/components/InfiniteScrollTecnico.vue";
 
 const incidents = ref([]);
 const userId = ref(null);
@@ -45,35 +46,8 @@ onMounted(() => {
                     <TecnicoPanel :id="userId" />
                 </div>
                 <div class="col-8">
-                    <div v-for="incident in incidents" :key="incident.id">
-                        <IncidentCard 
-                            :title="incident.title" 
-                            :description="incident.description"
-                            :category="incident.importance" 
-                            :type="String(incident.failuretypes_id)" 
-                            :machines_id="String(incident.machines_id)" 
-                            :status="incident.status"
-                            :register_date="incident.created_at" 
-                            :machine_name="incident.machine_name"
-                            :failure_type_name="incident.failure_type_name" 
-                            :incidents_id="incident.id" 
-                        />
-                    </div>
-                    <div class="d-flex justify-content-evenly mt-1">
-                        <button 
-                            class="btn btn-egibide" 
-                            :disabled="currentPage === 1"
-                            @click="fetchIncidents(currentPage - 1)">
-                            Anterior
-                        </button>
-                        <span>Pagina {{ currentPage }} de {{ totalPages }}</span>
-                        <button 
-                            class="btn btn-egibide" 
-                            :disabled="currentPage === totalPages"
-                            @click="fetchIncidents(currentPage + 1)">
-                            Siguiente
-                        </button>
-                    </div>
+                    <InfiniteScrollTecnico/>
+
                 </div>
             </div>
         </div>
