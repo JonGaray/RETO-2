@@ -32,8 +32,6 @@
             </ul>
         </div>
     </div>
-
-    <!-- Modal para Crear Campus -->
     <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Nuevo Campus</h2>
@@ -45,8 +43,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal para Editar Campus -->
     <div v-if="showEditModal" class="modal-backdrop">
         <div class="modal show">
             <h2>Editar Campus</h2>
@@ -92,12 +88,10 @@ export default {
                 console.error('Error al obtener los campus:', error);
             }
         },
-
         toggleStatus(campus) {
             campus.status = campus.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
             this.updateCampusStatus(campus);
         },
-
         async updateCampusStatus(campus) {
             const token = sessionStorage.getItem('token');
             try {
@@ -115,7 +109,6 @@ export default {
                 console.error("Error al actualizar el estado del campus:", error);
             }
         },
-
         createCampus() {
             const token = sessionStorage.getItem('token');
             const campusData = {
@@ -127,21 +120,19 @@ export default {
                 },
             })
                 .then(response => {
-                    this.campuses.push(response.data.campus); // Agregar el nuevo campus a la lista
-                    this.closeModal(); // Cerrar el modal
-                    this.fetchCampuses(); //Recarga la select
+                    this.campuses.push(response.data.campus);
+                    this.closeModal();
+                    this.fetchCampuses();
                 })
                 .catch(error => {
                     console.error('Error al crear el campus:', error);
                 });
         },
-
         editCampus(campus) {
             this.editCampusObj = campus;
             this.editedCampusName = campus.name;
             this.showEditModal = true;
         },
-
         saveCampusEdit() {
             const token = sessionStorage.getItem('token');
             const campusData = {
@@ -155,15 +146,14 @@ export default {
                 .then(response => {
                     const index = this.campuses.findIndex(campus => campus.id === this.editCampusObj.id);
                     if (index !== -1) {
-                        this.campuses[index].name = this.editedCampusName; // Actualizar el nombre del campus en la lista
+                        this.campuses[index].name = this.editedCampusName;
                     }
-                    this.closeModal(); // Cerrar el modal
+                    this.closeModal();
                 })
                 .catch(error => {
                     console.error('Error al editar el campus:', error);
                 });
         },
-
         closeModal() {
             this.showCreateModal = false;
             this.showEditModal = false;
@@ -175,5 +165,4 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos del modal */
 </style>

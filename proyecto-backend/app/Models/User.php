@@ -51,10 +51,10 @@ class User extends Authenticatable implements JWTSubject
     }
     public function getJWTIdentifier()
     {
-        return $this->getKey(); // Identificador único del usuario
+        return $this->getKey();
     }
     public function getJWTCustomClaims()
     {
-        return []; // Puedes agregar datos personalizados al token si es necesario
+        return [];
     }
 }

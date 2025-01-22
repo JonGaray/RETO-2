@@ -31,20 +31,18 @@ export default {
     data() {
         const user = JSON.parse(sessionStorage.getItem('user'));
         return {
-            userName: user ? user.name : '', // Definimos userName y le asignamos el valor del sessionStorage
-            incidentsCount: 0,  // Inicializamos el contador de incidencias
+            userName: user ? user.name : '',
+            incidentsCount: 0,
             solvedtoday: 0,
         };
     },
     created() {
-        const token = sessionStorage.getItem('token'); // Recupera el token desde sessionStorage
+        const token = sessionStorage.getItem('token');
         if (token) {
-            // Obtener el ID del usuario desde la URL
-            const userId = this.$route.params.id;  // Recuperamos el ID del usuario desde la URL
-            // Agrega el token a los encabezados de la solicitud
+            const userId = this.$route.params.id;
             axios.get(`http://127.0.0.1:8000/api/auth/incidents/activeincidents`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,  // Añadir el token al header
+                    Authorization: `Bearer ${token}`,
                 }
             })
                 .then(response => {
@@ -55,7 +53,7 @@ export default {
                 });
                 axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,  // Añadir el token al header
+                    Authorization: `Bearer ${token}`,
                 }
             })
                 .then(response => {
@@ -72,5 +70,4 @@ export default {
 </script>
 
 <style scoped>
-/* Aquí puedes añadir tus estilos */
 </style>

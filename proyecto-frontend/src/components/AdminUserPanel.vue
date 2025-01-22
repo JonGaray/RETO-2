@@ -111,6 +111,8 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
+
+
 export default {
   data() {
     return {
@@ -195,6 +197,7 @@ export default {
           });
           return;
         }
+
         // Validar que la contraseña tenga al menos 8 caracteres
         if (this.newUser.password.length < 8) {
           Swal.fire({
@@ -216,12 +219,9 @@ export default {
               },
             }
         );
-        console.log( response.data);
 
         this.users.push(response.data);
         this.closeModal();
-
-        // Mensaje de éxito
         Swal.fire({
           icon: 'success',
           title: 'Usuario creado',
@@ -234,7 +234,7 @@ export default {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: error.response.data.message || 'Este usuario ya existe',
+            text: error.response.data.message || 'Ha ocurrido un error al crear el usuario.',
           });
         } else if (error.request) {
           // Sin respuesta del servidor
@@ -243,11 +243,16 @@ export default {
             title: 'Error de red',
             text: 'No se pudo conectar con el servidor. Por favor, intente más tarde.',
           });
+        } else {
+          // Otros errores
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ha ocurrido un error inesperado. Por favor, intente más tarde.',
+          });
         }
       }
-    }
-
-    ,
+    },
     openEditUserModal(user) {
       this.editedUser = { ...user }; // Copia los datos del usuario seleccionado
       this.showEditUserModal = true;
