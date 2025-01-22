@@ -1,38 +1,49 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import IncidentCard from '../components/IncidentTecnico.vue';
 
+// Variables reactivas
 const incidents = ref([]);
-const userId = ref(null);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const loading = ref(false);
 const hasMore = ref(true);
-const fetchIncidents = async () => {
-  if (loading.value || !hasMore.value) return;
-  const token = sessionStorage.getItem('token');
+const searchQuery = ref('');
+const isSearching = ref(false);
+
+// Función para obtener las incidencias
+const fetchIncidents = async (reset = false) => {
+  if (loading.value || (!hasMore.value && !isSearching.value)) return;
+
   loading.value = true;
+  const token = sessionStorage.getItem('token');
+
   try {
-    const response = await axios.get(
-        `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-    );
-    if (response.data && response.data.data) {
-      const newIncidents = response.data.data;
-      incidents.value = [...incidents.value, ...newIncidents];
-      totalPages.value = response.data.last_page;
-      if (currentPage.value < totalPages.value) {
-        currentPage.value++;
-      } else {
-        hasMore.value = false;
-      }
+    const url = isSearching.value
+      ? `http://127.0.0.1:8000/api/auth/incidents/search`
+      : `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`;
+
+    const params = isSearching.value ? { query: searchQuery.value } : {};
+
+    const response = await axios.get(url, {
+      params,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = response.data.data || [];
+
+    if (reset) {
+      incidents.value = data;
     } else {
-      hasMore.value = false;
+      incidents.value = [...incidents.value, ...data];
+    }
+
+    totalPages.value = response.data.last_page || 1;
+    hasMore.value = currentPage.value < totalPages.value;
+
+    if (!isSearching.value && !reset) {
+      currentPage.value++;
     }
   } catch (error) {
     console.error('Error al obtener las incidencias:', error);
@@ -40,19 +51,59 @@ const fetchIncidents = async () => {
     loading.value = false;
   }
 };
+
+// Manejar la búsqueda
+const handleSearch = async () => {
+  if (searchQuery.value.trim() === '') {
+    resetInfiniteScroll();
+    return;
+  }
+
+  isSearching.value = true;
+  currentPage.value = 1;
+  hasMore.value = false; // Desactivar scroll infinito durante la búsqueda
+  await fetchIncidents(true); // Resetear incidencias en búsqueda
+};
+
+// Restablecer el scroll infinito
+const resetInfiniteScroll = async () => {
+  isSearching.value = false;
+  currentPage.value = 1;
+  totalPages.value = 1;
+  hasMore.value = true;
+  incidents.value = [];
+  await fetchIncidents(true);
+};
+
+// Manejar el evento de scroll
 const handleScroll = (event) => {
   const container = event.target;
-  if (container.scrollTop + container.clientHeight >= container.scrollHeight - 10) {
+  if (
+    container.scrollTop + container.clientHeight >= container.scrollHeight - 10 &&
+    !loading.value &&
+    !isSearching.value
+  ) {
     fetchIncidents();
   }
 };
+
+// Watcher para búsqueda con debounce
+let debounceTimeout;
+watch(searchQuery, () => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(handleSearch, 300); // Espera de 300ms antes de buscar
+});
+
+// Modal
+const showModal = ref(false);
 const handleNewIncident = () => {
   showModal.value = true;
 };
-const showModal = ref(false);
 const closeModal = () => {
   showModal.value = false;
 };
+
+// Cargar incidencias al montar el componente
 onMounted(() => {
   fetchIncidents();
 });
@@ -61,39 +112,71 @@ onMounted(() => {
 <template>
   <main>
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
+        <!-- Barra de búsqueda -->
+        <div class="col-9 mb-3">
+          <input
+            v-model="searchQuery"
+            type="text"
+            @input="handleSearch"
+            class="form-control"
+            placeholder="Buscar por nombre de incidencia"
+          />
+        </div>
+        <!-- Contenedor de incidencias con scroll infinito -->
         <div class="col-12 infinite-scroll-container" @scroll="handleScroll">
           <div v-for="incident in incidents" :key="incident.id">
             <IncidentCard
-                :title="incident.title"
-                :description="incident.description"
-                :category="incident.importance"
-                :type="String(incident.failuretypes_id)"
-                :machines_id="String(incident.machines_id)"
-                :status="incident.status"
-                :register_date="incident.created_at"
-                :machine_name="incident.machine_name"
-                :failure_type_name="incident.failure_type_name"
-                :incidents_id="incident.id"
+              :title="incident.title"
+              :description="incident.description"
+              :category="incident.importance"
+              :type="String(incident.failuretypes_id)"
+              :machines_id="String(incident.machines_id)"
+              :status="incident.status"
+              :register_date="incident.created_at"
+              :machine_name="incident.machine_name"
+              :failure_type_name="incident.failure_type_name"
+              :incidents_id="incident.id"
             />
           </div>
+          <!-- Spinner de carga -->
           <div v-if="loading" class="loading-spinner">
             Cargando más incidencias...
           </div>
+          <!-- Mensaje si no hay más incidencias -->
           <div v-if="!hasMore && !loading" class="no-more-items">
             No hay más incidencias para mostrar.
           </div>
         </div>
       </div>
     </div>
+    <!-- Modal -->
     <div v-if="showModal" class="modal-backdrop">
       <div class="modal show">
         <h2>Nueva Incidencia</h2>
-        <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" @click="closeModal">
+          Cancelar
+        </button>
       </div>
     </div>
   </main>
 </template>
 
 <style scoped>
+.infinite-scroll-container {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 1rem;
+}
+
+.no-more-items {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: gray;
+}
 </style>
