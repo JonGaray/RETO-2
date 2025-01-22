@@ -10,6 +10,7 @@ const userId = ref(null);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const showModal = ref(false);
+const searchQuery = ref('');
 const fetchIncidents = async (page = 1) => {
   const token = sessionStorage.getItem('token');
   try {
@@ -41,6 +42,7 @@ const closeModal = () => {
 onMounted(() => {
   fetchIncidents();
 });
+
 </script>
 
 <template>
@@ -53,7 +55,10 @@ onMounted(() => {
         <div class="col-4">
           <UserPanel :id="userId" />
         </div>
-        <div class="col-8">
+        <div class="col-8 justify-content-center">
+                   <!-- Mostrar las incidencias -->
+
+
             <InifniteScroll/>
         </div>
       </div>

@@ -23,6 +23,13 @@ Route::controller(AuthController::class)->prefix('auth')->group(function()
 });
 Route::controller(IncidentController::class)->prefix('auth')->group(function()
 {
+<<<<<<< HEAD
+    Route::post('incidents', 'index')->middleware('auth:api');
+    Route::get('incidents/search', 'searchByName')->middleware('auth:api');
+    Route::post('incidents/create', 'create')->middleware('auth:api'); // Creación de la incidencia
+    Route::put('incidents/{id}/status', 'updateStatus')->middleware('auth:api');
+=======
+>>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
     Route::get('incidents/getall', 'getAllIncidents')->middleware('auth:api');
     Route::get('incidents/activeincidents','getActiveIncidents')->middleware('auth:api');
     Route::get('incidents/solvedtoday','getSolvedToday')->middleware('auth:api');
