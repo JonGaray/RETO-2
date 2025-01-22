@@ -23,36 +23,35 @@
 import axios from 'axios';
 
 export default {
-  props: ['id'], // Recibimos el ID del usuario como prop
   data() {
     const user = JSON.parse(sessionStorage.getItem('user'));
     return {
-      userName: user ? user.name : '', // Definimos userName y le asignamos el valor del sessionStorage
-      incidentsCount: 0,  // Inicializamos el contador de incidencias
+      userName: user ? user.name : '',
+      incidentsCount: 0,
+      userId: user ? user.id : null
     };
   },
   created() {
-    const token = sessionStorage.getItem('token'); // Recupera el token desde sessionStorage
-    if (token) {
-      // Agrega el token a los encabezados de la solicitud
-      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.id}/count`, {
+    const token = sessionStorage.getItem('token');
+    if (token && this.userId) {
+      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.userId}/count`, {
         headers: {
-          Authorization: `Bearer ${token}`,  // Añadir el token al header
+          Authorization: `Bearer ${token}`,
         }
       })
       .then(response => {
         this.incidentsCount = response.data.count;
+        console.log(response.data.count);
       })
       .catch(error => {
         console.error("Error al obtener el número de incidencias:", error);
       });
     } else {
-      console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
+      console.error("No se encontró el token de autenticación o el ID del usuario.");
     }
   }
 };
 </script>
 
 <style scoped>
-/* Aquí puedes añadir tus estilos */
 </style>

@@ -44,7 +44,7 @@
           <label class="mt-5">Nombre</label>
           <input v-model="newUser.name" type="text" class="form-control" required />
           <label class="mt-3">Correo electrónico</label>
-          <input v-model="newUser.email" type="email" class="form-control" required />
+          <input v-model="newUser.email" type="email" class="form-control" id="mail" required />
             <label class="mt-3">Contraseña</label>
           <input v-model="newUser.password" type="text" class="form-control" required />
           <label class="mt-3">Primer apellido</label>
@@ -110,6 +110,8 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 export default {
   data() {
@@ -183,19 +185,72 @@ export default {
     async createUser() {
       try {
         const token = sessionStorage.getItem('token');
-        const response = await axios.put(
-          'http://127.0.0.1:8000/api/auth/users/create',
-          this.newUser,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+
+        const email = this.newUser.email.trim();
+
+        // Validar el dominio del correo
+        if (!validarDominioCorreo(email)) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Correo inválido',
+            text: 'El correo debe tener el dominio @ikasle.egibide.org o @egibide.org',
+          });
+          return;
+        }
+
+        // Validar que la contraseña tenga al menos 8 caracteres
+        if (this.newUser.password.length < 8) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Contraseña inválida',
+            text: 'La contraseña debe tener al menos 8 caracteres.',
+          });
+          return;
+        }
+
+
+        // Si pasa todas las validaciones, crear el usuario
+        const response = await axios.post(
+            'http://127.0.0.1:8000/api/auth/users/create',
+            this.newUser,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
         );
+
         this.users.push(response.data);
         this.closeModal();
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario creado',
+          text: 'El usuario se ha registrado exitosamente.',
+        });
       } catch (error) {
-        console.error('Error al crear usuario:', error);
+        // Manejo de errores
+        if (error.response) {
+          // Errores del servidor
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.response.data.message || 'Ha ocurrido un error al crear el usuario.',
+          });
+        } else if (error.request) {
+          // Sin respuesta del servidor
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de red',
+            text: 'No se pudo conectar con el servidor. Por favor, intente más tarde.',
+          });
+        } else {
+          // Otros errores
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ha ocurrido un error inesperado. Por favor, intente más tarde.',
+          });
+        }
       }
     },
     openEditUserModal(user) {
@@ -210,6 +265,8 @@ export default {
       this.editedUser = null;
     },
     async saveEditedUser() {
+      alert(this.editedUser)
+
       const token = sessionStorage.getItem('token');
       await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
@@ -240,6 +297,12 @@ export default {
     },
   },
 };
+function validarDominioCorreo(correo) {
+  // Expresión regular para validar los dominios especificados
+  const regex = /^[^@\s]+@(ikasle\.egibide\.org|egibide\.org)$/;
+  return regex.test(correo); // Retorna true si cumple, false si no
+}
+
 </script>
 
 <style scoped></style>

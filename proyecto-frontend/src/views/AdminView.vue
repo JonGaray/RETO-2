@@ -7,17 +7,12 @@ import AdminCampusPanel from '@/components/AdminCampusPanel.vue';
 import AdminSectionPanel from '@/components/AdminSectionPanel.vue';
 import AdminFailureTypePanel from '@/components/AdminFailureTypePanel.vue';
 import AdminMaintenancePanel from '@/components/AdminMaintenancePanel.vue';
-import { ref } from 'vue'; // Importamos ref para la reactividad
+import { ref } from 'vue';
 
-// Creamos una propiedad reactiva para controlar el componente activo
-const activePanel = ref('section'); // Valor inicial es "section", pero puedes poner "user" u otro
-
-// Función para cambiar el panel activo desde AdminPagePanel
+const activePanel = ref('section');
 const setActivePanel = (panel) => {
   activePanel.value = panel;
 };
-
-// Función para obtener el componente a renderizar dinámicamente
 function getComponent(panel) {
   switch (panel) {
     case 'user':
@@ -33,7 +28,7 @@ function getComponent(panel) {
     case 'maintenance':
       return AdminMaintenancePanel;
     default:
-      return AdminUserPanel; // Componente por defecto si no hay match
+      return AdminSectionPanel;
   }
 }
 </script>
@@ -46,11 +41,9 @@ function getComponent(panel) {
           <HeaderAdmin />
         </div>
         <div class="col-4">
-          <!-- Pasamos la función para cambiar el panel activo -->
           <AdminPagePanel @panelChange="setActivePanel" />
         </div>
         <div class="col-8">
-          <!-- Renderizado condicional basado en el valor de activePanel -->
           <component :is="getComponent(activePanel)" />
         </div>
       </div>
@@ -59,5 +52,4 @@ function getComponent(panel) {
 </template>
 
 <style scoped>
-/* Aquí podrías agregar estilos si lo deseas */
 </style>

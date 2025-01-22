@@ -23,41 +23,31 @@ class MachineMaintenanceController extends Controller
             ->join('maintenances', 'machinesmaintenances.maintenances_id', '=', 'maintenances.id')
             ->get();
         ;
-        //dd($machinemaintenance);
         return response()->json($machinemaintenance);
     }
 
     public function create(Request $request)
     {
-        // Valida los datos de la asociación
         $validator = Validator::make($request->all(), [
             'machines_id' => 'required|exists:machines,id',
             'maintenances_id' => 'required|exists:maintenances,id',
         ]);
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-
-        // Crea la asociación
         $machineMaintenance = MachineMaintenance::create([
             'machines_id' => $request->machines_id,
             'maintenances_id' => $request->maintenances_id,
         ]);
-
-        // Obtén el nombre de la máquina
         $machine = Machine::find($request->machines_id);
-
-        // Crea la incidencia automáticamente
         Incident::create([
-            'title' => 'Mantenimiento de máquina ' . $machine->name,  // Título dinámico
+            'title' => 'Mantenimiento de máquina ' . $machine->name,
             'description' => 'Mantenimiento preventivo',
             'importance' => 'mantenimiento',
             'status' => 'nuevo',
             'machines_id' => $request->machines_id,
-            'failuretypes_id' => Failuretype::where('name', 'mantenimiento')->first()->id ?? 1,  // Ajusta según el failuretype de "mantenimiento"
+            'failuretypes_id' => Failuretype::where('name', 'mantenimiento')->first()->id ?? 1,
         ]);
-
         return response()->json([
             'message' => 'Asociación y mantenimiento creados correctamente',
             'data' => $machineMaintenance,

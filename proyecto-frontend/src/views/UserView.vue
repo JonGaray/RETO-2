@@ -1,22 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/Incident.vue';
 import UserPanel from '../components/UserPanel.vue';
 import Header from '../components/Header.vue';
 import InifniteScroll from "@/components/InifniteScroll.vue";
 
-// Variables reactivas
 const incidents = ref([]);
 const userId = ref(null);
 const currentPage = ref(1);
 const totalPages = ref(1);
-
-// Estado para el modal
 const showModal = ref(false);
 const searchQuery = ref('');
-
-// Función para obtener las incidencias
 const fetchIncidents = async (page = 1) => {
   const token = sessionStorage.getItem('token');
   try {
@@ -25,7 +19,6 @@ const fetchIncidents = async (page = 1) => {
         Authorization: `Bearer ${token}`,
       },
     });
-
     if (response.data && response.data.data) {
       incidents.value = response.data.data;
       totalPages.value = response.data.last_page;
@@ -38,20 +31,14 @@ const fetchIncidents = async (page = 1) => {
     console.error('Error al obtener las incidencias:', error);
   }
 };
-
-// Escuchar el evento para abrir el modal
 const handleNewIncident = () => {
   console.log('Modal abierto:', showModal.value);
   showModal.value = true;
   console.log('Modal después de abrir:', showModal.value);
 };
-
-// Cerrar el modal
 const closeModal = () => {
   showModal.value = false;
 };
-
-// Llamar a fetchIncidents al montar el componente
 onMounted(() => {
   fetchIncidents();
 });
@@ -59,12 +46,10 @@ onMounted(() => {
 </script>
 
 <template>
-
   <main>
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <!-- Escucha del evento personalizado -->
           <Header @new-incident="handleNewIncident" />
         </div>
         <div class="col-4">
@@ -75,15 +60,9 @@ onMounted(() => {
 
 
             <InifniteScroll/>
-
-
-          <!-- Controles de paginación -->
-
         </div>
       </div>
     </div>
-
-    <!-- Modal de creación de nueva incidencia -->
     <div v-if="showModal" class="modal-backdrop">
       <div class="modal show">
         <h2>Nueva Incidencia</h2>
@@ -94,5 +73,4 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
 </style>

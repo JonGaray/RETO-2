@@ -85,30 +85,22 @@ class MachineController extends Controller
     public function getBySection(Request $request)
     {
         try {
-            // Obtener el parámetro 'section_id' de la solicitud
             $sectionId = $request->input('sections_id');
-            // Verificar si section_id es válido
             if (!$sectionId) {
                 return response()->json(['error' => 'sections_id es requerido'], 400);
             }
-            // Buscar las máquinas asociadas a la sección
             $machines = Machine::where('sections_id', $sectionId)->get();
-            // Verificar si se encontraron máquinas
             if ($machines->isEmpty()) {
                 return response()->json(['error' => 'No se encontraron máquinas para esta sección'], 404);
             }
-            // Retornar las máquinas en formato JSON
             return response()->json(['data' => $machines], 200);
         } catch (\Exception $e) {
-            // En caso de error, capturar la excepción y retornar un error interno del servidor
             return response()->json(['error' => 'Error al obtener las máquinas', 'message' => $e->getMessage()], 500);
         }
     }
     public function searchByName(Request $request){
         $query = $request->input('query');
-
         $machines = Machine::where('name', 'like', "%{$query}%")->get();
-
         return response()->json($machines);
     }
 }

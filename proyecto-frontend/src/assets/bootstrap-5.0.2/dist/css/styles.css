@@ -250,7 +250,7 @@
   padding: 20px;
   border-radius: 10px;
   width: 500px;
-  display: block; /* Cambiar de display: none a display: block */
+  display: block;
 }
 
 .modal.show {
@@ -326,11 +326,11 @@ button:disabled {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* Asegúrate de que esté por debajo del modal */
+  z-index: 1050;
 }
 
 .modal {
@@ -338,8 +338,8 @@ button:disabled {
   padding: 20px;
   border-radius: 10px;
   width: 500px;
-  z-index: 1060; /* Asegúrate de que esté por encima del backdrop */
-  display: block; /* Asegúrate de que el modal se muestre */
+  z-index: 1060;
+  display: block;
 }
 
 .modal.show {
@@ -379,11 +379,54 @@ button:disabled {
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none; /* El icono no debe interferir con la interacción del usuario */
+  pointer-events: none;
 }
 
 select.form-control {
-  padding-right: 30px; /* Espacio para el icono */
+  padding-right: 30px;
+}
+
+.infinite-scroll-container {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 1rem;
+}
+
+.no-more-items {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: gray;
+}
+
+.infinite-scroll-container {
+  height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #800080 #e0e0e0; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar {
+  width: 8px; 
+  height: 8px; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #800080; 
+  border-radius: 10px; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: #9a009a; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar-track {
+  background: #e0e0e0; 
+  border-radius: 10px; 
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -103,21 +103,13 @@ watch(searchQuery, () => {
   clearTimeout(debounceTimeout);
   debounceTimeout = setTimeout(handleSearch, 300); // 300ms de espera antes de buscar
 });
-
-// Escuchar el evento para abrir el modal
 const handleNewIncident = () => {
   showModal.value = true;
 };
-
-// Estado del modal
 const showModal = ref(false);
-
-// Cerrar el modal
 const closeModal = () => {
   showModal.value = false;
 };
-
-// Llamar a fetchIncidents al montar el componente
 onMounted(() => {
   fetchIncidents();
 });
@@ -169,13 +161,9 @@ const resetInfiniteScroll = async () => {
                 :failure_type_name="incident.failure_type_name"
             />
           </div>
-
-          <!-- Mostrar spinner mientras se cargan más incidencias -->
           <div v-if="loading" class="loading-spinner">
             Cargando más incidencias...
           </div>
-
-          <!-- Mostrar mensaje si no hay más incidencias -->
           <div v-if="!hasMore && !loading" class="no-more-items">
             No hay más incidencias para mostrar.
           </div>
@@ -192,54 +180,4 @@ const resetInfiniteScroll = async () => {
 </template>
 
 <style scoped>
-.infinite-scroll-container {
-  height: 80vh;
-  overflow-y: auto;
-}
-
-.loading-spinner {
-  text-align: center;
-  padding: 1rem;
-}
-
-.no-more-items {
-  text-align: center;
-  padding: 1rem;
-  font-style: italic;
-  color: gray;
-}
-
-
-
-.infinite-scroll-container {
-  height: 80vh;
-  overflow-y: auto;
-
-  /* Firefox scrollbar styling */
-  scrollbar-width: thin; /* Barra delgada */
-  scrollbar-color: #800080 #e0e0e0; /* Morado para el deslizador y gris claro para el fondo */
-}
-
-.infinite-scroll-container::-webkit-scrollbar {
-  width: 8px; /* Ancho de la barra */
-  height: 8px; /* Altura de la barra horizontal, si aplica */
-}
-
-.infinite-scroll-container::-webkit-scrollbar-thumb {
-  background-color: #800080; /* Color del deslizador (morado) */
-  border-radius: 10px; /* Bordes redondeados */
-}
-
-.infinite-scroll-container::-webkit-scrollbar-thumb:hover {
-  background-color: #9a009a; /* Color más claro al pasar el cursor */
-}
-
-.infinite-scroll-container::-webkit-scrollbar-track {
-  background: #e0e0e0; /* Fondo de la barra (gris claro) */
-  border-radius: 10px; /* Bordes redondeados */
-}
-
-
-
 </style>
-
