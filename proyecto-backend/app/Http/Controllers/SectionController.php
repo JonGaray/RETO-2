@@ -21,7 +21,8 @@ class SectionController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'status' => 'required|in:habilitado,deshabilitado',
-            'campus_id' => 'required|exists:campuses,id'
+            'campus_id' => 'required|exists:campuses,id',
+            'niu' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -30,9 +31,10 @@ class SectionController extends Controller
             'name' => $request->name,
             'status' => $request->status,
             'campus_id' => $request->campus_id,
+            'niu' => $request->niu,
         ]);
         return response()->json([
-            'message' => "Seccion registrada correctamente",
+            'message' => "Sección registrada correctamente",
             'section' => $section,
         ]);
     }
@@ -41,21 +43,24 @@ class SectionController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'status' => 'required|in:habilitado,deshabilitado',
-            'campus_id' => 'required|exists:campuses,id'
+            'campus_id' => 'required|exists:campuses,id',
+            'niu' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
         $section = Section::find($id);
         if (!$section) {
-            return response()->json(['message' => 'Seccion no encontrada'], 404);
+            return response()->json(['message' => 'Sección no encontrada'], 404);
         }
         $section->name = $request->name;
         $section->status = $request->status;
         $section->campus_id = $request->campus_id;
+        $section->niu = $request->niu;
         $section->save();
+
         return response()->json([
-            'message' => 'Seccion actualizada correctamente',
+            'message' => 'Sección actualizada correctamente',
             'section' => $section,
         ]);
     }
