@@ -175,6 +175,30 @@ export default {
       try {
         const token = sessionStorage.getItem('token');
         const email = this.newUser.email.trim();
+        if (this.newUser.name.trim().length > 255) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Exceso de caracteres',
+            text: 'El nombre no puede superar los 255 caracteres',
+          });
+          return;
+        }
+        if (this.newUser.username1.trim().length > 255) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Exceso de caracteres',
+            text: 'El primer apellido no puede superar los 255 caracteres',
+          });
+          return;
+        }
+        if (this.newUser.username2.trim().length > 255) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Exceso de caracteres',
+            text: 'El segundo apellido no puede superar los 255 caracteres',
+          });
+          return;
+        }
         if (!validarDominioCorreo(email)) {
           Swal.fire({
             icon: 'error',
@@ -202,31 +226,7 @@ export default {
         );
         this.users.push(response.data);
         this.closeModal();
-        Swal.fire({
-          icon: 'success',
-          title: 'Usuario creado',
-          text: 'El usuario se ha registrado exitosamente.',
-        });
       } catch (error) {
-        if (error.response) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error.response.data.message || 'Ha ocurrido un error al crear el usuario.',
-          });
-        } else if (error.request) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error de red',
-            text: 'No se pudo conectar con el servidor. Por favor, intente más tarde.',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Ha ocurrido un error inesperado. Por favor, intente más tarde.',
-          });
-        }
       }
     },
     openEditUserModal(user) {
@@ -243,6 +243,38 @@ export default {
     async saveEditedUser() {
       alert(this.editedUser)
       const token = sessionStorage.getItem('token');
+      if (this.newUser.name.trim().length > 255) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Exceso de caracteres',
+            text: 'El nombre no puede superar los 255 caracteres',
+          });
+          return;
+        }
+        if (this.newUser.username1.trim().length > 255) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Exceso de caracteres',
+            text: 'El primer apellido no puede superar los 255 caracteres',
+          });
+          return;
+        }
+        if (this.newUser.username2.trim().length > 255) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Exceso de caracteres',
+            text: 'El segundo apellido no puede superar los 255 caracteres',
+          });
+          return;
+        }
+        if (!validarDominioCorreo(email)) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Correo inválido',
+            text: 'El correo debe tener el dominio @ikasle.egibide.org o @egibide.org',
+          });
+          return;
+        }
       await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
           Authorization: `Bearer ${token}`,

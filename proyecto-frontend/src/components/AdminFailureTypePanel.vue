@@ -46,6 +46,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     data() {
@@ -80,6 +81,14 @@ export default {
             const failuretypeData = {
                 name: this.newFailuretypeName,
             };
+            if (failuretypeData.name.trim().length > 255) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El nombre no puede superar los 255 caracteres',
+                });
+                return;
+            }
             axios.post('http://127.0.0.1:8000/api/auth/failuretypes/create', failuretypeData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -104,6 +113,14 @@ export default {
             const failuretypeData = {
                 name: this.editedFailuretypeName,
             };
+            if (failuretypeData.name.trim().length > 255) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El nombre no puede superar los 255 caracteres',
+                });
+                return;
+            }
             axios.put(`http://127.0.0.1:8000/api/auth/failuretypes/${this.editFailuretypeObj.id}/edit`, failuretypeData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -131,5 +148,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
