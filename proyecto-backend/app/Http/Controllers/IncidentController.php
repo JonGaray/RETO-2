@@ -97,6 +97,146 @@ class IncidentController extends Controller
         $incidentCount = Incident::whereDate('end_date', Carbon::today())->count();
         return response()->json(['count' => $incidentCount]);
     }
+    public function getImportance($importance)
+    {
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->where('incidents.importance', $importance)
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+            ->orderBy('machines.priority', 'asc')
+            ->paginate(3);
+
+        return response()->json($incidents);
+    }
+
+    public function getFailureType($failureType)
+    {
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->where('incidents.failuretypes_id', $failureType)
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'parada' THEN 1
+                WHEN incidents.importance = 'averia' THEN 2
+                WHEN incidents.importance = 'aviso' THEN 3
+                ELSE 5
+            END
+        ")
+            ->orderBy('machines.priority', 'asc')
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'mantenimiento' THEN 1
+                ELSE 2
+            END
+        ")
+            ->paginate(3);
+
+        return response()->json($incidents);
+    }
+
+    public function getSection($section)
+    {
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->join('sections', 'machines.sections_id', '=', 'sections.id')
+            ->where('sections.id', $section)
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'parada' THEN 1
+                WHEN incidents.importance = 'averia' THEN 2
+                WHEN incidents.importance = 'aviso' THEN 3
+                ELSE 5
+            END
+        ")
+            ->orderBy('machines.priority', 'asc')
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'mantenimiento' THEN 1
+                ELSE 2
+            END
+        ")
+            ->paginate(3);
+
+        return response()->json($incidents);
+    }
+
+    public function getCampus($campus)
+    {
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->join('sections', 'machines.sections_id', '=', 'sections.id')
+            ->where('sections.campus_id', $campus)
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'parada' THEN 1
+                WHEN incidents.importance = 'averia' THEN 2
+                WHEN incidents.importance = 'aviso' THEN 3
+                ELSE 5
+            END
+        ")
+            ->orderBy('machines.priority', 'asc')
+            ->orderByRaw("
+            CASE
+                WHEN incidents.importance = 'mantenimiento' THEN 1
+                ELSE 2
+            END
+        ")
+            ->paginate(3);
+
+        return response()->json($incidents);
+    }
+
     public function acceptIncident($id)
     {
         $incident = Incident::findOrFail($id);
