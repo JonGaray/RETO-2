@@ -1,4 +1,5 @@
 <template>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <div class="d-flex justify-content-between align-items-center">
     <h1 class="text-egibide">Sistema de Incidencias</h1>
     <div class="d-flex">
