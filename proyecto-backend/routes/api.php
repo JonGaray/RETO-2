@@ -30,6 +30,7 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function()
     Route::post('/incidents/{id}/join','joinIncident')->middleware('auth:api');
     Route::post('/incidents/{id}/finish','finishIncident')->middleware('auth:api');
     Route::post('/incidents/store','store')->middleware('auth:api');
+    Route::get('incidents/search', 'searchByName')->middleware('auth:api');
 });
 
 Route::controller(MachineController::class)->prefix('auth')->group(function (){
@@ -72,4 +73,3 @@ Route::controller(FailuretypeController::class)->prefix('auth')->group(function 
     Route::post('failuretypes/create', 'create')->middleware('auth:api');
     Route::put('failuretypes/{id}/edit', 'edit')->middleware('auth:api');
 });
-
