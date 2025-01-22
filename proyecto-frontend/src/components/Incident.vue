@@ -1,4 +1,5 @@
 <template>
+
     <div class="card shadow-sm mb-3" style="border-radius: 15px;">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
@@ -11,7 +12,6 @@
                         <li class="badge-initcap"><strong>Maquina:</strong> {{ machine_name }}</li>
                     </ul>
                 </div>
-                <!-- Badge con clases dinámicas para el color -->
                 <span :class="badgeClass" class="badge p-2 fs-6 badge-initcap">{{ status }}</span>
             </div>
             <div class="d-flex justify-content-end">
@@ -27,15 +27,14 @@ export default {
         title: String,
         description: String,
         category: String,
-        type: [String, Number], // Acepta tanto String como Number
-        machines_id: [String, Number], // Acepta tanto String como Number
+        type: [String, Number],
+        machines_id: [String, Number],
         status: String,
         date: String,
         machine_name: String,
         failure_type_name: String,
     },
     computed: {
-        // Computed property para determinar la clase del badge
         badgeClass() {
             if (this.status === 'nuevo') {
                 return 'bg-danger';
@@ -44,16 +43,14 @@ export default {
             } else if (this.status === 'terminado') {
                 return 'bg-success';
             }
-            return 'bg-secondary'; // Por defecto, si no hay estado conocido
+            return 'bg-secondary';
         }
     },
     methods: {
         formattedDate(date) {
-            if (!date) return 'Fecha no disponible'; // Si no hay fecha, mostrar un texto alternativo
-            // Asegurarse de que el formato esté en un formato compatible
-            const fixedDate = date.replace(' ', 'T'); // Cambia el espacio por 'T' para que sea compatible con ISO
+            if (!date) return 'Fecha no disponible';
+            const fixedDate = date.replace(' ', 'T');
             const parsedDate = new Date(fixedDate);
-            // Verificar si la fecha es válida
             return isNaN(parsedDate.getTime()) ? 'Fecha no disponible' : parsedDate.toLocaleDateString();
         }
     }
@@ -61,13 +58,4 @@ export default {
 </script>
 
 <style scoped>
-.card {
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/* Aplicar InitCap al texto dentro del badge */
-.badge-initcap {
-    text-transform: capitalize; /* Convierte la primera letra de cada palabra a mayúscula */
-}
 </style>

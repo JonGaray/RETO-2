@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .foto-perfil-usu {
   width: 25%;
   height: 25%;
@@ -11,8 +12,421 @@
 .boton-perfil-usu {
   width: 30%;
   margin: 0 auto;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  z-index: 1060;
   display: block;
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+}
+
+.switch input {
+  display: none;
+}
+
+.switch span {
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.switch span::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.3s;
+}
+
+.switch input:checked + span {
+  background-color: #790253;
+}
+
+.switch input:checked + span::before {
+  transform: translateX(20px);
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  z-index: 1060;
+  display: block;
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+}
+
+.switch input {
+  display: none;
+}
+
+.switch span {
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.switch span::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.3s;
+}
+
+.switch input:checked + span {
+  background-color: #790253;
+}
+
+.switch input:checked + span::before {
+  transform: translateX(20px);
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  z-index: 1060;
+  display: block;
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+}
+
+.switch input {
+  display: none;
+}
+
+.switch span {
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.switch span::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.3s;
+}
+
+.switch input:checked + span {
+  background-color: #790253;
+}
+
+.switch input:checked + span::before {
+  transform: translateX(20px);
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+}
+
+.switch input {
+  display: none;
+}
+
+.switch span {
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.switch span::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.3s;
+}
+
+.switch input:checked + span {
+  background-color: #790253;
+}
+
+.switch input:checked + span::before {
+  transform: translateX(20px);
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  display: block;
+}
+
+.modal.show {
+  display: block !important;
+  opacity: 1;
+  z-index: 1060;
+}
+
+.card {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.badge-initcap {
+  text-transform: capitalize;
+}
+
+.card {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.badge-initcap {
+  text-transform: capitalize;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+button:disabled {
+  background-color: #dcdcdc;
+  cursor: not-allowed;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+button:disabled {
+  background-color: #dcdcdc;
+  cursor: not-allowed;
+}
+
+@media (min-width: 1024px) {
+  .about {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+}
+.container {
+  margin-top: 20px;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  z-index: 1060;
+  display: block;
+}
+
+.modal.show {
+  display: block !important;
+  opacity: 1;
+  z-index: 1060;
+}
+
+.pencil {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.activated {
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
+}
+
+.desactivated {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.dropdown-wrapper {
+  position: relative;
+}
+
+.dropdown-icon-container {
+  position: relative;
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+select.form-control {
+  padding-right: 30px;
+}
+
+.infinite-scroll-container {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.loading-spinner {
   text-align: center;
+  padding: 1rem;
+}
+
+.no-more-items {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: gray;
+}
+
+.infinite-scroll-container {
+  height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #800080 #e0e0e0; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar {
+  width: 8px; 
+  height: 8px; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #800080; 
+  border-radius: 10px; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: #9a009a; 
+}
+
+.infinite-scroll-container::-webkit-scrollbar-track {
+  background: #e0e0e0; 
+  border-radius: 10px; 
 }
 
 /*# sourceMappingURL=styles.css.map */

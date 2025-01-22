@@ -1,10 +1,11 @@
 <script setup>
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/IncidentTecnico.vue'; // Importa el componente IncidentCard
-import TecnicoPanel from '../components/TecnicoPanel.vue'; // Importa el componente TecnicoPanel
-import Header from '../components/Header.vue'; // Importa el componente Header
+import IncidentCard from '../components/IncidentTecnico.vue';
+import TecnicoPanel from '../components/TecnicoPanel.vue';
+import Header from '../components/Header.vue';
 
+<<<<<<< HEAD
 // Variables reactivas
 const incidents = ref([]); // Inicializa la lista de incidencias
 const userId = ref(null); // Inicializa userId con null
@@ -50,6 +51,30 @@ const fetchIncidents = async (filterType, page = 1) => {
           Authorization: `Bearer ${token}`,
         },
       });
+=======
+const incidents = ref([]);
+const userId = ref(null);
+const currentPage = ref(1);
+const totalPages = ref(1);
+const fetchIncidents = async (page = 1) => {
+    const token = sessionStorage.getItem('token');
+    try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/getall?page=${page}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+            incidents.value = response.data.data;
+            totalPages.value = response.data.last_page;
+            currentPage.value = page;
+        } else {
+            console.error('No se encontraron incidencias');
+            incidents.value = [];
+        }
+    } catch (error) {
+        console.error('Error al obtener las incidencias:', error);
+>>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
     }
 
     // Verificar si la respuesta tiene la propiedad 'data' y asignarla correctamente
@@ -65,10 +90,12 @@ const fetchIncidents = async (filterType, page = 1) => {
     console.error('Error al obtener las incidencias:', error);
   }
 };
-
-// Llamar a fetchIncidents al cargar el componente
 onMounted(() => {
+<<<<<<< HEAD
   fetchIncidents('default'); // Llamada por defecto sin filtro
+=======
+    fetchIncidents();
+>>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
 });
 
 // Método para recibir el evento desde el componente hijo
@@ -95,11 +122,55 @@ const onFiltersChanged = (filters) => {
 </script>
 
 <template>
+<<<<<<< HEAD
   <main>
     <div class="container">
       <div class="row">
         <div class="col-12">
           <Header/>
+=======
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <Header />
+                </div>
+                <div class="col-4">
+                    <TecnicoPanel :id="userId" />
+                </div>
+                <div class="col-8">
+                    <div v-for="incident in incidents" :key="incident.id">
+                        <IncidentCard 
+                            :title="incident.title" 
+                            :description="incident.description"
+                            :category="incident.importance" 
+                            :type="String(incident.failuretypes_id)" 
+                            :machines_id="String(incident.machines_id)" 
+                            :status="incident.status"
+                            :register_date="incident.created_at" 
+                            :machine_name="incident.machine_name"
+                            :failure_type_name="incident.failure_type_name" 
+                            :incidents_id="incident.id" 
+                        />
+                    </div>
+                    <div class="d-flex justify-content-evenly mt-1">
+                        <button 
+                            class="btn btn-egibide" 
+                            :disabled="currentPage === 1"
+                            @click="fetchIncidents(currentPage - 1)">
+                            Anterior
+                        </button>
+                        <span>Pagina {{ currentPage }} de {{ totalPages }}</span>
+                        <button 
+                            class="btn btn-egibide" 
+                            :disabled="currentPage === totalPages"
+                            @click="fetchIncidents(currentPage + 1)">
+                            Siguiente
+                        </button>
+                    </div>
+                </div>
+            </div>
+>>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
         </div>
         <div class="col-4">
           <!-- Se renderiza el componente TecnicoPanel solo si userId tiene valor -->
@@ -145,7 +216,10 @@ const onFiltersChanged = (filters) => {
 </template>
 
 <style scoped>
+<<<<<<< HEAD
 .container {
   margin-top: 20px;
 }
+=======
+>>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
 </style>

@@ -78,4 +78,20 @@ class SectionController extends Controller
             'section' => $section,
         ]);
     }
+    public function getSections(){
+        $sections = Section::all();
+        return response()->json($sections);
+    }
+    public function getSectionsByCampus($campusId)
+    {
+        $sections = Section::where('campus_id', $campusId)->get();
+        return response()->json($sections);
+    }
+    public function searchByName(Request $request){
+        $query = $request->input('query');
+
+        $sections = Section::where('name', 'like', "%{$query}%")->get();
+
+        return response()->json($sections);
+    }
 }

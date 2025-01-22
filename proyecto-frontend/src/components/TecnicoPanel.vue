@@ -56,6 +56,7 @@
 import axios from "axios";
 
 export default {
+<<<<<<< HEAD
   data() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     return {
@@ -138,6 +139,45 @@ export default {
           });
     } else {
       console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
+=======
+    data() {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        return {
+            userName: user ? user.name : '',
+            incidentsCount: 0,
+            solvedtoday: 0,
+        };
+    },
+    created() {
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            const userId = this.$route.params.id;
+            axios.get(`http://127.0.0.1:8000/api/auth/incidents/activeincidents`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+                .then(response => {
+                    this.incidentsCount = response.data.count;
+                })
+                .catch(error => {
+                    console.error("Error al obtener el número de incidencias:", error);
+                });
+                axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+                .then(response => {
+                    this.solvedtoday = response.data.count;
+                })
+                .catch(error => {
+                    console.error("Error al obtener el número de incidencias:", error);
+                });
+        } else {
+            console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
+        }
+>>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
     }
   },
   methods: {
@@ -183,5 +223,9 @@ export default {
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 /* Aquí puedes añadir tus estilos */
 </style>
+=======
+</style>
+>>>>>>> aea5f593080d4b15d530ddebd1ab37891d8dce10
