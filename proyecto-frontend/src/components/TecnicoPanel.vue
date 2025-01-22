@@ -19,9 +19,6 @@
     <div class="w-100"></div>
     <div class="card mt-5 p-3">
       <h4 class="text-center mb-4">Filtrar Incidencias</h4>
-      <p class="text-muted text-center mb-4">
-        Este es el lugar desde el cual el técnico puede filtrar las incidencias.
-      </p>
       <label class="mt-3">Campus</label>
       <select class="form-control text-center" v-model="selectedCampus" @change="onFilterChange('campus')">
         <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
