@@ -16,7 +16,7 @@ Route::controller(AuthController::class)->prefix('auth')->group(function()
     Route::post('login', 'login');
     Route::get('/users', 'index')->middleware('auth:api');
     Route::put('/users/{id}/status', 'updateStatus')->middleware('auth:api');
-    Route::put('/users/create', 'create')->middleware('auth:api');
+    Route::post('/users/create', 'create')->middleware('auth:api');
     Route::put('/users/{id}/save', 'save')->middleware('auth:api');
     Route::get('/users/search', 'searchByName')->middleware('auth:api');
 });
