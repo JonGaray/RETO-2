@@ -57,7 +57,5 @@ export default {
 </script>
 
 <style scoped>
-.badge-initcap{
-  text-transform: capitalize;
-}
+
 </style>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/AdminUserPanel.vue';
+import IncidentCard from '../components/IncidentTecnico.vue';
 
 const incidents = ref([]);
 const currentPage = ref(1);
