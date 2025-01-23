@@ -25,7 +25,6 @@ class MachineMaintenanceController extends Controller
         ;
         return response()->json($machinemaintenance);
     }
-
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/IncidentTecnico.vue';
 import TecnicoPanel from '../components/TecnicoPanel.vue';
 import Header from '../components/Header.vue';
 import InfiniteScrollTecnico from "@/components/InfiniteScrollTecnico.vue";
@@ -10,29 +9,32 @@ const incidents = ref([]);
 const userId = ref(null);
 const currentPage = ref(1);
 const totalPages = ref(1);
-const fetchIncidents = async (page = 1) => {
-    const token = sessionStorage.getItem('token');
-    try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/getall?page=${page}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        if (response.data && Array.isArray(response.data.data)) {
-            incidents.value = response.data.data;
-            totalPages.value = response.data.last_page;
-            currentPage.value = page;
-        } else {
-            console.error('No se encontraron incidencias');
-            incidents.value = [];
-        }
-    } catch (error) {
-        console.error('Error al obtener las incidencias:', error);
+const selectedFilter = ref('');
+const selectedFilterType = ref('');
+
+const onFiltersChanged = (filters) => {
+    if (filters.selectedCampus !== undefined) {
+        selectedFilter.value = filters.selectedCampus;
+        selectedFilterType.value = 'campus';
+    } else if (filters.selectedSection !== undefined) {
+        selectedFilter.value = filters.selectedSection;
+        selectedFilterType.value = 'section';
+    } else if (filters.selectedFailureType !== undefined) {
+        selectedFilter.value = filters.selectedFailureType;
+        selectedFilterType.value = 'failureType';
+    } else if (filters.selectedImportance !== undefined) {
+        selectedFilter.value = filters.selectedImportance;
+        selectedFilterType.value = 'importance';
+    }
+    fetchIncidentsWithFilters();
+};
+
+const fetchIncidentsWithFilters = () => {
+    const infiniteScrollTecnico = document.querySelector('InfiniteScrollTecnico');
+    if (infiniteScrollTecnico) {
+        infiniteScrollTecnico.fetchIncidents(selectedFilterType.value, selectedFilter.value);
     }
 };
-onMounted(() => {
-    fetchIncidents();
-});
 </script>
 
 <template>
@@ -43,11 +45,10 @@ onMounted(() => {
                     <Header />
                 </div>
                 <div class="col-4">
-                    <TecnicoPanel :id="userId" />
+                    <TecnicoPanel :id="userId" @filtersChanged="onFiltersChanged" />
                 </div>
                 <div class="col-8">
-                    <InfiniteScrollTecnico/>
-
+                    <InfiniteScrollTecnico :filterType="selectedFilterType" :filterValue="selectedFilter" />
                 </div>
             </div>
         </div>
@@ -55,4 +56,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.container {
+    margin-top: 20px;
+}
 </style>

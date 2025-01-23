@@ -1,38 +1,39 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 import IncidentCard from '../components/AdminUserPanel.vue';
 
 const incidents = ref([]);
-const userId = ref(null);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const loading = ref(false);
 const hasMore = ref(true);
-const fetchIncidents = async () => {
-  if (loading.value || !hasMore.value) return;
-  const token = sessionStorage.getItem('token');
-  loading.value = true;
+const props = defineProps({
+  filterType: String,
+  filterValue: String,
+});
+const fetchIncidents = async (reset = false) => {
+  if (loading.value || !hasMore.value) return;  // Prevenir cargas duplicadas
+  loading.value = true;  // Estado de carga activo
+  const token = sessionStorage.getItem('token');  // Obtener token de sesión
   try {
-    const response = await axios.get(
-        `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-    );
-    if (response.data && response.data.data) {
-      const newIncidents = response.data.data;
-      incidents.value = [...incidents.value, ...newIncidents];
-      totalPages.value = response.data.last_page;
-      if (currentPage.value < totalPages.value) {
-        currentPage.value++;
-      } else {
-        hasMore.value = false;
-      }
+    let url = `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`;
+    if (props.filterType && props.filterValue) {
+      url = `http://127.0.0.1:8000/api/auth/incidents/${props.filterValue}/${props.filterType}?page=${currentPage.value}`;
+    }
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = response.data.data || [];
+    if (reset) {
+      incidents.value = data;
     } else {
-      hasMore.value = false;
+      incidents.value = [...incidents.value, ...data];  
+    }
+    totalPages.value = response.data.last_page || 1; 
+    hasMore.value = currentPage.value < totalPages.value; 
+    if (!reset) {
+      currentPage.value++;
     }
   } catch (error) {
     console.error('Error al obtener las incidencias:', error);
@@ -46,13 +47,15 @@ const handleScroll = (event) => {
     fetchIncidents();
   }
 };
-const handleNewIncident = () => {
-  showModal.value = true;
-};
-const showModal = ref(false);
-const closeModal = () => {
-  showModal.value = false;
-};
+watch(
+  () => [props.filterType, props.filterValue],
+  () => {
+    currentPage.value = 1;
+    hasMore.value = true;
+    incidents.value = [];
+    fetchIncidents(true);
+  }
+);
 onMounted(() => {
   fetchIncidents();
 });
@@ -61,21 +64,13 @@ onMounted(() => {
 <template>
   <main>
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
         <div class="col-12 infinite-scroll-container" @scroll="handleScroll">
           <div v-for="incident in incidents" :key="incident.id">
-            <IncidentCard
-                :title="incident.title"
-                :description="incident.description"
-                :category="incident.importance"
-                :type="String(incident.failuretypes_id)"
-                :machines_id="String(incident.machines_id)"
-                :status="incident.status"
-                :register_date="incident.created_at"
-                :machine_name="incident.machine_name"
-                :failure_type_name="incident.failure_type_name"
-                :incidents_id="incident.id"
-            />
+            <IncidentCard :title="incident.title" :description="incident.description" :category="incident.importance"
+              :type="String(incident.failuretypes_id)" :machines_id="String(incident.machines_id)"
+              :status="incident.status" :register_date="incident.created_at" :machine_name="incident.machine_name"
+              :failure_type_name="incident.failure_type_name" :incidents_id="incident.id" />
           </div>
           <div v-if="loading" class="loading-spinner">
             Cargando más incidencias...
@@ -84,12 +79,6 @@ onMounted(() => {
             No hay más incidencias para mostrar.
           </div>
         </div>
-      </div>
-    </div>
-    <div v-if="showModal" class="modal-backdrop">
-      <div class="modal show">
-        <h2>Nueva Incidencia</h2>
-        <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
       </div>
     </div>
   </main>

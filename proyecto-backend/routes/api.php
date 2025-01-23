@@ -9,30 +9,34 @@ use App\Http\Controllers\MachineMaintenanceController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UserIncidentController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(AuthController::class)->prefix('auth')->group(function()
-{
+Route::controller(AuthController::class)->prefix('auth')->group(function() {
     Route::post('login', 'login');
     Route::get('/users', 'index')->middleware('auth:api');
     Route::put('/users/{id}/status', 'updateStatus')->middleware('auth:api');
-    Route::put('/users/create', 'create')->middleware('auth:api');
+    Route::post('/users/create', 'create')->middleware('auth:api');
     Route::put('/users/{id}/save', 'save')->middleware('auth:api');
     Route::get('/users/search', 'searchByName')->middleware('auth:api');
 });
-Route::controller(IncidentController::class)->prefix('auth')->group(function()
-{
+Route::controller(IncidentController::class)->prefix('auth')->group(function() {
     Route::get('incidents/getall', 'getAllIncidents')->middleware('auth:api');
     Route::get('incidents/activeincidents','getActiveIncidents')->middleware('auth:api');
     Route::get('incidents/solvedtoday','getSolvedToday')->middleware('auth:api');
+    Route::get('incidents/{importance}/importance','getImportance')->middleware('auth:api');
+    Route::get('incidents/{failuretype}/failuretype','getFailureType')->middleware('auth:api');
+    Route::get('incidents/{section}/section','getSection')->middleware('auth:api');
+    Route::get('incidents/{campus}/campus','getCampus')->middleware('auth:api');
+    Route::post('/incidents/{id}/accept','acceptIncident')->middleware('auth:api');
+    Route::post('/incidents/{id}/join','joinIncident')->middleware('auth:api');
+    Route::post('/incidents/{id}/finish','finishIncident')->middleware('auth:api');
+    Route::post('/incidents/store','store')->middleware('auth:api');
     Route::post('/incidents/{id}/accept','acceptIncident')->middleware('auth:api');
     Route::post('/incidents/{id}/join','joinIncident')->middleware('auth:api');
     Route::post('/incidents/{id}/finish','finishIncident')->middleware('auth:api');
     Route::post('/incidents/store','store')->middleware('auth:api');
     Route::get('incidents/search', 'searchByName')->middleware('auth:api');
 });
-
 Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::get('machines','index')->middleware('auth:api');
     Route::get('machines/getsections', 'getBySection')->middleware('auth:api');

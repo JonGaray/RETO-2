@@ -59,6 +59,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     data() {
@@ -114,6 +115,13 @@ export default {
             const campusData = {
                 name: this.newCampusName,
             };
+            if (campusData.name.length > 255) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El nombre no puede superar los 255 caracteres',
+                });
+            }
             axios.post('http://127.0.0.1:8000/api/auth/campuses/create', campusData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -138,6 +146,13 @@ export default {
             const campusData = {
                 name: this.editedCampusName,
             };
+            if (campusData.name.length > 255) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El nombre no puede superar los 255 caracteres',
+                });
+            }
             axios.put(`http://127.0.0.1:8000/api/auth/campuses/${this.editCampusObj.id}/edit`, campusData, {
                 headers: {
                     Authorization: `Bearer ${token}`,

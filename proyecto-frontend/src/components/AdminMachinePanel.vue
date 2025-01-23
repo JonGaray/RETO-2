@@ -5,13 +5,8 @@
         <h4>Gestión de Maquinas</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Maquina</button>
       </div>
-          <input
-            v-model="searchQuery"
-            type="text"
-            @input="searchMachines"
-            class="form-control mb-3"
-            placeholder="Buscar por nombre de máquina"
-          />
+      <input v-model="searchQuery" type="text" @input="searchMachines" class="form-control mb-3"
+        placeholder="Buscar por nombre de máquina" />
       <ul class="list-group">
         <li v-for="(machine, index) in machines" :key="index"
           class="list-group-item d-flex justify-content-between align-items-center">
@@ -130,6 +125,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -149,7 +145,7 @@ export default {
       },
       editedMachine: null,
       selectedCampus: null,
-            searchQuery: "",
+      searchQuery: "",
     }
   },
   created() {
@@ -189,7 +185,7 @@ export default {
       });
   },
   methods: {
-      searchMachines() {
+    searchMachines() {
       const token = sessionStorage.getItem("token");
       axios
         .get("http://127.0.0.1:8000/api/auth/machines/search", {
@@ -225,7 +221,14 @@ export default {
         return;
       }
       const token = sessionStorage.getItem("token");
-      console.log(this.newMachine);
+      if (this.newMachine.name.trim().length > 255) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Exceso de caracteres',
+          text: 'El nombre no puede superar los 255 caracteres',
+        });
+        return;
+      }
       axios
         .post(
           "http://127.0.0.1:8000/api/auth/machines/create",
@@ -250,6 +253,14 @@ export default {
     },
     saveMachineEdit() {
       const token = sessionStorage.getItem("token");
+      if (this.editedMachine.name.trim().length > 255) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Exceso de caracteres',
+          text: 'El nombre no puede superar los 255 caracteres',
+        });
+        return;
+      }
       axios
         .put(`http://127.0.0.1:8000/api/auth/machines/${this.editedMachine.id}/edit`, this.editedMachine, {
           headers: {
@@ -309,5 +320,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

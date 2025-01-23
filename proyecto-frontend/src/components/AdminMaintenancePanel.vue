@@ -76,6 +76,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     data() {
@@ -143,6 +144,22 @@ export default {
                 name: this.newMaintenanceName,
                 regularity: this.newMaintenanceRegularity,
             };
+            if (maintenanceData.name.trim().length > 255) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El nombre no puede superar los 255 caracteres',
+                });
+                return;
+            }
+            if (maintenanceData.regularity.toString().length > 12) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'La regularidad no puede superar los 12 caracteres',
+                });
+                return;
+            }
             axios.post('http://127.0.0.1:8000/api/auth/maintenances/create', maintenanceData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -160,31 +177,31 @@ export default {
                 });
         },
         createAssociation() {
-    const token = sessionStorage.getItem('token');
-    const associationData = {
-        machines_id: this.selectedMachineId,
-        maintenances_id: this.selectedMaintenanceId,
-    };
-    axios.post('http://127.0.0.1:8000/api/auth/machinemaintenances/create', associationData, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+            const token = sessionStorage.getItem('token');
+            const associationData = {
+                machines_id: this.selectedMachineId,
+                maintenances_id: this.selectedMaintenanceId,
+            };
+            axios.post('http://127.0.0.1:8000/api/auth/machinemaintenances/create', associationData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then(response => {
+                    if (response.data && response.data.data) {
+                        this.machinemaintenances.push(response.data.data);
+                    } else {
+                        console.error('La respuesta no contiene la propiedad "data" con la asociación.');
+                    }
+                    this.closeModal();
+                    this.fetchMachineMaintenances();
+                    this.fetchMachines();
+                    this.fetchMaintenances();
+                })
+                .catch(error => {
+                    console.error('Error al crear la asociación:', error);
+                });
         },
-    })
-    .then(response => {
-        if (response.data && response.data.data) {
-            this.machinemaintenances.push(response.data.data);
-        } else {
-            console.error('La respuesta no contiene la propiedad "data" con la asociación.');
-        }
-        this.closeModal();
-        this.fetchMachineMaintenances();
-        this.fetchMachines();
-        this.fetchMaintenances();
-    })
-    .catch(error => {
-        console.error('Error al crear la asociación:', error);
-    });
-},
         closeModal() {
             this.showCreateMaintenanceModal = false;
             this.showCreateAssociationModal = false;
@@ -197,5 +214,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

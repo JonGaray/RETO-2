@@ -11,6 +11,7 @@
                 <li v-for="(section, index) in sections" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
+                        <strong class="me-3">{{ section.niu }}</strong>
                         <strong>{{ section.name }} </strong>
                         <span class="text-muted d-block">{{ section.status === 'habilitado' ? 'Activo' : 'Deshabilitado'
                             }}</span>
@@ -50,6 +51,8 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
+            <label class="mt-3">NIU</label>
+            <input v-model="newNiu" type="number" class="form-control" placeholder="Introduce el NIU">
             <div class="d-flex justify-content-between mt-5">
                 <button type="button" class="btn btn-egibide" @click="createSection">Crear Seccion</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
@@ -72,6 +75,8 @@
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                 </div>
             </div>
+            <label class="mt-3">NIU</label>
+            <input v-model="editedNiu" type="number" class="form-control" :placeholder="editSectionObj.niu">
             <div class="d-flex justify-content-between mt-5">
                 <button type="button" class="btn btn-egibide" @click="saveSectionEdit">Guardar</button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
@@ -82,6 +87,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
     data() {
@@ -94,6 +100,8 @@ export default {
             editedSectionName: '',
             newCampusId: null,
             editedCampusId: null,
+            newNiu: null,
+            editedNiu: null,
             editSectionObj: null,
             searchQuery: "",
         };
@@ -116,7 +124,7 @@ export default {
                     this.sections = response.data;
                 })
                 .catch((error) => {
-                    console.error("Error al buscar máquinas:", error);
+                    console.error("Error al buscar secciones:", error);
                 });
         },
         async fetchSections() {
@@ -171,8 +179,23 @@ export default {
             const sectionData = {
                 name: this.newSectionName,
                 campus_id: this.newCampusId,
+                niu: this.newNiu,
                 status: 'habilitado',
             };
+            if (sectionData.name.trim().length > 255) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El nombre no puede superar los 255 caracteres',
+                });
+            }
+            if (sectionData.niu.toString().length > 12) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El NIU no puede superar los 12 caracteres',
+                });
+            }
             axios.post('http://127.0.0.1:8000/api/auth/sections/create', sectionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -182,7 +205,6 @@ export default {
                     this.sections.push(response.data.section);
                     this.closeModal();
                     this.fetchSections();
-                    this.fetchCampuses();
                 })
                 .catch(error => {
                     console.error('Error al crear la sección:', error);
@@ -192,6 +214,7 @@ export default {
             this.editSectionObj = section;
             this.editedSectionName = section.name;
             this.editedCampusId = section.campus_id;
+            this.editedNiu = section.niu;
             this.showEditModal = true;
         },
         saveSectionEdit() {
@@ -199,8 +222,23 @@ export default {
             const sectionData = {
                 name: this.editedSectionName,
                 campus_id: this.editedCampusId,
+                niu: this.editedNiu,
                 status: 'habilitado',
             };
+            if (sectionData.name.trim().length > 255) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El nombre no puede superar los 255 caracteres',
+                });
+            }
+            if (sectionData.niu.toString().length > 12) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Exceso de caracteres',
+                    text: 'El NIU no puede superar los 12 caracteres',
+                });
+            }
             axios.put(`http://127.0.0.1:8000/api/auth/sections/${this.editSectionObj.id}/edit`, sectionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -211,10 +249,10 @@ export default {
                     if (index !== -1) {
                         this.sections[index].name = this.editedSectionName;
                         this.sections[index].campus_id = this.editedCampusId;
+                        this.sections[index].niu = this.editedNiu;
                     }
                     this.closeModal();
                     this.fetchSections();
-                    this.fetchCampuses();
                 })
                 .catch(error => {
                     console.error('Error al editar la sección:', error);
@@ -227,10 +265,11 @@ export default {
             this.editedSectionName = '';
             this.newCampusId = null;
             this.editedCampusId = null;
+            this.newNiu = null;
+            this.editedNiu = null;
         },
     },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('status')->default('habilitado');
             $table->foreignId('campus_id')->constrained()->cascadeOnDelete();
+            $table->integer('niu');
         });
     }
 
