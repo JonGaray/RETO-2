@@ -1,77 +1,77 @@
 <template>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <div class="d-flex justify-content-between align-items-center">
-    <h1 class="text-egibide">Sistema de Incidencias</h1>
-    <div class="d-flex">
-      <button class="btn btn-egibide me-5" @click="showModal = true">+ Nueva Incidencia</button>
-      <button class="btn btn-outline-egibide" @click="logout">Cerrar Sesión</button>
+  <div class="container py-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center mb-4">
+      <h1 class="text-egibide mb-3 mb-lg-0">Sistema de Incidencias</h1>
+      <div class="d-flex flex-column flex-sm-row">
+        <button class="btn btn-egibide mb-3 mb-sm-0 me-0 me-sm-3" @click="showModal = true">+ Nueva Incidencia</button>
+        <button class="btn btn-outline-egibide" @click="logout">Cerrar Sesión</button>
+      </div>
     </div>
-  </div>
-  <div v-if="showModal" class="modal-backdrop">
-    <div class="modal">
-      <h2>Nueva Incidencia</h2>
-      <form @submit.prevent="submitIncident">
-        <div class="mb-3">
-          <label for="title" class="form-label">Título</label>
-          <input type="text" id="title" v-model="newIncident.title" class="form-control" required>
-        </div>
-        <div class="mb-3">
-          <label for="description" class="form-label">Descripción</label>
-          <textarea id="description" v-model="newIncident.description" class="form-control" required></textarea>
-        </div>
-        <div class="mb-3 dropdown-wrapper">
-          <label for="campus" class="form-label">Campus</label>
-          <div class="dropdown-icon-container">
-            <select id="campus" v-model="selectedCampus" @change="fetchSections" class="form-control" required>
-              <option v-for="campus in campuses" :key="campus.id" :value="campus.id">{{ campus.name }}</option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-icon"></i>
+    <div v-if="showModal" class="modal-backdrop">
+      <div class="modal">
+        <h2>Nueva Incidencia</h2>
+        <form @submit.prevent="submitIncident">
+          <div class="mb-3">
+            <label for="title" class="form-label">Título</label>
+            <input type="text" id="title" v-model="newIncident.title" class="form-control" required>
           </div>
-        </div>
-        <div class="mb-3 dropdown-wrapper">
-          <label for="section" class="form-label">Sección</label>
-          <div class="dropdown-icon-container">
-            <select id="section" v-model="selectedSection" @change="fetchMachines" class="form-control" required>
-              <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.name }}</option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-icon"></i>
+          <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <textarea id="description" v-model="newIncident.description" class="form-control" required></textarea>
           </div>
-        </div>
-        <div class="mb-3 dropdown-wrapper">
-          <label for="importance" class="form-label">Importancia</label>
-          <div class="dropdown-icon-container">
-            <select id="importance" v-model="newIncident.importance" class="form-control" required>
-              <option value="parada">Parada</option>
-              <option value="averia">Avería</option>
-              <option value="aviso">Aviso</option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-icon"></i>
+          <div class="mb-3 dropdown-wrapper">
+            <label for="campus" class="form-label">Campus</label>
+            <div class="dropdown-icon-container">
+              <select id="campus" v-model="selectedCampus" @change="fetchSections" class="form-control" required>
+                <option v-for="campus in campuses" :key="campus.id" :value="campus.id">{{ campus.name }}</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
           </div>
-        </div>
-        <div class="mb-3 dropdown-wrapper">
-          <label for="machine" class="form-label">Máquina</label>
-          <div class="dropdown-icon-container">
-            <select id="machine" v-model="newIncident.machines_id" class="form-control" required>
-              <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}</option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-icon"></i>
+          <div class="mb-3 dropdown-wrapper">
+            <label for="section" class="form-label">Sección</label>
+            <div class="dropdown-icon-container">
+              <select id="section" v-model="selectedSection" @change="fetchMachines" class="form-control" required>
+                <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.name }}</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
           </div>
-        </div>
-        <div class="mb-3 dropdown-wrapper">
-          <label for="failuretype" class="form-label">Tipo de Avería</label>
-          <div class="dropdown-icon-container">
-            <select id="failuretype" v-model="newIncident.failuretypes_id" class="form-control" required>
-              <option v-for="failuretype in failuretypes" :key="failuretype.id" :value="failuretype.id">{{
-                failuretype.name }}</option>
-            </select>
-            <i class="fas fa-chevron-down dropdown-icon"></i>
+          <div class="mb-3 dropdown-wrapper">
+            <label for="importance" class="form-label">Importancia</label>
+            <div class="dropdown-icon-container">
+              <select id="importance" v-model="newIncident.importance" class="form-control" required>
+                <option value="parada">Parada</option>
+                <option value="averia">Avería</option>
+                <option value="aviso">Aviso</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
           </div>
-        </div>
-        <div class="mb-3 d-flex justify-content-between">
-          <button type="submit" class="btn btn-egibide">Crear Incidencia</button>
-          <button type="button" class="btn btn-secondary" @click="showModal = false">Cancelar</button>
-        </div>
-      </form>
+          <div class="mb-3 dropdown-wrapper">
+            <label for="machine" class="form-label">Máquina</label>
+            <div class="dropdown-icon-container">
+              <select id="machine" v-model="newIncident.machines_id" class="form-control" required>
+                <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
+          </div>
+          <div class="mb-3 dropdown-wrapper">
+            <label for="failuretype" class="form-label">Tipo de Avería</label>
+            <div class="dropdown-icon-container">
+              <select id="failuretype" v-model="newIncident.failuretypes_id" class="form-control" required>
+                <option v-for="failuretype in failuretypes" :key="failuretype.id" :value="failuretype.id">{{ failuretype.name }}</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
+            </div>
+          </div>
+          <div class="mb-3 d-flex justify-content-between">
+            <button type="submit" class="btn btn-egibide">Crear Incidencia</button>
+            <button type="button" class="btn btn-secondary" @click="showModal = false">Cancelar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>

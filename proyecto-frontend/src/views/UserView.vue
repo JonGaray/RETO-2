@@ -42,28 +42,42 @@ const closeModal = () => {
 onMounted(() => {
   fetchIncidents();
 });
-
 </script>
 
 <template>
-  <main>
+  <main class="py-4">
     <div class="container">
       <div class="row">
         <div class="col-12">
           <Header @new-incident="handleNewIncident" />
         </div>
-        <div class="col-4">
+        <div class="col-lg-4 col-md-6 col-sm-12">
           <UserPanel :id="userId" />
         </div>
-        <div class="col-8 justify-content-center">
+        <div class="col-lg-8 col-md-6 col-sm-12 justify-content-center">
             <InifniteScroll/>
         </div>
       </div>
     </div>
     <div v-if="showModal" class="modal-backdrop">
-      <div class="modal show">
-        <h2>Nueva Incidencia</h2>
-        <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+      <div class="modal show" tabindex="-1" style="display: block;" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Nueva Incidencia</h5>
+              <button type="button" class="close" @click="closeModal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Formulario de nueva incidencia</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+              <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>

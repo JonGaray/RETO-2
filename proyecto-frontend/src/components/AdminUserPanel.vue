@@ -1,100 +1,122 @@
 <template>
-  <div class="col-md-12 mt-5">
+  <div class="container mt-5">
     <div class="custom-card">
-      <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <h4>Gestión de Usuarios</h4>
-        <button class="btn btn-egibide" @click="showCreateModal = true">+ Nuevo Usuario</button>
+        <button class="btn btn-egibide mt-3 mt-md-0" @click="showCreateModal = true">+ Nuevo Usuario</button>
       </div>
-          <input
-            v-model="searchQuery"
-            type="text"
-            @input="searchUsers"
-            class="form-control mb-3"
-            placeholder="Buscar por nombre de usuario"
-          />
+      <input
+        v-model="searchQuery"
+        type="text"
+        @input="searchUsers"
+        class="form-control mb-3"
+        placeholder="Buscar por nombre de usuario"
+      />
       <ul class="list-group">
-        <li v-for="(user, index) in users" :key="index"
-          class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
+        <li
+          v-for="(user, index) in users"
+          :key="index"
+          class="list-group-item d-flex justify-content-between align-items-center flex-column flex-md-row"
+        >
+          <div class="text-center text-md-left">
             <strong>{{ user.name }} </strong>
             <span class="text-muted d-block badge-initcap">{{ user.role }}</span>
           </div>
-          <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center mt-3 mt-md-0">
             <label class="switch me-3">
               <div v-if="user.status === 'habilitado'">
-                <img class="activated" src="../img/boton-de-encendido.png">
+                <img class="activated" src="../img/boton-de-encendido.png" alt="Habilitado">
               </div>
               <div v-else>
-                <img class="desactivated" src="../img/interfaz.png">
+                <img class="desactivated" src="../img/interfaz.png" alt="Deshabilitado">
               </div>
               <input type="checkbox" :checked="user.status === 'habilitado'" @change="toggleStatus(user)">
               <span></span>
             </label>
-            <button class="btn btn-outline-egibide btn-sm" @click="openEditUserModal(user)"><img class="pencil"
-                src="../img/lapiz-de-cejas.png">Editar</button>
+            <button class="btn btn-outline-egibide btn-sm" @click="openEditUserModal(user)">
+              <img class="pencil" src="../img/lapiz-de-cejas.png" alt="Editar"> Editar
+            </button>
           </div>
         </li>
       </ul>
       <div v-if="showCreateModal" class="modal-backdrop">
         <div class="modal show">
           <h2>Crear Nuevo Usuario</h2>
-          <label class="mt-5">Nombre</label>
-          <input v-model="newUser.name" type="text" class="form-control" required />
-          <label class="mt-3">Correo electrónico</label>
-          <input v-model="newUser.email" type="email" class="form-control" id="mail" required />
-            <label class="mt-3">Contraseña</label>
-          <input v-model="newUser.password" type="text" class="form-control" required />
-          <label class="mt-3">Primer apellido</label>
-          <input v-model="newUser.username1" type="text" class="form-control" required />
-          <label class="mt-3">Segundo apellido</label>
-          <input v-model="newUser.username2" type="text" class="form-control" required />
-          <div class="mb-3 dropdown-wrapper">
-            <label for="roleSelect" class="mt-2">Rol</label>
-            <div class="dropdown-icon-container">
-              <select id="roleSelect" v-model="newUser.role" class="form-control mt-1" required>
-                <option value="user">User</option>
-                <option value="tecnico">Técnico</option>
-                <option value="admin">Admin</option>
-              </select>
-              <i class="fas fa-chevron-down dropdown-icon"></i>
+          <form @submit.prevent="createUser">
+            <div class="form-group">
+              <label class="mt-3">Nombre</label>
+              <input v-model="newUser.name" type="text" class="form-control" required />
             </div>
-          </div>
-          <div class="d-flex justify-content-between mt-5">
-            <button class="btn btn-egibide" @click="createUser">Crear Usuario</button>
-            <button class="btn btn-secondary" @click="closeModal">Cancelar</button>
-          </div>
+            <div class="form-group">
+              <label class="mt-3">Correo electrónico</label>
+              <input v-model="newUser.email" type="email" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="mt-3">Contraseña</label>
+              <input v-model="newUser.password" type="text" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="mt-3">Primer apellido</label>
+              <input v-model="newUser.username1" type="text" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="mt-3">Segundo apellido</label>
+              <input v-model="newUser.username2" type="text" class="form-control" required />
+            </div>
+            <div class="mb-3 dropdown-wrapper">
+              <label class="mt-3">Rol</label>
+              <div class="dropdown-icon-container">
+                <select v-model="newUser.role" class="form-control" required>
+                  <option value="user">User</option>
+                  <option value="tecnico">Técnico</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-egibide" type="submit">Crear Usuario</button>
+              <button class="btn btn-secondary" @click="closeModal">Cancelar</button>
+            </div>
+          </form>
         </div>
       </div>
       <div v-if="showEditUserModal" class="modal-backdrop">
         <div class="modal show">
           <h2>Editar Usuario</h2>
-          <label class="mt-5">Nombre</label>
-          <input required v-model="editedUser.name" type="text" class="form-control mt-3"
-            placeholder="Nombre del usuario" />
-            <label class="mt-5">Correo electrónico</label>
-          <input required id="emailEdit" v-model="editedUser.email" type="email" class="form-control mt-1"
-            placeholder="Correo electrónico" />
-            <label class="mt-5">Primer apellido</label>
-          <input required id="username1Edit" v-model="editedUser.username1" type="text" class="form-control mt-1"
-            placeholder="Username 1" />
-            <label class="mt-5">Segundo apellido</label>
-          <input required id="username2Edit" v-model="editedUser.username2" type="text" class="form-control mt-1"
-            placeholder="Username 2" />
-            <div class="mb-3 dropdown-wrapper">
-          <label for="roleEdit" class="mt-2">Rol</label>
-          <div class="dropdown-icon-container">
-          <select required id="roleEdit" v-model="editedUser.role" class="form-control mt-1">
-            <option value="user">Usuario</option>
-            <option value="tecnico">Técnico</option>
-            <option value="admin">Administrador</option>
-          </select>
-          <i class="fas fa-chevron-down dropdown-icon"></i>
+          <form @submit.prevent="saveEditedUser">
+            <div class="form-group">
+              <label class="mt-3">Nombre</label>
+              <input v-model="editedUser.name" type="text" class="form-control" required />
             </div>
-          </div>
-          <div class="d-flex justify-content-between mt-5">
-            <button type="button" class="btn btn-egibide" @click="saveEditedUser">Guardar</button>
-            <button type="button" class="btn btn-secondary" @click="closeEditUserModal">Cancelar</button>
-          </div>
+            <div class="form-group">
+              <label class="mt-3">Correo electrónico</label>
+              <input v-model="editedUser.email" type="email" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="mt-3">Primer apellido</label>
+              <input v-model="editedUser.username1" type="text" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="mt-3">Segundo apellido</label>
+              <input v-model="editedUser.username2" type="text" class="form-control" required />
+            </div>
+            <div class="mb-3 dropdown-wrapper">
+              <label class="mt-3">Rol</label>
+              <div class="dropdown-icon-container">
+                <select v-model="editedUser.role" class="form-control" required>
+                  <option value="user">User</option>
+                  <option value="tecnico">Técnico</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <i class="fas fa-chevron-down dropdown-icon"></i>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-egibide">Guardar</button>
+              <button type="button" class="btn btn-secondary" @click="closeEditUserModal">Cancelar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
