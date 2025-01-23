@@ -152,9 +152,18 @@ methods: {
     }
     this.$emit("filtersChanged", updatedFilter);
   },
-  async resetFilter(){
-    window.location.reload();
-  }
+  resetFilter() {
+  this.selectedCampus = null;
+  this.selectedSection = null;
+  this.selectedFailureType = null;
+  this.selectedImportance = null;
+  this.$emit("filtersChanged", {
+    selectedCampus: null,
+    selectedSection: null,
+    selectedFailureType: null,
+    selectedImportance: null
+  });
+}
 },
 };
 </script>

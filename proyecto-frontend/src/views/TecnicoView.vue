@@ -21,7 +21,7 @@ const onFiltersChanged = (filters) => {
         selectedFilterType.value = 'section';
     } else if (filters.selectedFailureType !== undefined) {
         selectedFilter.value = filters.selectedFailureType;
-        selectedFilterType.value = 'failureType';
+        selectedFilterType.value = 'failuretype';
     } else if (filters.selectedImportance !== undefined) {
         selectedFilter.value = filters.selectedImportance;
         selectedFilterType.value = 'importance';
