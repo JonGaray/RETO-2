@@ -35,15 +35,15 @@ function getComponent(panel) {
 
 <template>
   <main>
-    <div class="container">
+    <div class="container py-4">
       <div class="row">
         <div class="col-12">
           <HeaderAdmin />
         </div>
-        <div class="col-4">
+        <div class="col-lg-4 col-md-6 col-sm-12">
           <AdminPagePanel @panelChange="setActivePanel" />
         </div>
-        <div class="col-8">
+        <div class="col-lg-8 col-md-6 col-sm-12">
           <component :is="getComponent(activePanel)" />
         </div>
       </div>
