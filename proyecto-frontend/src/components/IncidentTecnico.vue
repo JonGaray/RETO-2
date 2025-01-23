@@ -65,8 +65,8 @@ export default {
             axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/accept`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
-                alert('Incidencia aceptada');
                 this.$emit('refresh');
+                window.location.reload();
             }).catch(error => {
                 console.error('Error al aceptar la incidencia:', error);
             });
@@ -77,7 +77,7 @@ export default {
             axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/join`, { users_id: user.id }, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
-                alert('Te has apuntado a la incidencia');
+                window.location.reload();
             }).catch(error => {
                 console.error('Error al apuntarse a la incidencia:', error);
             });
@@ -87,8 +87,8 @@ export default {
             axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/finish`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
-                alert('Incidencia finalizada');
                 this.$emit('refresh');
+                window.location.reload();
             }).catch(error => {
                 console.error('Error al finalizar la incidencia:', error);
             });
