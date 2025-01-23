@@ -5,17 +5,17 @@
         <h4>Gestión de Usuarios</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nuevo Usuario</button>
       </div>
-          <!-- Barra de busqueda -->
-          <input
-            v-model="searchQuery"
-            type="text"
-            @input="searchUsers"
-            class="form-control mb-3"
-            placeholder="Buscar por nombre de usuario"
-          />
+      <!-- Barra de busqueda -->
+      <input
+          v-model="searchQuery"
+          type="text"
+          @input="searchUsers"
+          class="form-control mb-3"
+          placeholder="Buscar por nombre de usuario"
+      />
       <ul class="list-group">
         <li v-for="(user, index) in users" :key="index"
-          class="list-group-item d-flex justify-content-between align-items-center">
+            class="list-group-item d-flex justify-content-between align-items-center">
           <div>
             <strong>{{ user.name }} </strong>
             <span class="text-muted d-block badge-initcap">{{ user.role }}</span>
@@ -32,7 +32,7 @@
               <span></span>
             </label>
             <button class="btn btn-outline-egibide btn-sm" @click="openEditUserModal(user)"><img class="pencil"
-                src="../img/lapiz-de-cejas.png">Editar</button>
+                                                                                                 src="../img/lapiz-de-cejas.png">Editar</button>
           </div>
         </li>
       </ul>
@@ -45,7 +45,7 @@
           <input v-model="newUser.name" type="text" class="form-control" required />
           <label class="mt-3">Correo electrónico</label>
           <input v-model="newUser.email" type="email" class="form-control" id="mail" required />
-            <label class="mt-3">Contraseña</label>
+          <label class="mt-3">Contraseña</label>
           <input v-model="newUser.password" type="text" class="form-control" required />
           <label class="mt-3">Primer apellido</label>
           <input v-model="newUser.username1" type="text" class="form-control" required />
@@ -77,25 +77,25 @@
           <h2>Editar Usuario</h2>
           <label class="mt-5">Nombre</label>
           <input required v-model="editedUser.name" type="text" class="form-control mt-3"
-            placeholder="Nombre del usuario" />
-            <label class="mt-5">Correo electrónico</label>
+                 placeholder="Nombre del usuario" />
+          <label class="mt-5">Correo electrónico</label>
           <input required id="emailEdit" v-model="editedUser.email" type="email" class="form-control mt-1"
-            placeholder="Correo electrónico" />
-            <label class="mt-5">Primer apellido</label>
+                 placeholder="Correo electrónico" />
+          <label class="mt-5">Primer apellido</label>
           <input required id="username1Edit" v-model="editedUser.username1" type="text" class="form-control mt-1"
-            placeholder="Username 1" />
-            <label class="mt-5">Segundo apellido</label>
+                 placeholder="Username 1" />
+          <label class="mt-5">Segundo apellido</label>
           <input required id="username2Edit" v-model="editedUser.username2" type="text" class="form-control mt-1"
-            placeholder="Username 2" />
-            <div class="mb-3 dropdown-wrapper">
-          <label for="roleEdit" class="mt-2">Rol</label>
-          <div class="dropdown-icon-container">
-          <select required id="roleEdit" v-model="editedUser.role" class="form-control mt-1">
-            <option value="user">Usuario</option>
-            <option value="tecnico">Técnico</option>
-            <option value="admin">Administrador</option>
-          </select>
-          <i class="fas fa-chevron-down dropdown-icon"></i>
+                 placeholder="Username 2" />
+          <div class="mb-3 dropdown-wrapper">
+            <label for="roleEdit" class="mt-2">Rol</label>
+            <div class="dropdown-icon-container">
+              <select required id="roleEdit" v-model="editedUser.role" class="form-control mt-1">
+                <option value="user">Usuario</option>
+                <option value="tecnico">Técnico</option>
+                <option value="admin">Administrador</option>
+              </select>
+              <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
           <div class="d-flex justify-content-between mt-5">
@@ -128,7 +128,7 @@ export default {
         role: '',
       },
       editedUser: null,
-                    searchQuery: "",
+      searchQuery: "",
     };
   },
   created() {
@@ -138,30 +138,30 @@ export default {
         Authorization: `Bearer ${token}`,  // Añadir el token al header
       }
     })
-      .then(response => {
-        this.users = response.data;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+        .then(response => {
+          this.users = response.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
   },
   methods: {
-              searchUsers() {
-              const token = sessionStorage.getItem("token");
-              axios
-                .get("http://127.0.0.1:8000/api/auth/users/search", {
-                  params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                .then((response) => {
-                  this.users = response.data; // Actualizar la lista con los resultados
-                })
-                .catch((error) => {
-                  console.error("Error al buscar máquinas:", error);
-                });
+    searchUsers() {
+      const token = sessionStorage.getItem("token");
+      axios
+          .get("http://127.0.0.1:8000/api/auth/users/search", {
+            params: { query: this.searchQuery }, // Enviar el término de búsqueda como parámetro
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
+          })
+          .then((response) => {
+            this.users = response.data; // Actualizar la lista con los resultados
+          })
+          .catch((error) => {
+            console.error("Error al buscar máquinas:", error);
+          });
+    },
     toggleStatus(user) {
       // Cambia el estado del usuario localmente
       user.status = user.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
@@ -273,16 +273,16 @@ export default {
           Authorization: `Bearer ${token}`,
         },
       })
-        .then(() => {
-          const index = this.users.findIndex((u) => u.id === this.editedUser.id);
-          if (index !== -1) {
-            this.users.splice(index, 1, this.editedUser);
-          }
-          this.closeEditUserModal();
-        })
-        .catch((error) => {
-          console.error("Error al editar la máquina:", error);
-        })
+          .then(() => {
+            const index = this.users.findIndex((u) => u.id === this.editedUser.id);
+            if (index !== -1) {
+              this.users.splice(index, 1, this.editedUser);
+            }
+            this.closeEditUserModal();
+          })
+          .catch((error) => {
+            console.error("Error al editar la máquina:", error);
+          })
     },
     closeModal() {
       this.showCreateModal = false;

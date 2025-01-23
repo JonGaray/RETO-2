@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import IncidentCard from '../components/IncidentTecnico.vue';
+import IncidentCard from '../components/AdminUserPanel.vue';
 
 const incidents = ref([]);
 const userId = ref(null);
