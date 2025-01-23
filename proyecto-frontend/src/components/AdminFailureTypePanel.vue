@@ -1,44 +1,47 @@
 <template>
-    <div class="col-md-12 mt-5">
-        <div class="custom-card">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Gestión de Tipos de Fallo</h4>
-                <button class="btn btn-egibide" @click="showCreateModal = true">+ Nuevo Tipo de Fallo</button>
+    <div class="container-fluid mt-5">
+        <div class="custom-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <h4 class="w-100 text-center text-md-start mb-3 mb-md-0">Gestión de Tipos de Fallo</h4>
+                <button class="btn btn-egibide mb-3 mb-md-0" @click="showCreateModal = true">+ Nuevo Tipo de
+                    Fallo</button>
             </div>
             <ul class="list-group">
                 <li v-for="(failuretype, index) in failuretypes" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
-                        <strong>{{ failuretype.name }} </strong>
+                        <strong>{{ failuretype.name }}</strong>
                     </div>
                     <div class="d-flex align-items-center">
-                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)"><img
-                                class="pencil" src="../img/lapiz-de-cejas.png">Editar</button>
+                        <button class="btn btn-outline-egibide btn-sm" @click="editFailuretype(failuretype)">
+                            <img class="pencil" src="../img/lapiz-de-cejas.png"> Editar
+                        </button>
                     </div>
                 </li>
             </ul>
         </div>
-    </div>
-    <div v-if="showCreateModal" class="modal-backdrop">
-        <div class="modal show">
-            <h2>Nuevo Tipo de Fallo</h2>
-            <label class="mt-5">Nombre del Tipo de Fallo</label>
-            <input v-model="newFailuretypeName" type="text" class="form-control">
-            <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-egibide" @click="createFailuretype">Crear Tipo de Fallo</button>
-                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+        <div v-if="showCreateModal" class="modal-backdrop">
+            <div class="modal show">
+                <h2>Nuevo Tipo de Fallo</h2>
+                <label class="mt-5">Nombre del Tipo de Fallo</label>
+                <input v-model="newFailuretypeName" type="text" class="form-control">
+                <div class="d-flex justify-content-between mt-5">
+                    <button type="button" class="btn btn-egibide" @click="createFailuretype">Crear Tipo de
+                        Fallo</button>
+                    <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div v-if="showEditModal" class="modal-backdrop">
-        <div class="modal show">
-            <h2>Editar Tipo de Fallo</h2>
-            <label class="mt-5">Nombre del Tipo de Fallo</label>
-            <input v-model="editedFailuretypeName" type="text" class="form-control"
-                :placeholder="editFailuretypeObj.name">
-            <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-egibide" @click="saveFailuretypeEdit">Guardar</button>
-                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+        <div v-if="showEditModal" class="modal-backdrop">
+            <div class="modal show">
+                <h2>Editar Tipo de Fallo</h2>
+                <label class="mt-5">Nombre del Tipo de Fallo</label>
+                <input v-model="editedFailuretypeName" type="text" class="form-control"
+                    :placeholder="editFailuretypeObj.name">
+                <div class="d-flex justify-content-between mt-5">
+                    <button type="button" class="btn btn-egibide" @click="saveFailuretypeEdit">Guardar</button>
+                    <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
