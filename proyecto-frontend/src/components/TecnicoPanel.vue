@@ -19,51 +19,31 @@
     <div class="w-100"></div>
     <div class="card mt-5 p-3">
       <h4 class="text-center mb-4">Filtrar Incidencias</h4>
-      <div class="mb-3 dropdown-wrapper">
       <label class="mt-3">Campus</label>
-      <div class="dropdown-icon-container">
       <select class="form-control text-center" v-model="selectedCampus" @change="onFilterChange('campus')">
         <option v-for="campus in campuses" :key="campus.id" :value="campus.id">
           {{ campus.name }}
         </option>
       </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-            </div>
-          </div>
-      <div class="mb-3 dropdown-wrapper">
       <label class="mt-3">Sección</label>
-      <div class="dropdown-icon-container">
       <select class="form-control text-center" v-model="selectedSection" @change="onFilterChange('section')">
         <option v-for="section in sections" :key="section.id" :value="section.id">
           {{ section.name }}
         </option>
       </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-            </div>
-          </div>
-      <div class="mb-3 dropdown-wrapper">
       <label class="mt-3">Tipo de Fallo</label>
-      <div class="dropdown-icon-container">
       <select class="form-control text-center" v-model="selectedFailureType" @change="onFilterChange('failureType')" >
         <option v-for="failuretype in failureTypes" :key="failuretype.id" :value="failuretype.id">
           {{ failuretype.name }}
         </option>
       </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-            </div>
-          </div>
-      <div class="mb-3 dropdown-wrapper">
       <label class="mt-3">Importancia</label>
-      <div class="dropdown-icon-container">
       <select class="form-control text-center" v-model="selectedImportance" @change="onFilterChange('importance')">
         <option value="parada">Parada</option>
         <option value="averia">Averia</option>
         <option value="aviso">Aviso</option>
         <option value="mantenimiento">Mantenimiento</option>
       </select>
-      <i class="fas fa-chevron-down dropdown-icon"></i>
-            </div>
-          </div>
       <button class="btn btn-egibide mt-3" @click="resetFilter">Reiniciar filtros </button>
     </div>
   </div>

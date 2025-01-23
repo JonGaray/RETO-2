@@ -36,17 +36,18 @@ const fetchIncidentsWithFilters = () => {
     }
 };
 </script>
+
 <template>
     <main>
-        <div class="container py-4">
+        <div class="container">
             <div class="row">
                 <div class="col-12">
                     <Header />
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-4">
                     <TecnicoPanel :id="userId" @filtersChanged="onFiltersChanged" />
                 </div>
-                <div class="col-lg-8 col-md-6 col-sm-12">
+                <div class="col-8">
                     <InfiniteScrollTecnico :filterType="selectedFilterType" :filterValue="selectedFilter" />
                 </div>
             </div>
@@ -55,4 +56,7 @@ const fetchIncidentsWithFilters = () => {
 </template>
 
 <style scoped>
+.container {
+    margin-top: 20px;
+}
 </style>
