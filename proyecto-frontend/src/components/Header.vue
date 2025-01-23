@@ -1,4 +1,5 @@
 <template>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <div class="container py-4">
     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center mb-4">
       <h1 class="text-egibide mb-3 mb-lg-0">Sistema de Incidencias</h1>
@@ -61,7 +62,8 @@
             <label for="failuretype" class="form-label">Tipo de Avería</label>
             <div class="dropdown-icon-container">
               <select id="failuretype" v-model="newIncident.failuretypes_id" class="form-control" required>
-                <option v-for="failuretype in failuretypes" :key="failuretype.id" :value="failuretype.id">{{ failuretype.name }}</option>
+                <option v-for="failuretype in failuretypes" :key="failuretype.id" :value="failuretype.id">{{
+                  failuretype.name }}</option>
               </select>
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
@@ -214,5 +216,4 @@ const logout = () => {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
