@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('machines_id')->constrained()->cascadeOnDelete();
             $table->foreignId('maintenances_id')->constrained()->cascadeOnDelete();
+            $table->date('next_due_date')->nullable();
         });
     }
 

@@ -8,7 +8,7 @@ class MachineMaintenance extends Model
 {
     protected $table = 'machinesmaintenances';
     protected $fillable = [
-        'machines_id','maintenances_id'
+        'machines_id','maintenances_id','next_due_date'
     ];
     public function machine()
     {
