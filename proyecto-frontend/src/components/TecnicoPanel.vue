@@ -37,14 +37,26 @@
           {{ failuretype.name }}
         </option>
       </select>
-      <label class="mt-3">Importancia</label>
+      <label class="mt-3">Gravedad</label>
       <select class="form-control text-center" v-model="selectedImportance" @change="onFilterChange('importance')">
         <option value="parada">Parada</option>
         <option value="averia">Averia</option>
         <option value="aviso">Aviso</option>
         <option value="mantenimiento">Mantenimiento</option>
       </select>
-      <button class="btn btn-egibide mt-3" @click="resetFilter">Reiniciar filtros </button>
+      <label class="mt-3">Estado</label>
+      <select class="form-control text-center" v-model="selectedStatus" @change="onFilterChange('status')">
+        <option value="nuevo">Nuevo</option>
+        <option value="proceso">En proceso</option>
+        <option value="terminado">Terminado</option>
+      </select>
+      <label class="mt-3">Máquina</label>
+      <select class="form-control text-center" v-model="selectedMachine" @change="onFilterChange('machine')">
+        <option v-for="machine in machines" :key="machine.id" :value="machine.id">
+          {{ machine.name }}
+        </option>
+      </select>
+      <button class="btn btn-egibide mt-3" @click="resetFilter">Reiniciar filtros</button>
     </div>
   </div>
 </template>
@@ -62,109 +74,102 @@ export default {
       sections: [],
       campuses: [],
       failureTypes: [],
+      machines: [], 
       selectedCampus: null,
       selectedSection: null,
       selectedFailureType: null,
       selectedImportance: null,
+      selectedStatus: null, 
+      selectedMachine: null,
     };
   },
   created() {
     const token = sessionStorage.getItem("token");
     if (token) {
       axios.get(`http://127.0.0.1:8000/api/auth/incidents/activeincidents`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  .then((response) => {
-      this.incidentsCount = response.data.count;
-    })
-        .catch((error) => {
-          console.error("Error al obtener el número de incidencias:", error);
-        });
-    axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-.then((response) => {
-  this.solvedtoday = response.data.count;
-})
-    .catch((error) => {
-      console.error("Error al obtener el número de incidencias:", error);
-    });
-axios.get(`http://127.0.0.1:8000/api/auth/campuses`, {
-headers: {
-  Authorization: `Bearer ${token}`,
-},
-})
-.then((response) => {
-  this.campuses = response.data;
-})
-    .catch((error) => {
-      console.error("Error al obtener los campuses:", error);
-    });
-axios.get(`http://127.0.0.1:8000/api/auth/sections`, {
-headers: {
-  Authorization: `Bearer ${token}`,
-},
-})
-.then((response) => {
-  this.sections = response.data.data;
-})
-    .catch((error) => {
-      console.error("Error al obtener las secciones:", error);
-    });
-axios.get(`http://127.0.0.1:8000/api/auth/failuretypes`, {
-headers: {
-  Authorization: `Bearer ${token}`,
-},
-})
-.then((response) => {
-  this.failureTypes = response.data.data;
-})
-    .catch((error) => {
-      console.error("Error al obtener los tipos de fallos:", error);
-    });
-} else {
-  console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
-}
-},
-methods: {
-  async onFilterChange(filterType) {
-    let updatedFilter = {};
-    switch (filterType) {
-      case 'campus':
-        updatedFilter.selectedCampus = this.selectedCampus;
-        break;
-      case 'section':
-        updatedFilter.selectedSection = this.selectedSection;
-        break;
-      case 'failureType':
-        updatedFilter.selectedFailureType = this.selectedFailureType;
-        break;
-      case 'importance':
-        updatedFilter.selectedImportance = this.selectedImportance;
-        break;
-      default:
-        updatedFilter.selectedReboot = "";
-        break;
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((response) => { this.incidentsCount = response.data.count; })
+      .catch((error) => { console.error("Error al obtener el número de incidencias:", error); });
+
+      axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((response) => { this.solvedtoday = response.data.count; })
+      .catch((error) => { console.error("Error al obtener las incidencias resueltas hoy:", error); });
+
+      axios.get(`http://127.0.0.1:8000/api/auth/campuses`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((response) => { this.campuses = response.data; })
+      .catch((error) => { console.error("Error al obtener los campuses:", error); });
+
+      axios.get(`http://127.0.0.1:8000/api/auth/sections`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((response) => { this.sections = response.data.data; })
+      .catch((error) => { console.error("Error al obtener las secciones:", error); });
+
+      axios.get(`http://127.0.0.1:8000/api/auth/failuretypes`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((response) => { this.failureTypes = response.data.data; })
+      .catch((error) => { console.error("Error al obtener los tipos de fallos:", error); });
+
+      axios.get(`http://127.0.0.1:8000/api/auth/machines`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((response) => { this.machines = response.data; })
+      .catch((error) => { console.error("Error al obtener las máquinas:", error); });
+    } else {
+      console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
     }
-    this.$emit("filtersChanged", updatedFilter);
   },
-  resetFilter() {
-  this.selectedCampus = null;
-  this.selectedSection = null;
-  this.selectedFailureType = null;
-  this.selectedImportance = null;
-  this.$emit("filtersChanged", {
-    selectedCampus: null,
-    selectedSection: null,
-    selectedFailureType: null,
-    selectedImportance: null
-  });
-}
-},
+  methods: {
+    async onFilterChange(filterType) {
+      let updatedFilter = {};
+      switch (filterType) {
+        case 'campus':
+          updatedFilter.selectedCampus = this.selectedCampus;
+          break;
+        case 'section':
+          updatedFilter.selectedSection = this.selectedSection;
+          break;
+        case 'failuretype':
+          updatedFilter.selectedFailureType = this.selectedFailureType;
+          break;
+        case 'importance':
+          updatedFilter.selectedImportance = this.selectedImportance;
+          break;
+        case 'status':
+          updatedFilter.selectedStatus = this.selectedStatus;
+          break;
+        case 'machine': 
+          updatedFilter.selectedMachine = this.selectedMachine;
+          break;
+        default:
+          updatedFilter.selectedReboot = "";
+          break;
+      }
+      this.$emit("filtersChanged", updatedFilter);
+    },
+    resetFilter() {
+      this.selectedCampus = null;
+      this.selectedSection = null;
+      this.selectedFailureType = null;
+      this.selectedImportance = null;
+      this.selectedStatus = null;
+      this.selectedMachine = null;
+      this.$emit("filtersChanged", {
+        selectedCampus: null,
+        selectedSection: null,
+        selectedFailureType: null,
+        selectedImportance: null,
+        selectedStatus: null,
+        selectedMachine: null
+      });
+    }
+  },
 };
 </script>
 

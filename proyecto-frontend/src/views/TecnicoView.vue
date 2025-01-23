@@ -25,6 +25,12 @@ const onFiltersChanged = (filters) => {
     } else if (filters.selectedImportance !== undefined) {
         selectedFilter.value = filters.selectedImportance;
         selectedFilterType.value = 'importance';
+    } else if (filters.selectedStatus !== undefined) {
+        selectedFilter.value = filters.selectedStatus;
+        selectedFilterType.value = 'status';
+    } else if (filters.selectedMachine !== undefined) { 
+        selectedFilter.value = filters.selectedMachine;
+        selectedFilterType.value = 'machine';
     }
     fetchIncidentsWithFilters();
 };
