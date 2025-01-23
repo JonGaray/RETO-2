@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="d-flex justify-content-center align-items-center" style="height: 97vh;">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
