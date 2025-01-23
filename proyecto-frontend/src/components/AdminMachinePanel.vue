@@ -1,7 +1,6 @@
 <template>
   <div class="col-12">
     <div class="card p-3 mt-3">
-      <h4 class="text-center mb-4">Gestión de Máquinas</h4>
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h4>Gestión de Maquinas</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Maquina</button>

@@ -1,16 +1,16 @@
 <template>
-    <div class="container mt-5">
-        <div class="custom-card">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+    <div class="col-12">
+        <div class="card p-3 mt-3">
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4>Gestión de Secciones</h4>
-                <button class="btn btn-egibide mt-3 mt-md-0" @click="showCreateModal = true">+ Nueva Sección</button>
+                <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Sección</button>
             </div>
             <input v-model="searchQuery" type="text" @input="searchSections" class="form-control mb-3"
                 placeholder="Buscar por nombre de seccion" />
             <ul class="list-group">
                 <li v-for="(section, index) in sections" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center flex-column flex-md-row">
-                    <div class="text-center text-md-left">
+                    <div class="text-left text-md-left">
                         <strong class="me-3">{{ section.niu }}</strong>
                         <strong>{{ section.name }}</strong>
                         <span class="text-muted d-block">{{ section.status === 'habilitado' ? 'Activo' : 'Deshabilitado'

@@ -1,7 +1,7 @@
 <template>
-  <div class="container mt-5">
-    <div class="custom-card">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+  <div class="col-12">
+    <div class="card p-3 mt-3">
+      <div class="d-flex justify-content-between align-items-center mb-4">
         <h4>Gestión de Usuarios</h4>
         <button class="btn btn-egibide mt-3 mt-md-0" @click="showCreateModal = true">+ Nuevo Usuario</button>
       </div>
@@ -18,7 +18,7 @@
           :key="index"
           class="list-group-item d-flex justify-content-between align-items-center flex-column flex-md-row"
         >
-          <div class="text-center text-md-left">
+          <div class="text-left text-md-left">
             <strong>{{ user.name }} </strong>
             <span class="text-muted d-block badge-initcap">{{ user.role }}</span>
           </div>
