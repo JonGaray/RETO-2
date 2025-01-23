@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\Models\Machine;
 use App\Models\MachineMaintenance;
 use App\Models\UserIncident;
 use Carbon\Carbon;
@@ -229,6 +230,37 @@ class IncidentController extends Controller
         ")
             ->paginate(3);
         return response()->json($incidents);
+    }
+    public function getStatus($status)
+    {
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->where('incidents.status', $status)
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+            ->orderBy('machines.priority', 'asc')
+            ->paginate(3);
+
+        return response()->json($incidents);
+    }
+    public function getMachines()
+    {
+        $machines = Machine::select('id', 'name')
+            ->orderBy('priority', 'asc')
+            ->get();
+
+        return response()->json($machines);
     }
     public function acceptIncident($id)
     {
