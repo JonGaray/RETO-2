@@ -1,17 +1,18 @@
 <template>
-    <div class="container-fluid mt-5">
-        <div class="custom-card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <div class="col-12">
+        <div class="card p-3 mt-3">
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="w-100 text-center text-md-start mb-3 mb-md-0">Gestión de Campus</h4>
-                <button class="btn btn-egibide mb-3 mb-md-0" @click="showCreateModal = true">+ Nuevo Campus</button>
+                <button class="btn btn-egibide mt-3 mt-md-0 text-nowrap" @click="showCreateModal = true">+ Nuevo Campus</button>
             </div>
+            <input v-model="searchQuery" type="text" @input="searchCampuses" class="form-control mb-3"
+                placeholder="Buscar por nombre de campus" />
             <ul class="list-group">
                 <li v-for="(campus, index) in campuses" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
                         <strong>{{ campus.name }}</strong>
-                        <span class="text-muted d-block">{{ campus.status === 'habilitado' ? 'Activo' : 'Deshabilitado'
-                            }}</span>
+                        <span class="text-muted d-block">{{ campus.status === 'habilitado' ? 'Activo' : 'Deshabilitado' }}</span>
                     </div>
                     <div class="d-flex align-items-center">
                         <label class="switch me-3">
@@ -34,10 +35,10 @@
         </div>
         <div v-if="showCreateModal" class="modal-backdrop">
             <div class="modal show">
-                <h2>Nuevo Campus</h2>
-                <label class="mt-5">Nombre del Campus</label>
-                <input v-model="newCampusName" type="text" class="form-control">
-                <div class="d-flex justify-content-between mt-5">
+                <h2>Nueva Campus</h2>
+                <label for="campusName" class="mt-2">Nombre del Campus</label>
+                <input v-model="newCampusName" type="text" class="form-control mt-3">
+                <div class="d-flex justify-content-between mt-4">
                     <button type="button" class="btn btn-egibide" @click="createCampus">Crear Campus</button>
                     <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
                 </div>
@@ -46,9 +47,9 @@
         <div v-if="showEditModal" class="modal-backdrop">
             <div class="modal show">
                 <h2>Editar Campus</h2>
-                <label class="mt-5">Nombre del Campus</label>
-                <input v-model="editedCampusName" type="text" class="form-control" :placeholder="editCampusObj.name">
-                <div class="d-flex justify-content-between mt-5">
+                <label for="editCampusName" class="mt-2">Nombre del Campus</label>
+                <input v-model="editedCampusName" type="text" class="form-control mt-3" :placeholder="editCampusObj.name">
+                <div class="d-flex justify-content-between mt-4">
                     <button type="button" class="btn btn-egibide" @click="saveCampusEdit">Guardar</button>
                     <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
                 </div>
@@ -56,6 +57,7 @@
         </div>
     </div>
 </template>
+
 
 <script>
 import axios from 'axios';

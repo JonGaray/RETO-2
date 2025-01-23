@@ -1,13 +1,11 @@
 <template>
-    <div class="container-fluid mt-5">
-        <div class="custom-card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-                <h4 class="w-100 text-center text-md-start mb-3 mb-md-0">Gestión de Mantenimientos</h4>
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-start">
-                    <button class="btn btn-egibide me-3 mb-3 mb-md-0" @click="showCreateMaintenanceModal = true">+ Nuevo
-                        Mantenimiento</button>
-                    <button class="btn btn-egibide" @click="showCreateAssociationModal = true">+ Nueva
-                        Asociación</button>
+    <div class="col-12">
+        <div class="card p-3 mt-3">
+            <div class="mb-4">
+                <h4>Gestión de Mantenimientos</h4>
+                <div class="d-flex align-items-center">
+                <button class="btn btn-egibide mt-3 mt-md-0" @click="showCreateMaintenanceModal = true">+ Nuevo Mantenimiento</button>
+                <button class="btn btn-egibide mt-3 mt-md-0" @click="showCreateAssociationModal = true">+ Nueva Asociación</button>
                 </div>
             </div>
             <h5 class="mt-4">Asociaciones Existentes</h5>
