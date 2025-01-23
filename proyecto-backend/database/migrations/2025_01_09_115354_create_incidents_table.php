@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->string('importance');
+            $table->dateTime('next_due_date')->nullable();
             $table->foreignId('machines_id')->constrained()->cascadeOnDelete();
             $table->foreignId('failuretypes_id')->constrained()->cascadeOnDelete();
         });

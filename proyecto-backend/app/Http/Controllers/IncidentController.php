@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident;
+use App\Models\MachineMaintenance;
 use App\Models\UserIncident;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -302,5 +303,25 @@ class IncidentController extends Controller
         ")
         ->paginate(4); // Paginación de 4 por página
     return response()->json($incidents);
-}
+    }
+    public function generateIncident($machinesMaintenanceId)
+    {
+        $machinesMaintenance = MachineMaintenance::find($machinesMaintenanceId);
+        if (!$machinesMaintenance) {
+            return response()->json(['error' => 'La relación máquina-mantenimiento no existe.'], 404);
+        }
+        $machine = $machinesMaintenance->machine;
+        $maintenance = $machinesMaintenance->maintenance;
+        $incident = new Incident();
+        $incident->title = "{$maintenance->name} para la máquina {$machine->name}";
+        $incident->description = "{$maintenance->name} para la máquina {$machine->name}";
+        $incident->status = 'nuevo';
+        $incident->severity = 'mantenimiento';
+        $incident->machine_id = $machine->id;
+        $incident->created_at = Carbon::now();
+        $incident->next_due_date = Carbon::now()->addDays($maintenance->regularity);
+        $incident->save();
+        $machinesMaintenance->next_due_date = Carbon::now()->addDays($maintenance->regularity);
+        $machinesMaintenance->save();
+    }
 }
