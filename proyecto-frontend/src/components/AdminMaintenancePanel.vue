@@ -1,12 +1,12 @@
 <template>
-    <div class="col-md-12 mt-5">
-        <div class="custom-card">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Gestión de Mantenimientos</h4>
-                <div>
-                    <button class="btn btn-egibide me-3" @click="showCreateMaintenanceModal = true">+ Nuevo
+    <div class="container-fluid mt-5">
+        <div class="custom-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <h4 class="w-100 text-center text-md-start mb-3 mb-md-0">Gestión de Mantenimientos</h4>
+                <div class="d-flex flex-wrap justify-content-center justify-content-md-start">
+                    <button class="btn btn-egibide me-3 mb-3 mb-md-0" @click="showCreateMaintenanceModal = true">+ Nuevo
                         Mantenimiento</button>
-                    <button class="btn btn-egibide ml-2" @click="showCreateAssociationModal = true">+ Nueva
+                    <button class="btn btn-egibide" @click="showCreateAssociationModal = true">+ Nueva
                         Asociación</button>
                 </div>
             </div>
@@ -17,8 +17,8 @@
                     <div>
                         <strong>
                             {{ machinemaintenance.machine_name || 'Nombre de máquina no disponible' }} -
-                            {{ machinemaintenance.maintenance_name || 'Nombre de mantenimiento no disponible' }} (Cada
-                            {{ machinemaintenance.regularity || 'Regularidad no disponible' }} días)
+                            {{ machinemaintenance.maintenance_name || 'Nombre de mantenimiento no disponible' }}
+                            (Cada {{ machinemaintenance.regularity || 'Regularidad no disponible' }} días)
                         </strong>
                     </div>
                 </li>
@@ -27,48 +27,49 @@
                 <p>Cargando...</p>
             </div>
         </div>
-    </div>
-    <div v-if="showCreateMaintenanceModal" class="modal-backdrop">
-        <div class="modal show">
-            <h2>Nuevo Mantenimiento</h2>
-            <label class="mt-5">Nombre del Mantenimiento</label>
-            <input v-model="newMaintenanceName" type="text" class="form-control mt-2"
-                placeholder="Nombre del mantenimiento">
-            <label class="mt-3">Regularidad</label>
-            <input v-model="newMaintenanceRegularity" type="number" class="form-control mt-2"
-                placeholder="Regularidad en días">
-            <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-egibide" @click="createMaintenance">Crear Mantenimiento</button>
-                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+        <div v-if="showCreateMaintenanceModal" class="modal-backdrop">
+            <div class="modal show">
+                <h2>Nuevo Mantenimiento</h2>
+                <label class="mt-5">Nombre del Mantenimiento</label>
+                <input v-model="newMaintenanceName" type="text" class="form-control mt-2"
+                    placeholder="Nombre del mantenimiento">
+                <label class="mt-3">Regularidad</label>
+                <input v-model="newMaintenanceRegularity" type="number" class="form-control mt-2"
+                    placeholder="Regularidad en días">
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-egibide" @click="createMaintenance">Crear
+                        Mantenimiento</button>
+                    <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div v-if="showCreateAssociationModal" class="modal-backdrop">
-        <div class="modal show">
-            <h2>Nueva Asociación Máquina-Mantenimiento</h2>
-            <div class="mb-3 dropdown-wrapper">
-                <label class="mt-5">Máquina</label>
-                <div class="dropdown-icon-container">
-                    <select v-model="selectedMachineId" class="form-control mt-2">
-                        <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}
-                        </option>
-                    </select>
-                    <i class="fas fa-chevron-down dropdown-icon"></i>
+        <div v-if="showCreateAssociationModal" class="modal-backdrop">
+            <div class="modal show">
+                <h2>Nueva Asociación Máquina-Mantenimiento</h2>
+                <div class="mb-3 dropdown-wrapper">
+                    <label class="mt-5">Máquina</label>
+                    <div class="dropdown-icon-container">
+                        <select v-model="selectedMachineId" class="form-control mt-2">
+                            <option v-for="machine in machines" :key="machine.id" :value="machine.id">{{ machine.name }}
+                            </option>
+                        </select>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3 dropdown-wrapper">
-                <label>Mantenimiento</label>
-                <div class="dropdown-icon-container">
-                    <select v-model="selectedMaintenanceId" class="form-control mt-2">
-                        <option v-for="maintenance in maintenances" :key="maintenance.id" :value="maintenance.id">{{
-                            maintenance.name }}</option>
-                    </select>
-                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                <div class="mb-3 dropdown-wrapper">
+                    <label>Mantenimiento</label>
+                    <div class="dropdown-icon-container">
+                        <select v-model="selectedMaintenanceId" class="form-control mt-2">
+                            <option v-for="maintenance in maintenances" :key="maintenance.id" :value="maintenance.id">{{
+                                maintenance.name }}</option>
+                        </select>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-egibide" @click="createAssociation">Crear Asociación</button>
-                <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-egibide" @click="createAssociation">Crear Asociación</button>
+                    <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>

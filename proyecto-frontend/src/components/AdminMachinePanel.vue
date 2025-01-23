@@ -1,6 +1,7 @@
 <template>
-  <div class="col-md-12 mt-5">
-    <div class="custom-card">
+  <div class="col-12">
+    <div class="card p-3 mt-3">
+      <h4 class="text-center mb-4">Gestión de Máquinas</h4>
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h4>Gestión de Maquinas</h4>
         <button class="btn btn-egibide" @click="showCreateModal = true">+ Nueva Maquina</button>
@@ -35,7 +36,7 @@
           <h2>Nueva Máquina</h2>
           <label for="machiName" class="mt-2">Nombre de la Maquina</label>
           <input required v-model="newMachine.name" type="text" class="form-control mt-3" />
-          <div class="mb-3 dropdown-wrapper">
+                    <div class="mb-3 dropdown-wrapper">
             <label for="prioritySelect" class="mt-2">Prioridad</label>
             <div class="dropdown-icon-container">
               <select required id="prioritySelect" v-model="newMachine.priority" class="form-control mt-1"
@@ -59,7 +60,7 @@
             </div>
           </div>
           <div class="mb-3 dropdown-wrapper">
-            <label for="sectionSelect" class="mt-2">Seccion</label>
+            <label for="sectionSelect" class="mt-2">Sección</label>
             <div class="dropdown-icon-container">
               <select required id="sectionSelect" v-model="newMachine.sections_id" class="form-control mt-1">
                 <option v-for="section in sectionsCampus" :key="section.id" :value="section.id">
@@ -69,7 +70,7 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-          <div class="d-flex justify-content-between mt-5">
+          <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-egibide" @click="createMachine">Crear Maquina</button>
             <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
           </div>
@@ -113,7 +114,7 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-          <div class="d-flex justify-content-between mt-5">
+          <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-egibide" @click="saveMachineEdit">Guardar</button>
             <button type="button" class="btn btn-secondary" @click="closeModal">Cancelar</button>
           </div>
