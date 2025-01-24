@@ -15,10 +15,10 @@ class Incident extends Model
     }
     public function machine()
     {
-        return $this->belongsTo('App\Models\Machine');
+        return $this->belongsTo('App\Models\Machine', "machines_id");
     }
     public function failuretype()
     {
-        return $this->belongsTo('App\Models\Failuretype');
+        return $this->belongsTo('App\Models\Failuretype', "failuretypes_id");
     }
 }
