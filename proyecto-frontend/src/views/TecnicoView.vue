@@ -28,7 +28,7 @@ const onFiltersChanged = (filters) => {
     } else if (filters.selectedStatus !== undefined) {
         selectedFilter.value = filters.selectedStatus;
         selectedFilterType.value = 'status';
-    } else if (filters.selectedMachine !== undefined) { 
+    } else if (filters.selectedMachine !== undefined) {
         selectedFilter.value = filters.selectedMachine;
         selectedFilterType.value = 'machine';
     }
@@ -36,9 +36,8 @@ const onFiltersChanged = (filters) => {
 };
 
 const fetchIncidentsWithFilters = () => {
-    const infiniteScrollTecnico = document.querySelector('InfiniteScrollTecnico');
-    if (infiniteScrollTecnico) {
-        infiniteScrollTecnico.fetchIncidents(selectedFilterType.value, selectedFilter.value);
+    if (InfiniteScrollTecnico.value) {
+        InfiniteScrollTecnico.value.fetchIncidents(selectedFilterType.value, selectedFilter.value);
     }
 };
 </script>
@@ -54,7 +53,8 @@ const fetchIncidentsWithFilters = () => {
                     <TecnicoPanel :id="userId" @filtersChanged="onFiltersChanged" />
                 </div>
                 <div class="col-8">
-                    <InfiniteScrollTecnico :filterType="selectedFilterType" :filterValue="selectedFilter" />
+                    <InfiniteScrollTecnico ref="InfiniteScroll" :filterType="selectedFilterType"
+                        :filterValue="selectedFilter" />
                 </div>
             </div>
         </div>
