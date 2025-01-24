@@ -303,13 +303,28 @@ class IncidentController extends Controller
 
         return response()->json($incidents);
     }
-    public function getMachines()
+    public function getMachines($machine_id)
     {
-        $machines = Machine::select('id', 'name')
-            ->orderBy('priority', 'asc')
-            ->get();
+        $incidents = Incident::select(
+            'incidents.*',
+            'machines.name as machine_name',
+            'failuretypes.name as failure_type_name'
+        )
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->where('incidents.machines_id', $machine_id) 
+            ->orderByRaw("
+            CASE
+                WHEN incidents.status = 'nuevo' THEN 1
+                WHEN incidents.status = 'proceso' THEN 2
+                WHEN incidents.status = 'terminado' THEN 3
+                ELSE 4
+            END
+        ")
+            ->orderBy('machines.priority', 'asc')
+            ->paginate(3);
 
-        return response()->json($machines);
+        return response()->json($incidents);
     }
     public function acceptIncident($id)
     {

@@ -10,12 +10,12 @@ const loading = ref(false);
 const hasMore = ref(true);
 const props = defineProps({
   filterType: String,
-  filterValue: String,
+  filterValue: [String, Number],
 });
 const fetchIncidents = async (reset = false) => {
-  if (loading.value || !hasMore.value) return;  // Prevenir cargas duplicadas
-  loading.value = true;  // Estado de carga activo
-  const token = sessionStorage.getItem('token');  // Obtener token de sesión
+  if (loading.value || !hasMore.value) return;
+  loading.value = true;
+  const token = sessionStorage.getItem('token');
   try {
     let url = `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`;
     if (props.filterType && props.filterValue) {
