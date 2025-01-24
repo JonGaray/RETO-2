@@ -49,7 +49,21 @@ export default {
       if (this.status === 'terminado') return 'bg-success';
       return 'bg-secondary';
     },
+  },
+  methods:{
+  finishIncident() {
+    const token = sessionStorage.getItem('token');
+    axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/finish`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(() => {
+      this.$emit('refresh');
+      window.location.reload();
+    }).catch(error => {
+      console.error('Error al finalizar la incidencia:', error);
+    });
   }
+  }
+
 };
 
 </script>
