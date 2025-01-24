@@ -35,7 +35,7 @@
         </div>
         <div v-if="showCreateModal" class="modal-backdrop">
             <div class="modal show">
-                <h2>Nueva Campus</h2>
+                <h2>Nuevo Campus</h2>
                 <label for="campusName" class="mt-2">Nombre del Campus</label>
                 <input v-model="newCampusName" type="text" class="form-control mt-3">
                 <div class="d-flex justify-content-between mt-4">
