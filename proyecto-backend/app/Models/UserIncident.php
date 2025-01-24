@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\IncidentController;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserIncident extends Model
 {
@@ -12,11 +15,12 @@ class UserIncident extends Model
     ];
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User','users_id');
     }
 
     public function incident()
     {
-        return $this->belongsTo('App\Models\Incident');
+        return $this->belongsTo('App\Models\Incident', 'incidents_id');
     }
+
 }

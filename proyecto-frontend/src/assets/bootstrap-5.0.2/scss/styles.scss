@@ -326,13 +326,31 @@ button:disabled {
   }
 }
 
-
 .modal.show {
   display: block !important;
   opacity: 1;
   z-index: 1060;
 }
+.modal-backdrop-incidencia {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
 
+.modal-incidencia {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  z-index: 1060;
+  display: block;
+}
 .pencil{
   width: 20px;
   height: 20px;

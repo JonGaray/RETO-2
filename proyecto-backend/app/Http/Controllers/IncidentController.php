@@ -6,6 +6,7 @@ use App\Models\Incident;
 use App\Models\UserIncident;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class IncidentController extends Controller
@@ -154,6 +155,54 @@ class IncidentController extends Controller
 
         return response()->json($incidents);
     }
+    public function getInProgressIncidents()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['error' => 'No autenticado'], 401);
+        }
+
+        $userId = $user->id;
+
+        $incidents = Incident::select('incidents.*')
+            ->join('machines', 'incidents.machines_id', '=', 'machines.id')
+            ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
+            ->join('usersincidents', 'incidents.id', '=', 'usersincidents.incidents_id')
+            ->where('usersincidents.users_id', $userId)
+            ->where('incidents.status', 'proceso')
+            ->orderByRaw("
+                CASE
+                    WHEN incidents.status = 'nuevo' THEN 1
+                    WHEN incidents.status = 'proceso' THEN 2
+                    WHEN incidents.status = 'terminado' THEN 3
+                    ELSE 4
+                END
+            ")
+            ->orderByRaw("
+                CASE
+                    WHEN incidents.importance = 'parada' THEN 1
+                    WHEN incidents.importance = 'averia' THEN 2
+                    WHEN incidents.importance = 'aviso' THEN 3
+                    ELSE 5
+                END
+            ")
+            ->orderBy('machines.priority', 'asc')
+            ->orderByRaw("
+                CASE
+                    WHEN incidents.importance = 'mantenimiento' THEN 1
+                    ELSE 2
+                END
+            ")
+            ->with(['machine:id,name', 'failureType:id,name'])->get(); // Ejecuta la consulta y pagina los resultados
+
+        if ($incidents->isEmpty()) { // Ahora isEmpty() funciona
+            return response()->json(['message' => 'No hay incidencias en proceso asociadas al usuario'], 404);
+        }
+
+        return response()->json($incidents);
+    }
+
     public function getSection($section)
     {
         $incidents = Incident::select(

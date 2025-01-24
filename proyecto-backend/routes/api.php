@@ -36,6 +36,7 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function() {
     Route::post('/incidents/{id}/finish','finishIncident')->middleware('auth:api');
     Route::post('/incidents/store','store')->middleware('auth:api');
     Route::get('incidents/search', 'searchByName')->middleware('auth:api');
+    Route::get('incidents/last-accepted', 'getInProgressIncidents')->middleware('auth:api');
 });
 Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::get('machines','index')->middleware('auth:api');
