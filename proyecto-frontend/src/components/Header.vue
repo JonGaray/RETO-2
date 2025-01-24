@@ -70,7 +70,7 @@
           </div>
           <div class="mb-3 d-flex justify-content-between">
             <button type="submit" class="btn btn-egibide">Crear Incidencia</button>
-            <button type="button" class="btn btn-secondary" @click="showModal = false">Cancelar</button>
+            <button type="button" class="btn btn-secondary" @click="modale = false">Cancelar</button>
           </div>
         </form>
       </div>
