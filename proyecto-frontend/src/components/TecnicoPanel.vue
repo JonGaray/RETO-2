@@ -14,6 +14,9 @@
           <span class="fw-bold">Resueltas hoy:</span>
           <span>{{ solvedtoday }}</span>
         </div>
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-egibide mt-5" @click="modale = true">Ver incidencias activas</button>
+        </div>
       </div>
     </div>
     <div class="w-100"></div>
@@ -59,22 +62,41 @@
       <button class="btn btn-egibide mt-3" @click="resetFilter">Reiniciar filtros</button>
     </div>
   </div>
+  <div v-if="modale" class="modal-backdrop">
+      <div class="modal">
+        <div class="d-flex justify-content-between">
+          <h2 style="display: inline">Mis incidencias</h2>
+          <button type="button" class="btn btn-egibide" @click="modale = false">Salir</button>
+        </div>
+        <div v-for="incident in incidents" :key="incident.id" :value="incident.id">
+          <IncidentActiveTecnico :title="incident.title" :description="incident.description" :category="incident.importance"
+                                 :type="String(incident.failuretypes_id)" :machines_id="String(incident.machines_id)"
+                                 :status="incident.status" :register_date="incident.created_at" :machine_name="incident.machine.name"
+                                 :failure_type_name="incident.failure_type.name" :incidents_id="incident.id"/>
+        </div>
+      </div>
+
+    </div>
 </template>
 
 <script>
 import axios from "axios";
+import IncidentActiveTecnico from "@/components/IncidentActiveTecnico.vue";
 
 export default {
+  components: {IncidentActiveTecnico},
   data() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     return {
+      modale: false,
       userName: user ? user.name : "",
       incidentsCount: 0,
       solvedtoday: 0,
       sections: [],
       campuses: [],
       failureTypes: [],
-      machines: [], 
+      machines: [],       
+      incidents: [],
       selectedCampus: null,
       selectedSection: null,
       selectedFailureType: null,
@@ -121,6 +143,17 @@ export default {
       })
       .then((response) => { this.machines = response.data; })
       .catch((error) => { console.error("Error al obtener las máquinas:", error); });
+      
+      axios.get("http://127.0.0.1:8000/api/auth/incidents/last-accepted",{
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      }).then((response)=>{
+            this.incidents = response.data
+          }
+      ).catch((error) => {
+        console.error("Error al obtener las incidencias:", error);
+      });
     } else {
       console.error("No se encontró el token de autenticación. Por favor, inicia sesión.");
     }
