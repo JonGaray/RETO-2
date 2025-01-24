@@ -25,6 +25,8 @@ Route::controller(IncidentController::class)->prefix('auth')->group(function() {
     Route::get('incidents/solvedtoday','getSolvedToday')->middleware('auth:api');
     Route::get('incidents/{importance}/importance','getImportance')->middleware('auth:api');
     Route::get('incidents/{failuretype}/failuretype','getFailureType')->middleware('auth:api');
+    Route::get('incidents/{status}/status','getStatus')->middleware('auth:api');
+    Route::get('incidents/{machine}/machine','getMachines')->middleware('auth:api');
     Route::get('incidents/{section}/section','getSection')->middleware('auth:api');
     Route::get('incidents/{campus}/campus','getCampus')->middleware('auth:api');
     Route::post('/incidents/{id}/accept','acceptIncident')->middleware('auth:api');

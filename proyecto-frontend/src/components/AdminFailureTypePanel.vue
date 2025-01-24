@@ -1,10 +1,9 @@
 <template>
-    <div class="container-fluid mt-5">
-        <div class="custom-card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <div class="col-12">
+        <div class="card p-3 mt-3">
+            <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="w-100 text-center text-md-start mb-3 mb-md-0">Gestión de Tipos de Fallo</h4>
-                <button class="btn btn-egibide mb-3 mb-md-0" @click="showCreateModal = true">+ Nuevo Tipo de
-                    Fallo</button>
+                <button class="btn btn-egibide mb-3 mb-md-0 text-nowrap" @click="showCreateModal = true">+ Nuevo Tipo de Fallo</button>
             </div>
             <ul class="list-group">
                 <li v-for="(failuretype, index) in failuretypes" :key="index"
