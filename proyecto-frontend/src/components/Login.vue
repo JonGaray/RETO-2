@@ -57,7 +57,8 @@ export default {
                 sessionStorage.setItem('token', response.data.access_token);
                 sessionStorage.setItem('user', JSON.stringify(response.data.user));
                 const expiresIn = 3600;
-                sessionStorage.setItem('token_expiration', Date.now() + expiresIn * 1000);
+                const expirationTime =  Date.now() + expiresIn * 1000;
+                sessionStorage.setItem('token_expiration', expirationTime);
                 setTimeout(() => {
                     sessionStorage.removeItem('token');
                     sessionStorage.removeItem('token_expiration');
@@ -84,5 +85,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

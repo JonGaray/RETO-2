@@ -15,9 +15,9 @@ Route::controller(AuthController::class)->prefix('auth')->group(function() {
     Route::post('login', 'login');
     Route::get('/users', 'index')->middleware('auth:api');
     Route::put('/users/{id}/status', 'updateStatus')->middleware('auth:api');
-    Route::post('/users/create', 'create')->middleware('auth:api');
-    Route::put('/users/{id}/save', 'save')->middleware('auth:api');
-    Route::get('/users/search', 'searchByName')->middleware('auth:api');
+    Route::post('/users/create', 'create')->middleware('auth:api','admin');
+    Route::put('/users/{id}/save', 'save')->middleware('auth:api','admin');
+    Route::get('/users/search', 'searchByName')->middleware('auth:api','admin');
 });
 Route::controller(IncidentController::class)->prefix('auth')->group(function() {
     Route::get('incidents/getall', 'getAllIncidents')->middleware('auth:api');
@@ -44,32 +44,32 @@ Route::controller(MachineController::class)->prefix('auth')->group(function (){
     Route::get('machines','index')->middleware('auth:api');
     Route::get('machines/getsections', 'getBySection')->middleware('auth:api');
     Route::get('machines/search', 'searchByName')->middleware('auth:api');
-    Route::post('machines/create','create')->middleware('auth:api');
-    Route::put('machines/{id}/edit','edit')->middleware('auth:api');
-    Route::put('machines/{id}/status','updateStatus')->middleware('auth:api');
+    Route::post('machines/create','create')->middleware('auth:api','admin');
+    Route::put('machines/{id}/edit','edit')->middleware('auth:api','admin');
+    Route::put('machines/{id}/status','updateStatus')->middleware('auth:api','admin');
 });
 Route::controller(CampusController::class)->prefix('auth')->group(function (){
     Route::get('campuses','index')->middleware('auth:api');
-    Route::post('campuses/create','create')->middleware('auth:api');
-    Route::put('campuses/{id}/edit','edit')->middleware('auth:api');
-    Route::put('campuses/{id}/status','updateStatus')->middleware('auth:api');
+    Route::post('campuses/create','create')->middleware('auth:api','admin');
+    Route::put('campuses/{id}/edit','edit')->middleware('auth:api','admin');
+    Route::put('campuses/{id}/status','updateStatus')->middleware('auth:api','admin');
 });
 Route::controller(SectionController::class)->prefix('auth')->group(function (){
     Route::get('sections','index')->middleware('auth:api');
     Route::get('sections/search', 'searchByName')->middleware('auth:api');
     Route::get('sections/getsections','getSections')->middleware('auth:api');
-    Route::post('sections/create','create')->middleware('auth:api');
-    Route::put('sections/{id}/edit','edit')->middleware('auth:api');
-    Route::put('sections/{id}/status','updateStatus')->middleware('auth:api');
+    Route::post('sections/create','create')->middleware('auth:api','admin');
+    Route::put('sections/{id}/edit','edit')->middleware('auth:api','admin');
+    Route::put('sections/{id}/status','updateStatus')->middleware('auth:api','admin');
     Route::get('sections/getbycampus/{campus_id}','getSectionsByCampus')->middleware('auth:api');
 });
 Route::controller(MaintenanceController::class)->prefix('auth')->group(function (){
     Route::post('maintenances','index')->middleware('auth:api');
-    Route::post('maintenances/create','create')->middleware('auth:api');
+    Route::post('maintenances/create','create')->middleware('auth:api','admin');
 });
 Route::controller(MachineMaintenanceController::class)->prefix('auth')->group(function (){
     Route::post('machinemaintenances','index')->middleware('auth:api');
-    Route::post('machinemaintenances/create','create')->middleware('auth:api');
+    Route::post('machinemaintenances/create','create')->middleware('auth:api','admin');
 });
 Route::controller(UserIncidentController::class)->prefix('auth')->group(function (){
     Route::post('userincidents/create','create')->middleware('auth:api');
@@ -77,6 +77,6 @@ Route::controller(UserIncidentController::class)->prefix('auth')->group(function
 });
 Route::controller(FailuretypeController::class)->prefix('auth')->group(function (){
     Route::get('failuretypes', 'index')->middleware('auth:api');
-    Route::post('failuretypes/create', 'create')->middleware('auth:api');
-    Route::put('failuretypes/{id}/edit', 'edit')->middleware('auth:api');
+    Route::post('failuretypes/create', 'create')->middleware('auth:api','admin');
+    Route::put('failuretypes/{id}/edit', 'edit')->middleware('auth:api','admin');
 });

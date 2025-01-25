@@ -4,6 +4,7 @@ import axios from 'axios';
 import UserPanel from '../components/UserPanel.vue';
 import Header from '../components/Header.vue';
 import InifniteScroll from "@/components/InifniteScroll.vue";
+import Swal from 'sweetalert2';
 
 const incidents = ref([]);
 const userId = ref(null);
@@ -39,7 +40,28 @@ const handleNewIncident = () => {
 const closeModal = () => {
   showModal.value = false;
 };
+const checkTokenExpiration = () => {
+  const tokenExpiration = sessionStorage.getItem('token_expiration');
+  if (tokenExpiration) {
+    const expirationTime = parseInt(tokenExpiration);
+    const currentTime = Date.now();
+    const timeRemaining = expirationTime - currentTime;
+    if (timeRemaining <= 0) {
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('token_expiration');
+      sessionStorage.removeItem('user');
+      Swal.fire({
+        icon: 'error',
+        title: 'Sesión caducada',
+        text: 'Inicie sesión de nuevo para continuar',
+      }); this.$router.push({ name: 'login' });
+    }
+  } else {
+    this.$router.push({ name: 'login' });
+  }
+};
 onMounted(() => {
+  checkTokenExpiration();
   fetchIncidents();
 });
 </script>
@@ -55,7 +77,7 @@ onMounted(() => {
           <UserPanel :id="userId" />
         </div>
         <div class="col-lg-8 col-md-6 col-sm-12 justify-content-center">
-            <InifniteScroll/>
+          <InifniteScroll />
         </div>
       </div>
     </div>
@@ -83,5 +105,4 @@ onMounted(() => {
   </main>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

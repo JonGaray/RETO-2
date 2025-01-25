@@ -7,7 +7,8 @@ import AdminCampusPanel from '@/components/AdminCampusPanel.vue';
 import AdminSectionPanel from '@/components/AdminSectionPanel.vue';
 import AdminFailureTypePanel from '@/components/AdminFailureTypePanel.vue';
 import AdminMaintenancePanel from '@/components/AdminMaintenancePanel.vue';
-import { ref } from 'vue';
+import Swal from 'sweetalert2';
+import { ref, onMounted } from 'vue';
 
 const activePanel = ref('section');
 const setActivePanel = (panel) => {
@@ -31,6 +32,30 @@ function getComponent(panel) {
       return AdminSectionPanel;
   }
 }
+onMounted(() => {
+  checkTokenExpiration();
+});
+const checkTokenExpiration = () => {
+  const tokenExpiration = sessionStorage.getItem('token_expiration');
+  if (tokenExpiration) {
+    const expirationTime = parseInt(tokenExpiration);
+    const currentTime = Date.now();
+    const timeRemaining = expirationTime - currentTime;
+    if (timeRemaining <= 0) {
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('token_expiration');
+      sessionStorage.removeItem('user');
+      Swal.fire({
+        icon: 'error',
+        title: 'Sesión caducada',
+        text: 'Inicie sesión de nuevo para continuar',
+      });
+      this.$router.push({ name: 'login' });
+    }
+  } else {
+    this.$router.push({ name: 'login' });
+  }
+};
 </script>
 
 <template>
@@ -51,5 +76,4 @@ function getComponent(panel) {
   </main>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

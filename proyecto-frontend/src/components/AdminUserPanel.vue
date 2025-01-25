@@ -5,19 +5,11 @@
         <h4>Gestión de Usuarios</h4>
         <button class="btn btn-egibide mt-3 mt-md-0" @click="showCreateModal = true">+ Nuevo Usuario</button>
       </div>
-      <input
-        v-model="searchQuery"
-        type="text"
-        @input="searchUsers"
-        class="form-control mb-3"
-        placeholder="Buscar por nombre de usuario"
-      />
+      <input v-model="searchQuery" type="text" @input="searchUsers" class="form-control mb-3"
+        placeholder="Buscar por nombre de usuario" />
       <ul class="list-group">
-        <li
-          v-for="(user, index) in users"
-          :key="index"
-          class="list-group-item d-flex justify-content-between align-items-center flex-column flex-md-row"
-        >
+        <li v-for="(user, index) in users" :key="index"
+          class="list-group-item d-flex justify-content-between align-items-center flex-column flex-md-row">
           <div class="text-left text-md-left">
             <strong>{{ user.name }} </strong>
             <span class="text-muted d-block badge-initcap">{{ user.role }}</span>
@@ -160,22 +152,22 @@ export default {
       });
   },
   methods: {
-              searchUsers() {
-              const token = sessionStorage.getItem("token");
-              axios
-                .get("http://127.0.0.1:8000/api/auth/users/search", {
-                  params: { query: this.searchQuery },
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                .then((response) => {
-                  this.users = response.data;
-                })
-                .catch((error) => {
-                  console.error("Error al buscar máquinas:", error);
-                });
-            },
+    searchUsers() {
+      const token = sessionStorage.getItem("token");
+      axios
+        .get("http://127.0.0.1:8000/api/auth/users/search", {
+          params: { query: this.searchQuery },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          this.users = response.data;
+        })
+        .catch((error) => {
+          console.error("Error al buscar máquinas:", error);
+        });
+    },
     toggleStatus(user) {
       user.status = user.status === 'habilitado' ? 'deshabilitado' : 'habilitado';
       this.updateUserStatus(user);
@@ -238,13 +230,13 @@ export default {
           return;
         }
         const response = await axios.post(
-            'http://127.0.0.1:8000/api/auth/users/create',
-            this.newUser,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
+          'http://127.0.0.1:8000/api/auth/users/create',
+          this.newUser,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         this.users.push(response.data);
         this.closeModal();
@@ -252,7 +244,7 @@ export default {
       }
     },
     openEditUserModal(user) {
-      this.editedUser = { ...user }; 
+      this.editedUser = { ...user };
       this.showEditUserModal = true;
     },
     closeEditUserModal() {
@@ -266,37 +258,37 @@ export default {
       alert(this.editedUser)
       const token = sessionStorage.getItem('token');
       if (this.newUser.name.trim().length > 255) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Exceso de caracteres',
-            text: 'El nombre no puede superar los 255 caracteres',
-          });
-          return;
-        }
-        if (this.newUser.username1.trim().length > 255) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Exceso de caracteres',
-            text: 'El primer apellido no puede superar los 255 caracteres',
-          });
-          return;
-        }
-        if (this.newUser.username2.trim().length > 255) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Exceso de caracteres',
-            text: 'El segundo apellido no puede superar los 255 caracteres',
-          });
-          return;
-        }
-        if (!validarDominioCorreo(email)) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Correo inválido',
-            text: 'El correo debe tener el dominio @ikasle.egibide.org o @egibide.org',
-          });
-          return;
-        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Exceso de caracteres',
+          text: 'El nombre no puede superar los 255 caracteres',
+        });
+        return;
+      }
+      if (this.newUser.username1.trim().length > 255) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Exceso de caracteres',
+          text: 'El primer apellido no puede superar los 255 caracteres',
+        });
+        return;
+      }
+      if (this.newUser.username2.trim().length > 255) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Exceso de caracteres',
+          text: 'El segundo apellido no puede superar los 255 caracteres',
+        });
+        return;
+      }
+      if (!validarDominioCorreo(email)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Correo inválido',
+          text: 'El correo debe tener el dominio @ikasle.egibide.org o @egibide.org',
+        });
+        return;
+      }
       await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -332,5 +324,4 @@ function validarDominioCorreo(correo) {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

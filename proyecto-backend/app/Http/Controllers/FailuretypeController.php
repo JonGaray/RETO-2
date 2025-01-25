@@ -28,7 +28,6 @@ class FailuretypeController extends Controller
             'failuretype' => $failuretype,
         ], 201);
     }
-
     public function edit(Request $request, $id)
     {
         $failuretype = Failuretype::find($id);

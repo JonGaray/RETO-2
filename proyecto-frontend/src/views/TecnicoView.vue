@@ -4,6 +4,7 @@ import axios from 'axios';
 import TecnicoPanel from '../components/TecnicoPanel.vue';
 import Header from '../components/Header.vue';
 import InfiniteScrollTecnico from "@/components/InfiniteScrollTecnico.vue";
+import Swal from 'sweetalert2';
 
 const incidents = ref([]);
 const userId = ref(null);
@@ -11,7 +12,6 @@ const currentPage = ref(1);
 const totalPages = ref(1);
 const selectedFilter = ref('');
 const selectedFilterType = ref('');
-
 const onFiltersChanged = (filters) => {
     if (filters.selectedCampus !== undefined) {
         selectedFilter.value = filters.selectedCampus;
@@ -34,12 +34,34 @@ const onFiltersChanged = (filters) => {
     }
     fetchIncidentsWithFilters();
 };
-
 const fetchIncidentsWithFilters = () => {
     if (InfiniteScrollTecnico.value) {
         InfiniteScrollTecnico.value.fetchIncidents(selectedFilterType.value, selectedFilter.value);
     }
 };
+const checkTokenExpiration = () => {
+    const tokenExpiration = sessionStorage.getItem('token_expiration');
+    if (tokenExpiration) {
+        const expirationTime = parseInt(tokenExpiration);
+        const currentTime = Date.now();
+        const timeRemaining = expirationTime - currentTime;
+        if (timeRemaining <= 0) {
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('token_expiration');
+            sessionStorage.removeItem('user');
+            Swal.fire({
+                icon: 'error',
+                title: 'Sesión caducada',
+                text: 'Inicie sesión de nuevo para continuar',
+            }); this.$router.push({ name: 'login' });
+        }
+    } else {
+        this.$router.push({ name: 'login' });
+    }
+};
+onMounted(() => {
+    checkTokenExpiration();
+});
 </script>
 
 <template>
@@ -61,8 +83,4 @@ const fetchIncidentsWithFilters = () => {
     </main>
 </template>
 
-<style scoped>
-.container {
-    margin-top: 20px;
-}
-</style>
+<style scoped></style>
