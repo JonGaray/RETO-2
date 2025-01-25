@@ -40,10 +40,8 @@ const handleNewIncident = () => {
 const closeModal = () => {
   showModal.value = false;
 };
-
 const checkTokenExpiration = () => {
   const tokenExpiration = sessionStorage.getItem('token_expiration');
-
   if (tokenExpiration) {
     const expirationTime = parseInt(tokenExpiration);
     const currentTime = Date.now();

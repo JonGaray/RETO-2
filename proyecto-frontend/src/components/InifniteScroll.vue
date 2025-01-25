@@ -14,7 +14,6 @@ const hasMore = ref(true);
 const isSearching = ref(false);
 const scrollContainer = ref(null);
 const searchQuery = ref("");
-
 const fetchIncidents = async (reset = false) => {
   if (loading.value || (!hasMore.value && !isSearching.value)) return;
   loading.value = true;
@@ -45,7 +44,6 @@ const fetchIncidents = async (reset = false) => {
     loading.value = false;
   }
 };
-
 const searchIncidents = async () => {
   if (searchQuery.value.trim() === '') {
     resetInfiniteScroll();
