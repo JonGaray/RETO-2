@@ -45,7 +45,6 @@ class IncidentController extends Controller
                 'message' => 'Incidencia creada correctamente',
                 'data' => $incident,
             ], 201);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -154,7 +153,6 @@ class IncidentController extends Controller
             END
         ")
             ->paginate(3);
-
         return response()->json($incidents);
     }
     public function getInProgressIncidents()
@@ -164,9 +162,7 @@ class IncidentController extends Controller
         if (!$user) {
             return response()->json(['error' => 'No autenticado'], 401);
         }
-
         $userId = $user->id;
-
         $incidents = Incident::select('incidents.*')
             ->join('machines', 'incidents.machines_id', '=', 'machines.id')
             ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
@@ -196,15 +192,12 @@ class IncidentController extends Controller
                     ELSE 2
                 END
             ")
-            ->with(['machine:id,name', 'failureType:id,name'])->get(); // Ejecuta la consulta y pagina los resultados
-
-        if ($incidents->isEmpty()) { // Ahora isEmpty() funciona
+            ->with(['machine:id,name', 'failureType:id,name'])->get();
+        if ($incidents->isEmpty()) {
             return response()->json(['message' => 'No hay incidencias en proceso asociadas al usuario'], 404);
         }
-
         return response()->json($incidents);
     }
-
     public function getSection($section)
     {
         $incidents = Incident::select(
@@ -240,7 +233,6 @@ class IncidentController extends Controller
             END
         ")
             ->paginate(3);
-
         return response()->json($incidents);
     }
     public function getCampus($campus)
@@ -300,7 +292,6 @@ class IncidentController extends Controller
         ")
             ->orderBy('machines.priority', 'asc')
             ->paginate(3);
-
         return response()->json($incidents);
     }
     public function getMachines($machine_id)
@@ -312,7 +303,7 @@ class IncidentController extends Controller
         )
             ->join('machines', 'incidents.machines_id', '=', 'machines.id')
             ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
-            ->where('incidents.machines_id', $machine_id) 
+            ->where('incidents.machines_id', $machine_id)
             ->orderByRaw("
             CASE
                 WHEN incidents.status = 'nuevo' THEN 1
@@ -323,7 +314,6 @@ class IncidentController extends Controller
         ")
             ->orderBy('machines.priority', 'asc')
             ->paginate(3);
-
         return response()->json($incidents);
     }
     public function acceptIncident($id)
@@ -373,7 +363,7 @@ class IncidentController extends Controller
     )
         ->join('machines', 'incidents.machines_id', '=', 'machines.id')
         ->join('failuretypes', 'incidents.failuretypes_id', '=', 'failuretypes.id')
-        ->where('title', 'like', "%{$query}%") // Filtro de búsqueda dinámico
+        ->where('title', 'like', "%{$query}%")
         ->orderByRaw("
             CASE
                 WHEN incidents.status = 'nuevo' THEN 1
@@ -397,7 +387,7 @@ class IncidentController extends Controller
                 ELSE 2
             END
         ")
-        ->paginate(4); // Paginación de 4 por página
+        ->paginate(4);
     return response()->json($incidents);
     }
     public function generateIncident($machinesMaintenanceId)

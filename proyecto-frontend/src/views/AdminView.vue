@@ -7,8 +7,8 @@ import AdminCampusPanel from '@/components/AdminCampusPanel.vue';
 import AdminSectionPanel from '@/components/AdminSectionPanel.vue';
 import AdminFailureTypePanel from '@/components/AdminFailureTypePanel.vue';
 import AdminMaintenancePanel from '@/components/AdminMaintenancePanel.vue';
-import { ref } from 'vue';
 import Swal from 'sweetalert2';
+import { ref, onMounted } from 'vue';
 
 const activePanel = ref('section');
 const setActivePanel = (panel) => {
@@ -32,6 +32,9 @@ function getComponent(panel) {
       return AdminSectionPanel;
   }
 }
+onMounted(() => {
+  checkTokenExpiration();
+});
 const checkTokenExpiration = () => {
   const tokenExpiration = sessionStorage.getItem('token_expiration');
   if (tokenExpiration) {
@@ -53,9 +56,6 @@ const checkTokenExpiration = () => {
     this.$router.push({ name: 'login' });
   }
 };
-onMounted(() => {
-  checkTokenExpiration();
-});
 </script>
 
 <template>
