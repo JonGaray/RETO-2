@@ -22,7 +22,6 @@
     <div class="w-100"></div>
     <div class="card mt-5 p-3">
       <h4 class="text-center mb-4">Filtrar Incidencias</h4>
-
       <div class="mb-3 dropdown-wrapper">
       <label class="mt-3">Campus</label>
       <div class="dropdown-icon-container">
@@ -95,7 +94,7 @@
   </div>
   <div v-if="modale" class="modal-backdrop">
     <div class="modal">
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between mb-3">
         <h2 style="display: inline">Mis incidencias</h2>
         <button type="button" class="btn btn-egibide" @click="modale = false">Salir</button>
       </div>
@@ -107,7 +106,6 @@
           :incidents_id="incident.id" />
       </div>
     </div>
-
   </div>
 </template>
 
@@ -147,37 +145,31 @@ export default {
       })
         .then((response) => { this.incidentsCount = response.data.count; })
         .catch((error) => { console.error("Error al obtener el número de incidencias:", error); });
-
       axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.solvedtoday = response.data.count; })
         .catch((error) => { console.error("Error al obtener las incidencias resueltas hoy:", error); });
-
       axios.get(`http://127.0.0.1:8000/api/auth/campuses`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.campuses = response.data; })
         .catch((error) => { console.error("Error al obtener los campuses:", error); });
-
       axios.get(`http://127.0.0.1:8000/api/auth/sections`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.sections = response.data.data; })
         .catch((error) => { console.error("Error al obtener las secciones:", error); });
-
       axios.get(`http://127.0.0.1:8000/api/auth/failuretypes`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.failureTypes = response.data.data; })
         .catch((error) => { console.error("Error al obtener los tipos de fallos:", error); });
-
       axios.get(`http://127.0.0.1:8000/api/auth/machines`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.machines = response.data; })
         .catch((error) => { console.error("Error al obtener las máquinas:", error); });
-
       axios.get("http://127.0.0.1:8000/api/auth/incidents/last-accepted", {
         headers: {
           Authorization: `bearer ${token}`,
