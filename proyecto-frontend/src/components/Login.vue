@@ -9,12 +9,12 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input v-model="email" type="email" id="email" class="form-control"
-                                    placeholder="Enter your email" required />
+                                    placeholder="Introduzca el correo electronico" required />
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">Contraseña</label>
                                 <input v-model="password" type="password" id="password" class="form-control"
-                                    placeholder="Enter your password" required />
+                                    placeholder="Introduzca la contraseña" required />
                             </div>
                             <button type="submit" class="btn btn-lola w-100" :disabled="isLoading">
                                 Entrar
