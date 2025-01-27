@@ -34,7 +34,7 @@ export default {
   created() {
     const token = sessionStorage.getItem('token');
     if (token && this.userId) {
-      axios.get(`http://127.0.0.1:8000/api/auth/userincidents/${this.userId}/count`, {
+      axios.get(`http://172.20.228.150:8080/api/auth/userincidents/${this.userId}/count`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }

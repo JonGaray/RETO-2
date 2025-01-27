@@ -62,7 +62,7 @@ export default {
     methods: {
         acceptIncident() {
             const token = sessionStorage.getItem('token');
-            axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/accept`, {}, {
+            axios.post(`http://172.20.228.150:8080/api/auth/incidents/${this.incidents_id}/accept`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
                 this.$emit('refresh');
@@ -74,7 +74,7 @@ export default {
         joinIncident() {
             const token = sessionStorage.getItem('token');
             const user = JSON.parse(sessionStorage.getItem('user'));
-            axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/join`, { users_id: user.id }, {
+            axios.post(`http://172.20.228.150:8080/api/auth/incidents/${this.incidents_id}/join`, { users_id: user.id }, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
                 window.location.reload();
@@ -84,7 +84,7 @@ export default {
         },
         finishIncident() {
             const token = sessionStorage.getItem('token');
-            axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/finish`, {}, {
+            axios.post(`http://172.20.228.150:8080/api/auth/incidents/${this.incidents_id}/finish`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(() => {
                 this.$emit('refresh');

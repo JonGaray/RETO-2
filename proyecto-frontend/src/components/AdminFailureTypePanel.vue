@@ -68,7 +68,7 @@ export default {
         async fetchFailuretypes() {
             const token = sessionStorage.getItem('token');
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/auth/failuretypes', {
+                const response = await axios.get('http://172.20.228.150:8080/api/auth/failuretypes', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -91,7 +91,7 @@ export default {
                 });
                 return;
             }
-            axios.post('http://127.0.0.1:8000/api/auth/failuretypes/create', failuretypeData, {
+            axios.post('http://172.20.228.150:8080/api/auth/failuretypes/create', failuretypeData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -123,7 +123,7 @@ export default {
                 });
                 return;
             }
-            axios.put(`http://127.0.0.1:8000/api/auth/failuretypes/${this.editFailuretypeObj.id}/edit`, failuretypeData, {
+            axios.put(`http://172.20.228.150:8080/api/auth/failuretypes/${this.editFailuretypeObj.id}/edit`, failuretypeData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

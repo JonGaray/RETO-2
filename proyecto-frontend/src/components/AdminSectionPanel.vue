@@ -126,7 +126,7 @@ export default {
         searchSections() {
             const token = sessionStorage.getItem("token");
             axios
-                .get("http://127.0.0.1:8000/api/auth/sections/search", {
+                .get("http://172.20.228.150:8080/api/auth/sections/search", {
                     params: { query: this.searchQuery },
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -142,7 +142,7 @@ export default {
         async fetchSections() {
             const token = sessionStorage.getItem('token');
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/auth/sections', {
+                const response = await axios.get('http://172.20.228.150:8080/api/auth/sections', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -155,7 +155,7 @@ export default {
         async fetchCampuses() {
             const token = sessionStorage.getItem('token');
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/auth/campuses', {
+                const response = await axios.get('http://172.20.228.150:8080/api/auth/campuses', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -173,7 +173,7 @@ export default {
             const token = sessionStorage.getItem('token');
             try {
                 const response = await axios.put(
-                    `http://127.0.0.1:8000/api/auth/sections/${section.id}/status`,
+                    `http://172.20.228.150:8080/api/auth/sections/${section.id}/status`,
                     { status: section.status },
                     {
                         headers: {
@@ -208,7 +208,7 @@ export default {
                     text: 'El NIU no puede superar los 12 caracteres',
                 });
             }
-            axios.post('http://127.0.0.1:8000/api/auth/sections/create', sectionData, {
+            axios.post('http://172.20.228.150:8080/api/auth/sections/create', sectionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -251,7 +251,7 @@ export default {
                     text: 'El NIU no puede superar los 12 caracteres',
                 });
             }
-            axios.put(`http://127.0.0.1:8000/api/auth/sections/${this.editSectionObj.id}/edit`, sectionData, {
+            axios.put(`http://172.20.228.150:8080/api/auth/sections/${this.editSectionObj.id}/edit`, sectionData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

@@ -20,8 +20,8 @@ const fetchIncidents = async (reset = false) => {
   try {
     const token = sessionStorage.getItem('token');
     const url = isSearching.value
-      ? `http://127.0.0.1:8000/api/auth/incidents/search`
-      : `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`;
+      ? `http://172.20.228.150:8080/api/auth/incidents/search`
+      : `http://172.20.228.150:8080/api/auth/incidents/getall?page=${currentPage.value}`;
     const params = isSearching.value ? { query: searchQuery.value } : {};
     const response = await axios.get(url, {
       params,

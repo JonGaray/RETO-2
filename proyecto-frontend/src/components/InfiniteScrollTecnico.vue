@@ -17,9 +17,9 @@ const fetchIncidents = async (reset = false) => {
   loading.value = true;
   const token = sessionStorage.getItem('token');
   try {
-    let url = `http://127.0.0.1:8000/api/auth/incidents/getall?page=${currentPage.value}`;
+    let url = `http://172.20.228.150:8080/api/auth/incidents/getall?page=${currentPage.value}`;
     if (props.filterType && props.filterValue) {
-      url = `http://127.0.0.1:8000/api/auth/incidents/${props.filterValue}/${props.filterType}?page=${currentPage.value}`;
+      url = `http://172.20.228.150:8080/api/auth/incidents/${props.filterValue}/${props.filterType}?page=${currentPage.value}`;
     }
     const response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },

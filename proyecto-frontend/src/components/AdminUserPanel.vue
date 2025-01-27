@@ -139,7 +139,7 @@ export default {
   },
   created() {
     const token = sessionStorage.getItem('token');
-    axios.get('http://127.0.0.1:8000/api/auth/users', {
+    axios.get('http://172.20.228.150:8080/api/auth/users', {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -155,7 +155,7 @@ export default {
     searchUsers() {
       const token = sessionStorage.getItem("token");
       axios
-        .get("http://127.0.0.1:8000/api/auth/users/search", {
+        .get("http://172.20.228.150:8080/api/auth/users/search", {
           params: { query: this.searchQuery },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -175,7 +175,7 @@ export default {
     async updateUserStatus(user) {
       try {
         const token = sessionStorage.getItem('token');
-        await axios.put(`http://127.0.0.1:8000/api/auth/users/${user.id}/status`, { status: user.status }, {
+        await axios.put(`http://172.20.228.150:8080/api/auth/users/${user.id}/status`, { status: user.status }, {
           headers: {
             Authorization: `Bearer ${token}`,
           }
@@ -230,7 +230,7 @@ export default {
           return;
         }
         const response = await axios.post(
-          'http://127.0.0.1:8000/api/auth/users/create',
+          'http://172.20.228.150:8080/api/auth/users/create',
           this.newUser,
           {
             headers: {
@@ -289,7 +289,7 @@ export default {
         });
         return;
       }
-      await axios.put(`http://127.0.0.1:8000/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
+      await axios.put(`http://172.20.228.150:8080/api/auth/users/${this.editedUser.id}/save`, this.editedUser, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
