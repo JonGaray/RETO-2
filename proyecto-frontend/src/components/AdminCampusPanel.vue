@@ -5,8 +5,6 @@
                 <h4 class="w-100 text-center text-md-start mb-3 mb-md-0">Gestión de Campus</h4>
                 <button class="btn btn-egibide mt-3 mt-md-0 text-nowrap" @click="showCreateModal = true">+ Nuevo Campus</button>
             </div>
-            <input v-model="searchQuery" type="text" @input="searchCampuses" class="form-control mb-3"
-                placeholder="Buscar por nombre de campus" />
             <ul class="list-group">
                 <li v-for="(campus, index) in campuses" :key="index"
                     class="list-group-item d-flex justify-content-between align-items-center">
