@@ -103,7 +103,7 @@ const router = useRouter();
 const fetchCampuses = async () => {
   const token = sessionStorage.getItem('token');
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/auth/campuses', {
+    const response = await axios.get('http://172.20.228.150:8080/api/auth/campuses', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -116,7 +116,7 @@ const fetchCampuses = async () => {
 const fetchSections = async () => {
   const token = sessionStorage.getItem('token');
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/auth/sections/getbycampus/${selectedCampus.value}`, {
+    const response = await axios.get(`http://172.20.228.150:8080/api/auth/sections/getbycampus/${selectedCampus.value}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -131,7 +131,7 @@ const fetchMachines = async () => {
   machines.value = [];
   const token = sessionStorage.getItem('token');
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/auth/machines/getsections', {
+    const response = await axios.get('http://172.20.228.150:8080/api/auth/machines/getsections', {
       params: { sections_id: selectedSection.value },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -145,7 +145,7 @@ const fetchMachines = async () => {
 const fetchFailureTypes = async () => {
   const token = sessionStorage.getItem('token');
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/auth/failuretypes', {
+    const response = await axios.get('http://172.20.228.150:8080/api/auth/failuretypes', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -181,7 +181,7 @@ const submitIncident = async () => {
   }
   const token = sessionStorage.getItem('token');
   try {
-    const response = await axios.post('http://127.0.0.1:8000/api/auth/incidents/store', newIncident.value, {
+    const response = await axios.post('http://172.20.228.150:8080/api/auth/incidents/store', newIncident.value, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -192,7 +192,7 @@ const submitIncident = async () => {
     }
     const user = JSON.parse(sessionStorage.getItem('user'));
     const userId = user.id;
-    await axios.post('http://127.0.0.1:8000/api/auth/userincidents/create', {
+    await axios.post('http://172.20.228.150:8080/api/auth/userincidents/create', {
       users_id: userId,
       incidents_id: response.data.data.id,
     }, {

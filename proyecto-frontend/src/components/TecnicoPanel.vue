@@ -140,37 +140,37 @@ export default {
   created() {
     const token = sessionStorage.getItem("token");
     if (token) {
-      axios.get(`http://127.0.0.1:8000/api/auth/incidents/activeincidents`, {
+      axios.get(`http://172.20.228.150:8080/api/auth/incidents/activeincidents`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.incidentsCount = response.data.count; })
         .catch((error) => { console.error("Error al obtener el número de incidencias:", error); });
-      axios.get(`http://127.0.0.1:8000/api/auth/incidents/solvedtoday`, {
+      axios.get(`http://172.20.228.150:8080/api/auth/incidents/solvedtoday`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.solvedtoday = response.data.count; })
         .catch((error) => { console.error("Error al obtener las incidencias resueltas hoy:", error); });
-      axios.get(`http://127.0.0.1:8000/api/auth/campuses`, {
+      axios.get(`http://172.20.228.150:8080/api/auth/campuses`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.campuses = response.data; })
         .catch((error) => { console.error("Error al obtener los campuses:", error); });
-      axios.get(`http://127.0.0.1:8000/api/auth/sections`, {
+      axios.get(`http://172.20.228.150:8080/api/auth/sections`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.sections = response.data.data; })
         .catch((error) => { console.error("Error al obtener las secciones:", error); });
-      axios.get(`http://127.0.0.1:8000/api/auth/failuretypes`, {
+      axios.get(`http://172.20.228.150:8080/api/auth/failuretypes`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.failureTypes = response.data.data; })
         .catch((error) => { console.error("Error al obtener los tipos de fallos:", error); });
-      axios.get(`http://127.0.0.1:8000/api/auth/machines`, {
+      axios.get(`http://172.20.228.150:8080/api/auth/machines`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => { this.machines = response.data; })
         .catch((error) => { console.error("Error al obtener las máquinas:", error); });
-      axios.get("http://127.0.0.1:8000/api/auth/incidents/last-accepted", {
+      axios.get("http://172.20.228.150:8080/api/auth/incidents/last-accepted", {
         headers: {
           Authorization: `bearer ${token}`,
         },

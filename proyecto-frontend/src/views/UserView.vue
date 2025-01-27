@@ -15,7 +15,7 @@ const searchQuery = ref('');
 const fetchIncidents = async (page = 1) => {
   const token = sessionStorage.getItem('token');
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/auth/incidents/getall?page=${page}`, {
+    const response = await axios.get(`http://172.20.228.150:8080/api/auth/incidents/getall?page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

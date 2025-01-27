@@ -80,7 +80,7 @@ export default {
         async fetchCampuses() {
             const token = sessionStorage.getItem('token');
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/auth/campuses', {
+                const response = await axios.get('http://172.20.228.150:8080/api/auth/campuses', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -98,7 +98,7 @@ export default {
             const token = sessionStorage.getItem('token');
             try {
                 const response = await axios.put(
-                    `http://127.0.0.1:8000/api/auth/campuses/${campus.id}/status`,
+                    `http://172.20.228.150:8080/api/auth/campuses/${campus.id}/status`,
                     { status: campus.status },
                     {
                         headers: {
@@ -123,7 +123,7 @@ export default {
                     text: 'El nombre no puede superar los 255 caracteres',
                 });
             }
-            axios.post('http://127.0.0.1:8000/api/auth/campuses/create', campusData, {
+            axios.post('http://172.20.228.150:8080/api/auth/campuses/create', campusData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -154,7 +154,7 @@ export default {
                     text: 'El nombre no puede superar los 255 caracteres',
                 });
             }
-            axios.put(`http://127.0.0.1:8000/api/auth/campuses/${this.editCampusObj.id}/edit`, campusData, {
+            axios.put(`http://172.20.228.150:8080/api/auth/campuses/${this.editCampusObj.id}/edit`, campusData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

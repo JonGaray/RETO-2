@@ -100,7 +100,7 @@ export default {
         async fetchMachineMaintenances() {
             const token = sessionStorage.getItem('token');
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/auth/machinemaintenances', {}, {
+                const response = await axios.post('http://172.20.228.150:8080/api/auth/machinemaintenances', {}, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -114,7 +114,7 @@ export default {
         async fetchMachines() {
             const token = sessionStorage.getItem('token');
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/auth/machines', {
+                const response = await axios.get('http://172.20.228.150:8080/api/auth/machines', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -127,7 +127,7 @@ export default {
         async fetchMaintenances() {
             const token = sessionStorage.getItem('token');
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/auth/maintenances', {}, {
+                const response = await axios.post('http://172.20.228.150:8080/api/auth/maintenances', {}, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -159,7 +159,7 @@ export default {
                 });
                 return;
             }
-            axios.post('http://127.0.0.1:8000/api/auth/maintenances/create', maintenanceData, {
+            axios.post('http://172.20.228.150:8080/api/auth/maintenances/create', maintenanceData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -181,7 +181,7 @@ export default {
                 machines_id: this.selectedMachineId,
                 maintenances_id: this.selectedMaintenanceId,
             };
-            axios.post('http://127.0.0.1:8000/api/auth/machinemaintenances/create', associationData, {
+            axios.post('http://172.20.228.150:8080/api/auth/machinemaintenances/create', associationData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

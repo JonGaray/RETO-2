@@ -52,7 +52,7 @@ export default {
   methods:{
   finishIncident() {
     const token = sessionStorage.getItem('token');
-    axios.post(`http://127.0.0.1:8000/api/auth/incidents/${this.incidents_id}/finish`, {}, {
+    axios.post(`http://172.20.228.150:8080/api/auth/incidents/${this.incidents_id}/finish`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(() => {
       this.$emit('refresh');

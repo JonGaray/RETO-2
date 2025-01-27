@@ -150,7 +150,7 @@ export default {
   },
   created() {
     const token = sessionStorage.getItem('token');
-    axios.get('http://127.0.0.1:8000/api/auth/machines', {
+    axios.get('http://172.20.228.150:8080/api/auth/machines', {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -161,7 +161,7 @@ export default {
       .catch(error => {
         console.error(error);
       });
-    axios.get('http://127.0.0.1:8000/api/auth/sections/getsections', {
+    axios.get('http://172.20.228.150:8080/api/auth/sections/getsections', {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -172,7 +172,7 @@ export default {
       .catch(error => {
         console.error(error);
       });
-    axios.get('http://127.0.0.1:8000/api/auth/campuses', {
+    axios.get('http://172.20.228.150:8080/api/auth/campuses', {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -188,7 +188,7 @@ export default {
     searchMachines() {
       const token = sessionStorage.getItem("token");
       axios
-        .get("http://127.0.0.1:8000/api/auth/machines/search", {
+        .get("http://172.20.228.150:8080/api/auth/machines/search", {
           params: { query: this.searchQuery },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -204,7 +204,7 @@ export default {
     async fetchSections() {
       if (!this.selectedCampus) return;
       const token = sessionStorage.getItem("token");
-      const response = await axios.get(`http://127.0.0.1:8000/api/auth/sections/getbycampus/${this.selectedCampus}`,
+      const response = await axios.get(`http://172.20.228.150:8080/api/auth/sections/getbycampus/${this.selectedCampus}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -231,7 +231,7 @@ export default {
       }
       axios
         .post(
-          "http://127.0.0.1:8000/api/auth/machines/create",
+          "http://172.20.228.150:8080/api/auth/machines/create",
           this.newMachine,
           {
             headers: {
@@ -262,7 +262,7 @@ export default {
         return;
       }
       axios
-        .put(`http://127.0.0.1:8000/api/auth/machines/${this.editedMachine.id}/edit`, this.editedMachine, {
+        .put(`http://172.20.228.150:8080/api/auth/machines/${this.editedMachine.id}/edit`, this.editedMachine, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -287,7 +287,7 @@ export default {
       const token = sessionStorage.getItem("token");
       try {
         await axios.put(
-          `http://127.0.0.1:8000/api/auth/machines/${machine.id}/status`,
+          `http://172.20.228.150:8080/api/auth/machines/${machine.id}/status`,
           { status: machine.status },
           {
             headers: {
