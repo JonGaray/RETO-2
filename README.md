@@ -5,5 +5,6 @@ USuarios:
   -  admin: admin@egibide.org
   -  usuario: user@egibide.org
   -  tecnico: tecnico@egibide.org
+
 Contraseña:
   -  12345678
