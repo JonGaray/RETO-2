@@ -2,7 +2,7 @@
 
 IP: 172.20.228.151
 
-USuarios:
+Usuarios:
   -  admin: admin@egibide.org
   -  usuario: user@egibide.org
   -  tecnico: tecnico@egibide.org
